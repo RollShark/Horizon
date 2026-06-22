@@ -125,7 +125,7 @@
     "platform": "feishu",
     "layout": "collapsible",
     "fallback_layout": "markdown",
-    "languages": ["zh"],
+    "languages": ["en"],
     "request_body": {
       "msg_type": "interactive",
       "card": {

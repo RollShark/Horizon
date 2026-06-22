@@ -5,359 +5,310 @@ date: 2026-06-22
 lang: en
 ---
 
-> From 24 items, 15 important content pieces were selected
+> From 23 items, 13 important content pieces were selected
 
 ---
 
 1. [Codex logging bug may write TBs to local SSDs](#item-1) ⭐️ 8.0/10
 2. [Did My Old Job Only Exist Because of Fraud?](#item-2) ⭐️ 8.0/10
-3. [Deno Desktop Enables Desktop App Development](#item-3) ⭐️ 7.0/10
-4. [Apertus: Open Foundation Model for Sovereign AI](#item-4) ⭐️ 7.0/10
-5. [Switching to Open-Weight LLMs Has Minimal Downside](#item-5) ⭐️ 7.0/10
-6. [Logarithms: The Universal Abstraction](#item-6) ⭐️ 7.0/10
-7. [Danish Privacy Activist Raided by Police](#item-7) ⭐️ 7.0/10
-8. [sqlite-utils 4.0rc1 adds migrations and nested transactions](#item-8) ⭐️ 7.0/10
-9. [Cloudflare Launches Temporary Accounts for AI Agents](#item-9) ⭐️ 7.0/10
-10. [Matrix Recurrent Units Update: Stability Fixes and Limitations](#item-10) ⭐️ 7.0/10
-11. [GLM 5.2 vs Opus: One-Shot Coding Test Sparks Debate](#item-11) ⭐️ 6.0/10
-12. [Fine-Tuning Qwen 3:0.6B for Question Categorization](#item-12) ⭐️ 6.0/10
-13. [ECCV 2026 Paper Decision Appeals Discussion](#item-13) ⭐️ 6.0/10
-14. [Improved JEPA Demo Adds Environment Noise and Fair Baseline](#item-14) ⭐️ 6.0/10
-15. [Best methods for fine-tuning Whisper on domain-specific Spanish](#item-15) ⭐️ 6.0/10
+3. [Logarithms Are Everywhere in Math and Science](#item-3) ⭐️ 8.0/10
+4. [Deno Desktop Enables Desktop Apps with Shared Runtime](#item-4) ⭐️ 7.0/10
+5. [Apertus: Open Foundation Model for Sovereign AI](#item-5) ⭐️ 7.0/10
+6. [Minimal Downside to Switching to Open-Weight LLMs](#item-6) ⭐️ 7.0/10
+7. [sqlite-utils 4.0rc1 adds migrations and nested transactions](#item-7) ⭐️ 7.0/10
+8. [Cloudflare Launches Temporary Workers Deployments](#item-8) ⭐️ 7.0/10
+9. [Update on Matrix Recurrent Units: Addressing Training Stability](#item-9) ⭐️ 7.0/10
+10. [GLM 5.2 vs Opus: One-Shot Prompting Sparks Debate](#item-10) ⭐️ 6.0/10
+11. [Fine-Tuning Qwen 0.6B for Question Categorization](#item-11) ⭐️ 6.0/10
+12. [Best Methods for Fine-Tuning Whisper on Domain-Specific Spanish Vocabulary](#item-12) ⭐️ 6.0/10
+13. [EMA on LoRA for Self-Distillation: Query](#item-13) ⭐️ 6.0/10
 
 ---
 
 <a id="item-1"></a>
 ## [Codex logging bug may write TBs to local SSDs](https://github.com/openai/codex/issues/28224) ⭐️ 8.0/10
 
-OpenAI's Codex desktop app has a bug where it continuously writes diagnostic logs to a local SQLite database, potentially writing terabytes of data and wearing out SSDs within a year. Additionally, the app causes excessive GPU usage even when idle, with the spinner animation alone using 100% GPU on an MBP M5. This bug poses a serious risk to users' hardware, potentially destroying SSDs and causing excessive power consumption and fan noise. It highlights a lack of quality assurance in AI coding tools, affecting developer trust and productivity. The log file is located at ~/.codex/logs_2.sqlite, and a workaround involves creating a SQLite trigger to block inserts or running VACUUM FULL to shrink the database. The excessive GPU usage issue has been reported for months without a fix.
+A logging bug in OpenAI's Codex CLI causes excessive writes to a local SQLite database, potentially writing up to 640 TB per year and wearing out SSDs within months. Community members have shared a SQLite trigger workaround and noted that running VACUUM FULL can shrink the log file from 27 GB to 73 MB. This bug poses a serious hardware risk for developers using Codex, as excessive writes can permanently damage SSDs. It also highlights quality issues in widely-used AI coding tools, eroding user trust and prompting community-driven workarounds. The bug is tracked on GitHub as issue #17320 and remains open. The excessive writes stem from TRACE logs that ignore the RUST_LOG environment variable, causing all log entries to be written to a SQLite database. A temporary fix involves creating a SQLite trigger to block log inserts.
 
 hackernews · vantareed · Jun 22, 07:30 · [Discussion](https://news.ycombinator.com/item?id=48626930)
 
-**Background**: Codex is an AI coding assistant from OpenAI that runs as a desktop app. It uses a local SQLite database to store logs for debugging, but a bug causes it to log excessively without limits. The app also renders animations using GPU, which can spike usage even when waiting for the model.
+**Background**: Codex is OpenAI's AI coding assistant that runs locally via CLI or desktop app. It uses SQLite for logging, and a misconfigured logging sink can write massive amounts of data. SSDs have limited write endurance, typically measured in total terabytes written (TBW); consumer drives often have a TBW of 150-600 TB.
 
 <details><summary>References</summary>
 <ul>
+<li><a href="https://github.com/openai/codex/issues/17320">Excessive SQLite WAL writes during streaming due to TRACE logs ignoring RUST_LOG · Issue #17320 · openai/codex</a></li>
+<li><a href="https://www.notebookcheck.net/OpenAI-Codex-has-a-bug-that-could-kill-your-SSD-in-under-a-year.1326191.0.html">OpenAI Codex has a bug that could kill your SSD in under a year - Notebookcheck News</a></li>
 <li><a href="https://smartscope.blog/en/generative-ai/chatgpt/codex-cli-diagnostic-logs-deep-dive/">Codex CLI Logs: Location, Debug Flags & 401 Error Fix (2026) - SmartScope</a></li>
-<li><a href="https://baonghean.vn/en/openai-codex-gap-loi-ghi-log-qua-muc-nguy-co-lam-hong-ssd-trong-chua-day-mot-nam-10341573.html">OpenAI Codex encounters excessive logging error: Risk of damaging SSDs in less than a year.</a></li>
-<li><a href="https://github.com/openai/codex/issues/10885">Codex desktop app is very power-hungry and uses lots of CPU + GPU</a></li>
 
 </ul>
 </details>
 
-**Discussion**: Community comments express frustration, calling Codex 'slopware' and noting the GPU issue has been open for 6 months. Users share workarounds like SQLite triggers and VACUUM, and some point out that Codex is open-source and can be patched. Others question why no QA tests caught these issues.
+**Discussion**: Community sentiment is largely critical of OpenAI, with users calling Codex 'slopware' and reporting high GPU usage even when idle. Some users appreciate the open-source nature of Codex, noting it can be patched, while others compare it unfavorably to Claude Code in terms of typing latency.
 
-**Tags**: `#bug`, `#openai`, `#codex`, `#performance`, `#logging`
+**Tags**: `#OpenAI`, `#Codex`, `#bug`, `#SSD`, `#logging`
 
 ---
 
 <a id="item-2"></a>
 ## [Did My Old Job Only Exist Because of Fraud?](https://david.newgas.net/did-my-old-job-only-exist-because-of-fraud/) ⭐️ 8.0/10
 
-A personal blog post and a high-scoring Hacker News discussion reveal widespread fraudulent billing, government contract abuse, and corporate inefficiency that create unnecessary tech jobs. Commenters share firsthand accounts of padded hours, fake consulting roles, and budget-draining projects. This matters because it exposes systemic fraud that wastes taxpayer money, inflates tech salaries, and distorts the job market. It challenges the assumption that all tech jobs are productive and highlights a hidden cost of government and corporate spending. Examples include a Canadian government incubator program funneling money to large firms like IBM instead of startups, a UK bank rehiring the same contractor through an outsourcing provider at a markup, and a manager fraudulently editing timesheets on a $1M+ government project. The post itself describes a job that existed solely to bill a client for unnecessary work.
+A personal essay and community discussion explore how systemic fraud in billing, government contracts, and outsourcing may inflate tech job counts, with commenters sharing firsthand experiences of fraudulent billing and contractor schemes. This raises critical questions about the true health of the tech job market and the integrity of government spending, potentially affecting how workers, investors, and policymakers assess employment data and contract oversight. Commenters describe specific schemes: a manager editing billing entries to inflate hours on a government project, and a contractor being rehired through an outsourcing firm at a markup without changing the actual work.
 
 hackernews · advisedwang · Jun 21, 21:40 · [Discussion](https://news.ycombinator.com/item?id=48622867)
 
-**Background**: Fraudulent billing in tech often involves padding hours, billing for unperformed work, or creating fake roles to consume budget. Government contracts are particularly vulnerable due to complex procurement rules and limited oversight. Such practices can inflate project costs by millions and lead to prison time when discovered.
+**Background**: Government contract fraud includes overbilling, billing for work not performed, and kickback schemes. Outsourcing often involves third-party firms that add markup while supplying the same workers. Such practices can artificially inflate demand for tech labor and distort job market statistics.
 
 <details><summary>References</summary>
 <ul>
-<li><a href="https://datasearchconsulting.com/fraud-in-the-technology-sector-understanding-its-impact-and-solutions">Fraud in the Technology Sector: Understanding Its Impact and ...</a></li>
-<li><a href="https://www.gao.gov/products/fgmsd-80-4">U.S. GAO - Contracting for Computer Software Development--Serious Problems Require Management Attention To Avoid Wasting Additional Millions</a></li>
-<li><a href="https://www.wiley.law/newsletter-Five-Lessons-to-Prevent-Government-Abuse-of-Commercial-Software-Licenses">Five Lessons to Prevent Government Abuse of Commercial Software Licenses: Wiley</a></li>
+<li><a href="https://constantinecannon.com/practice/whistleblower/whistleblower-types/government-contract-fraud/">Government Contractor Fraud | Whistleblower Law Firm</a></li>
+<li><a href="https://rm-firm.com/legal-blog/government-procurement-fraud/">10 Examples of Government Procurement Fraud | Reese Marketos LLP</a></li>
+<li><a href="https://fedpractice.com/practice-areas/government-contracts/government-contract-procurement-fraud-false-claims-act/">Government Contract Procurement Fraud and False Claims Act</a></li>
 
 </ul>
 </details>
 
-**Discussion**: Commenters overwhelmingly agree that such fraud is common, sharing personal stories from Canada, the UK, and the US. Some note that the fraud is often tacitly accepted by management as a way to justify budgets. A few skeptics argue that not all inefficiency is fraud, but the consensus is that systemic abuse is widespread.
+**Discussion**: The community strongly agrees that fraud is widespread, with multiple commenters sharing personal anecdotes of billing fraud, contractor markup schemes, and government funding being funneled to large companies instead of startups. Some express cynicism about the tech industry's reliance on such practices.
 
-**Tags**: `#tech industry`, `#fraud`, `#government contracts`, `#consulting`, `#software engineering`
+**Tags**: `#fraud`, `#government contracting`, `#tech industry`, `#outsourcing`, `#billing practices`
 
 ---
 
 <a id="item-3"></a>
-## [Deno Desktop Enables Desktop App Development](https://docs.deno.com/runtime/desktop/) ⭐️ 7.0/10
+## [Logarithms Are Everywhere in Math and Science](https://alexkritchevsky.com/2026/05/25/everything-is-logarithms.html) ⭐️ 8.0/10
 
-Deno has introduced Deno Desktop, a new feature that allows developers to build desktop applications using Deno with multiple backends including CEF, Webview, and raw backends. This expands Deno's ecosystem beyond server-side and CLI applications into desktop GUI development, offering a modern alternative to Electron with a permission system and potential for shared runtimes. Deno Desktop supports CEF, Webview, and raw backends, and plans to introduce a shared CEF runtime to reduce binary sizes to a few MB per app. Permissions granted at compile time are baked into the binary.
+An essay titled 'Everything is logarithms' argues that logarithms are fundamental to understanding ratios, scales, and information across many domains, from mathematics to computer science. This perspective highlights the unifying role of logarithms in diverse fields, potentially changing how we teach and think about mathematical concepts and their applications. The essay explores logarithms in contexts such as information theory (bits, nats, digits), complex analysis, and historical calculation methods using log tables.
 
-hackernews · GeneralMaximus · Jun 22, 05:38 · [Discussion](https://news.ycombinator.com/item?id=48626137)
+hackernews · E-Reverance · Jun 21, 21:10 · [Discussion](https://news.ycombinator.com/item?id=48622626)
 
-**Background**: Deno is a secure runtime for JavaScript and TypeScript, known for its built-in permission system. Desktop development typically requires bundling a browser engine like Chromium (as in Electron), which leads to large app sizes. Deno Desktop aims to mitigate this by supporting multiple backends and a shared runtime.
+**Background**: A logarithm is the inverse operation of exponentiation, answering how many times one number must be multiplied by itself to get another number. They are used to simplify multiplication into addition, and to represent ratios and scales in science and engineering.
 
-<details><summary>References</summary>
-<ul>
-<li><a href="https://docs.deno.com/runtime/fundamentals/security/">Security and permissions | Deno Docs</a></li>
-<li><a href="https://github.com/chromiumembedded/cef">GitHub - chromiumembedded/cef: Chromium Embedded Framework ...</a></li>
-<li><a href="https://github.com/webview/webview_deno">GitHub - webview/webview_deno: 🌐 Deno bindings for webview, a tiny library for creating web-based desktop GUIs</a></li>
+**Discussion**: Commenters discuss the concept of torsors in relation to baseless logarithms, historical use of log tables, and the need for a type system to specify the base and domain of logarithms. Some recommend further reading on the lost art of logarithms and Lie theory.
 
-</ul>
-</details>
-
-**Discussion**: The community expressed excitement about the feature, with discussions around integration with native apps (similar to Tauri's sidecar), a launch-in-browser option, and the shared CEF runtime's versioning challenges. Users also highlighted the importance of surfacing compile-time permissions to end users.
-
-**Tags**: `#Deno`, `#Desktop Development`, `#WebView`, `#CEF`, `#Runtime`
+**Tags**: `#mathematics`, `#logarithms`, `#computer science`, `#information theory`
 
 ---
 
 <a id="item-4"></a>
-## [Apertus: Open Foundation Model for Sovereign AI](https://apertvs.ai/) ⭐️ 7.0/10
+## [Deno Desktop Enables Desktop Apps with Shared Runtime](https://docs.deno.com/runtime/desktop/) ⭐️ 7.0/10
 
-Apertus is a fully open foundation model initiative from the Swiss AI Initiative, backed by EPFL and ETH Zurich, aiming to provide sovereign AI capabilities with open weights, data, and training recipes. As of late 2025, Apertus is considered the largest and most capable fully open model, addressing the growing need for AI sovereignty outside the US. Its compliance with the EU AI Act makes it strategically important for European organizations. Apertus V1 performance was sub-par, and the team is currently working on V2. The model claims to focus on many languages but has been criticized for unreliability in simple multilingual queries.
+Deno Desktop has been released, allowing developers to build desktop applications using Deno with backends such as CEF and Webview, and plans to reduce binary sizes through a shared runtime. This expands Deno's utility beyond server-side and CLI applications into desktop development, offering a lighter alternative to Electron by potentially reducing app sizes to a few megabytes per app. Deno Desktop supports CEF (Chromium Embedded Framework) and Webview backends, with a raw backend also available. The shared runtime feature is on the roadmap to avoid bundling a full browser engine per app.
 
-hackernews · T-A · Jun 21, 21:29 · [Discussion](https://news.ycombinator.com/item?id=48622778)
+hackernews · GeneralMaximus · Jun 22, 05:38 · [Discussion](https://news.ycombinator.com/item?id=48626137)
 
-**Background**: Sovereign AI refers to a nation's ability to develop and control its own AI infrastructure and models, reducing dependence on foreign providers. Apertus is part of a broader trend where countries seek AI autonomy, especially after concerns about data security and geopolitical risks. Fully open models like Apertus release all components (data, code, weights) to ensure transparency and reproducibility.
+**Background**: CEF is an open-source framework for embedding Chromium-based browsers in applications, while Webview is a lightweight library that uses the operating system's native web engine (WebKit on macOS/Linux, Edge WebView2 on Windows). Deno is a JavaScript/TypeScript runtime built on V8, known for its security and modern features.
 
 <details><summary>References</summary>
 <ul>
-<li><a href="https://en.wikipedia.org/wiki/Apertus_(LLM)">Apertus (LLM) - Wikipedia</a></li>
-<li><a href="https://apertvs.ai/">Fully Open Foundation Model for Sovereign AI</a></li>
-<li><a href="https://www.explainx.ai/blog/apertus-open-foundation-model-sovereign-ai-2026">Apertus: The Fully Open Foundation Model for Sovereign AI ...</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Chromium_Embedded_Framework">Chromium Embedded Framework - Wikipedia</a></li>
+<li><a href="https://github.com/webview/webview">GitHub - webview/webview: Tiny cross-platform webview library for C/C++. Uses WebKit (GTK/Cocoa) and Edge WebView2 (Windows). · GitHub</a></li>
 
 </ul>
 </details>
 
-**Discussion**: Community comments are mixed: some appreciate the sovereignty goal but criticize the slow pace and lack of competitiveness compared to other open models like OLMo and Nemotron. Others highlight the value of the team's learning experience and potential for future improvements.
+**Discussion**: Community sentiment is mixed: some users dislike JavaScript desktop apps, while others appreciate the shared runtime approach and Deno's permission system. There is interest in a 'launch in browser' option and questions about CEF versioning with shared runtimes.
 
-**Tags**: `#open source`, `#foundation model`, `#AI sovereignty`, `#LLM`, `#community discussion`
+**Tags**: `#deno`, `#desktop`, `#javascript`, `#cef`, `#webview`
 
 ---
 
 <a id="item-5"></a>
-## [Switching to Open-Weight LLMs Has Minimal Downside](https://www.marble.onl/posts/cancel_claude.html) ⭐️ 7.0/10
+## [Apertus: Open Foundation Model for Sovereign AI](https://apertvs.ai/) ⭐️ 7.0/10
 
-A blog post argues that switching from proprietary LLMs (like Claude or GPT-4) to open-weight models (e.g., Llama 3, Mistral) carries minimal downside, citing comparable performance and benefits such as privacy, control, and cost savings. This debate is significant because it challenges the dominance of proprietary AI models and highlights the growing viability of open-weight alternatives for enterprises and developers who prioritize data sovereignty and customization. The post acknowledges that open-weight models may lag a few months behind proprietary ones, but argues that for many use cases, this gap is negligible. Community comments also note that open models can be run locally, avoiding API gatekeeping and data leakage risks.
+Apertus is a fully open foundation model project designed for sovereign AI, aiming to comply with the EU AI Act by respecting opt-outs, removing PII, and preventing memorization. This project addresses the growing need for AI sovereignty outside the US, offering a transparent and compliant alternative for organizations that want to control their data and models. Apertus V1 performance was sub-par, and the team is currently working on V2. The instruct models are based on Llama 3.1 fine-tunes from last year, raising questions about competitiveness.
 
-hackernews · amarble · Jun 21, 20:56 · [Discussion](https://news.ycombinator.com/item?id=48622518)
+hackernews · T-A · Jun 21, 21:29 · [Discussion](https://news.ycombinator.com/item?id=48622778)
 
-**Background**: Open-weight LLMs are models whose trained parameters (weights) are publicly released, allowing anyone to download, run, and fine-tune them. Unlike fully open-source AI, open-weight models may not include training data or code, but they still offer more control than proprietary APIs. Proprietary models like GPT-4 and Claude are only accessible via paid APIs, limiting user control and raising privacy concerns.
+**Background**: Sovereign AI refers to a state's ability to design, host, operate, and regulate AI systems within its territory, including data storage and model training. Open foundation models like Apertus aim to provide transparency and control, contrasting with proprietary models from US tech giants.
 
 <details><summary>References</summary>
 <ul>
-<li><a href="https://app.readytensor.ai/lessons/proprietary-vs-open-weight-llms-how-to-choose-for-your-agentic-system-aaidc-week11-lesson3-Kev4TxRgmnUn">Proprietary vs Open Weight LLMs : How to Choose for Your Agentic...</a></li>
-<li><a href="https://www.linkedin.com/pulse/open-weight-llms-strategic-advantage-enterprise-ai-chris-thomas-quwif">Open - Weight LLMs : A Strategic Advantage for Enterprise AI</a></li>
-<li><a href="https://readmedium.com/why-i-use-locally-hosted-llms-9146e1fd55fa">Why I use locally hosted LLMs</a></li>
+<li><a href="https://apertvs.ai/?trk=article-ssr-frontend-pulse_little-text-block">Fully Open Foundation Model for Sovereign AI</a></li>
+<li><a href="https://news.ycombinator.com/item?id=48622778">Apertus – Open Foundation Model for Sovereign AI | Hacker News</a></li>
+<li><a href="https://www.linkedin.com/pulse/sovereign-ai-new-geopolitical-fault-line-boards-cant-ignore-palande-mzy4c">Sovereign AI : The New Geopolitical Fault Line Boards Can’t Ignore</a></li>
 
 </ul>
 </details>
 
-**Discussion**: Comments are mixed: some users share practical tips for routing requests to open models, while others criticize the post for conflating open-weight with true open-source. One commenter notes that open-weight models are still black boxes, unlike traditional FOSS where code is inspectable and modifiable.
+**Discussion**: Community feedback is mixed: some appreciate the sovereignty goal but criticize slow progress and sub-par performance, while others note that the team lacks experience compared to established LLM providers. Comparisons to other open models like OLMo and Nemotron highlight Apertus's current limitations.
 
-**Tags**: `#open-source`, `#LLMs`, `#AI`, `#privacy`, `#model comparison`
+**Tags**: `#open-source`, `#AI`, `#foundation model`, `#sovereign AI`, `#LLM`
 
 ---
 
 <a id="item-6"></a>
-## [Logarithms: The Universal Abstraction](https://alexkritchevsky.com/2026/05/25/everything-is-logarithms.html) ⭐️ 7.0/10
+## [Minimal Downside to Switching to Open-Weight LLMs](https://www.marble.onl/posts/cancel_claude.html) ⭐️ 7.0/10
 
-An essay titled 'Everything is logarithms' argues that logarithms are a fundamental abstraction underlying mathematics, physics, and information theory, proposing the concept of 'baseless logarithms' as a unit-free quantity. This perspective reframes how we think about measurement and scaling across disciplines, potentially influencing how scientists and engineers approach problems involving ratios, information, and dimensional analysis. The essay introduces 'baseless logarithms' as a torsor, where the base corresponds to a choice of unit (e.g., bits, nats, digits), and discusses how logarithms appear in laws like Weber-Fechner and in information entropy.
+A blog post argues that open-weight large language models (LLMs) are a viable alternative to proprietary models with minimal trade-offs, citing cost savings, privacy benefits, and near-parity in capability. This debate is significant because it challenges the prevailing assumption that proprietary models like GPT-4 and Claude are necessary for high-quality AI applications, potentially accelerating adoption of open models in privacy-sensitive and cost-conscious environments. The post acknowledges that open-weight models may be a few months behind proprietary ones, but argues that for many use cases, this lag is acceptable. It also notes that open models can be run locally or via third-party services, though privacy concerns vary by provider.
 
-hackernews · E-Reverance · Jun 21, 21:10 · [Discussion](https://news.ycombinator.com/item?id=48622626)
+hackernews · amarble · Jun 21, 20:56 · [Discussion](https://news.ycombinator.com/item?id=48622518)
 
-**Background**: Logarithms transform multiplication into addition, making them essential for simplifying calculations and modeling exponential relationships. In information theory, logarithms measure information in bits or nats. The concept of a torsor describes a set where differences are meaningful but absolute values are not, similar to how logarithms without a specified base represent a ratio.
+**Background**: Open-weight LLMs make their pre-trained weights publicly available, allowing anyone to use, fine-tune, or deploy them. This contrasts with proprietary models like GPT-4 and Claude, which are only accessible via API and whose weights remain secret. The open-source vs. proprietary AI debate has intensified as open models have improved rapidly, narrowing the capability gap.
 
-**Discussion**: Commenters praised the essay's depth and recommended related resources like Charles Petzold's 'The Lost Art of Logarithms'. Some debated the term 'baseless logarithm', with one commenter arguing it is nonsensical and that base is a unit choice, while another linked it to torsors in mathematics.
+<details><summary>References</summary>
+<ul>
+<li><a href="https://www.linkedin.com/pulse/open-weights-llms-in-depth-analysis-adoption-usage-performance-jha-kymhc">Open - Weights LLMs: In-Depth Analysis of Adoption, Usage, and...</a></li>
+<li><a href="https://newsletter.himanshuramchandani.co/p/proprietary-vs-open-source-ai-trap-that-s-bankrupting-startups">Proprietary vs Open - Source AI Trap That's Bankrupting Startups</a></li>
+<li><a href="https://www.sunqi.org/open-source-vs-proprietary-2025.html">Open Source vs Proprietary : How to Think About the Trade -off in 2025</a></li>
 
-**Tags**: `#mathematics`, `#logarithms`, `#information theory`, `#abstraction`
+</ul>
+</details>
+
+**Discussion**: Commenters raised nuanced points: some questioned the true openness of open-weight models, noting that users cannot modify the underlying matrices. Others highlighted that privacy depends on the service provider, with some recommending eurouter.ai for better data protection. A few argued that the capability lag is negligible for many tasks, especially those that were using older proprietary models.
+
+**Tags**: `#open source`, `#LLM`, `#AI`, `#privacy`, `#machine learning`
 
 ---
 
 <a id="item-7"></a>
-## [Danish Privacy Activist Raided by Police](https://twitter.com/LarsAnders1620/status/2068208864747540516#m) ⭐️ 7.0/10
+## [sqlite-utils 4.0rc1 adds migrations and nested transactions](https://simonwillison.net/2026/Jun/21/sqlite-utils-40rc1/#atom-everything) ⭐️ 7.0/10
 
-Danish privacy activist Lars Andersen was raided by police, who turned off his power and seized his cameras, escalating tensions over surveillance and government accountability. This incident highlights potential government overreach and hypocrisy in enforcing privacy laws, sparking debate on the balance between security and civil liberties in Denmark. The raid involved plainclothes masked officers entering Andersen's apartment, and he had previously used methods like GPS tracking on ministers' cars and doxxing their children, which critics view as crossing ethical lines.
+sqlite-utils 4.0rc1 introduces built-in database migrations and nested transaction support via db.atomic(). This major update simplifies database schema management for Python developers and enables safer, more flexible transaction handling in SQLite. Migrations are defined as Python functions using the @migrations() decorator and can be applied via CLI or Python API. Nested transactions are implemented using SQLite savepoints.
 
-hackernews · I_am_tiberius · Jun 22, 04:50 · [Discussion](https://news.ycombinator.com/item?id=48625823)
+rss · Simon Willison · Jun 21, 23:35
 
-**Background**: Lars Andersen is a former police officer turned privacy activist known for exposing government hypocrisy. He has been convicted for sending threatening texts to a prosecutor and has a history of controversial tactics, including ignoring minor drug offenses while serving as a cop.
+**Background**: sqlite-utils is a Python library and CLI tool that provides high-level operations on SQLite databases. Previously, schema changes had to be managed manually or with external tools like sqlite-migrate, which is now integrated into the core library.
 
-**Discussion**: Community comments are mixed: some criticize Andersen's methods as over-the-line, while others argue the police raid proves his point about government hypocrisy. Concerns were raised about the police's use of masked officers and the potential danger if the homeowner had been armed.
+<details><summary>References</summary>
+<ul>
+<li><a href="https://sqlite-utils.datasette.io/en/latest/migrations.html">Database migrations - sqlite - utils</a></li>
+<li><a href="https://simonwillison.net/2026/Jun/21/sqlite-utils-40rc1/">sqlite - utils 4.0rc1 adds migrations and nested transactions</a></li>
 
-**Tags**: `#privacy`, `#police`, `#activism`, `#Denmark`, `#surveillance`
+</ul>
+</details>
+
+**Tags**: `#sqlite`, `#python`, `#database`, `#migrations`, `#open-source`
 
 ---
 
 <a id="item-8"></a>
-## [sqlite-utils 4.0rc1 adds migrations and nested transactions](https://simonwillison.net/2026/Jun/21/sqlite-utils-40rc1/#atom-everything) ⭐️ 7.0/10
+## [Cloudflare Launches Temporary Workers Deployments](https://simonwillison.net/2026/Jun/21/temporary-cloudflare-accounts/#atom-everything) ⭐️ 7.0/10
 
-Simon Willison released sqlite-utils 4.0rc1, the first release candidate for version 4, which introduces database migrations (ported from the sqlite-migrate package) and nested transactions via a new db.atomic() context manager. These features address long-standing community requests and make sqlite-utils a more complete tool for managing SQLite databases, especially for projects that need schema evolution and reliable transaction handling. Migrations are forward-only and defined as decorated Python functions; nested transactions use SQLite savepoints and are exposed via db.atomic(). The release candidate includes minor backwards-incompatible changes.
+Cloudflare now allows users to deploy a Workers project for 60 minutes without creating an account, using the command `npx wrangler deploy --temporary`. This lowers the barrier to trying Cloudflare Workers, making serverless deployment accessible to anyone with a terminal, including AI agents and casual developers. The temporary deployment is ephemeral and lasts exactly 60 minutes, after which it is automatically removed. Users can claim the project via a provided URL to extend its lifetime.
 
-rss · Simon Willison · Jun 21, 23:35
+rss · Simon Willison · Jun 21, 22:01
 
-**Background**: sqlite-utils is a Python library and CLI tool that provides high-level operations on SQLite databases. Migrations allow developers to version-control database schema changes, while nested transactions enable partial rollbacks within a transaction.
+**Background**: Cloudflare Workers is a serverless edge computing platform that runs JavaScript on Cloudflare's global CDN. Wrangler is the official CLI tool for managing Workers projects. Previously, deploying a Worker required creating a Cloudflare account and configuring a project.
 
 <details><summary>References</summary>
 <ul>
-<li><a href="https://sqlite-utils.datasette.io/en/latest/migrations.html">Database migrations - sqlite-utils</a></li>
-<li><a href="https://simonwillison.net/2026/Jun/21/sqlite-utils-40rc1/">sqlite-utils 4.0rc1 adds migrations and nested transactions</a></li>
-<li><a href="https://github.com/simonw/sqlite-migrate">GitHub - simonw/sqlite-migrate: A simple database migration ... GitHub - simonw/sqlite-utils: Python CLI utility and library ... sqlite-migrate · PyPI sqlite-utils 4.0rc1 adds migrations and nested transactions sqlite-utils · PyPI</a></li>
+<li><a href="https://developers.cloudflare.com/workers/wrangler/commands/">Commands - Wrangler · Cloudflare Workers docs</a></li>
+<li><a href="https://www.npmjs.com/package/wrangler">wrangler - npm</a></li>
 
 </ul>
 </details>
 
-**Tags**: `#sqlite`, `#python`, `#database`, `#migrations`, `#open source`
+**Tags**: `#Cloudflare`, `#serverless`, `#deployment`, `#developer tools`
 
 ---
 
 <a id="item-9"></a>
-## [Cloudflare Launches Temporary Accounts for AI Agents](https://simonwillison.net/2026/Jun/21/temporary-cloudflare-accounts/#atom-everything) ⭐️ 7.0/10
+## [Update on Matrix Recurrent Units: Addressing Training Stability](https://www.reddit.com/r/MachineLearning/comments/1ubz5o8/an_update_on_matrix_recurrent_units_an_attention/) ⭐️ 7.0/10
 
-Cloudflare introduced temporary, ephemeral accounts that allow anyone to deploy a Workers project using `npx wrangler deploy --temporary` without signing up, with the deployment lasting 60 minutes. This feature dramatically reduces friction for rapid prototyping, CI/CD pipelines, and AI agents that need to deploy code quickly without managing credentials. It lowers the barrier to entry for serverless computing on Cloudflare's edge network. The temporary account can be claimed within 60 minutes via a claim URL to persist the deployment. The feature is designed for AI agents but is useful for all developers, as noted by the author.
-
-rss · Simon Willison · Jun 21, 22:01
-
-**Background**: Cloudflare Workers is a serverless computing platform that runs code on Cloudflare's global edge network. Previously, deploying a Worker required creating a Cloudflare account and managing API tokens, which added friction for quick experiments or automated agents.
-
-<details><summary>References</summary>
-<ul>
-<li><a href="https://developers.cloudflare.com/workers/platform/claim-deployments/">Claim deployments (temporary accounts) - Cloudflare Docs</a></li>
-<li><a href="https://developers.cloudflare.com/changelog/post/2026-06-19-temporary-accounts-for-agents/">Temporary accounts for AI agent deployments · Changelog</a></li>
-<li><a href="https://www.explainx.ai/blog/cloudflare-temporary-accounts-ai-agents-wrangler-2026">Cloudflare Temporary Accounts: How AI Agents Deploy Workers ...</a></li>
-
-</ul>
-</details>
-
-**Discussion**: The Hacker News discussion (referenced in the article) generally welcomed the feature, noting its utility for quick tests and AI workflows, though some raised concerns about abuse potential and the 60-minute limit.
-
-**Tags**: `#Cloudflare`, `#serverless`, `#developer tools`, `#AI agents`, `#deployment`
-
----
-
-<a id="item-10"></a>
-## [Matrix Recurrent Units Update: Stability Fixes and Limitations](https://www.reddit.com/r/MachineLearning/comments/1ubz5o8/an_update_on_matrix_recurrent_units_an_attention/) ⭐️ 7.0/10
-
-The author of Matrix Recurrent Units (MRU) reports improvements to address training instability, including methods like skew-symmetric matrices with matrix exponential or Cayley map, LDU factorization, and QR decomposition to bound matrix states. However, experiments on the TinyStories dataset show MRU underperforms compared to a transformer baseline. This work explores linear-time alternatives to attention, which is crucial for scaling sequence models to long contexts. The identified limitations—especially the poor performance of orthogonal matrices—provide insights into the design of efficient recurrent architectures. The MRU uses a parallel scan based on associative matrix multiplication to achieve linear-time complexity. The author found that forcing input states to be orthogonal via Cayley map or matrix exponential severely hurt performance, suggesting shear transformations are critical.
+The author reports progress on Matrix Recurrent Units (MRU), a linear-time attention alternative, by experimenting with new input state matrix methods (skew-symmetric, LDU, QR) to bound matrix states and stabilize training on larger datasets. This work addresses a key limitation of MRUs—training instability—potentially making them more viable for efficient sequence modeling, which is critical for scaling transformers and exploring alternatives to attention. The author found that orthogonal input state matrices (via Cayley map or matrix exponential) performed poorly, suggesting shear transformations are critical, while LDU factorization gave the best results. On the TinyStories dataset, MRU underperformed a baseline GPT-2.
 
 reddit · r/MachineLearning · /u/mikayahlevi · Jun 21, 19:39
 
-**Background**: Attention mechanisms in transformers have quadratic complexity in sequence length, motivating research into linear-time alternatives. Matrix Recurrent Units (MRU) are a novel architecture that uses cumulative matrix multiplication to process sequences in linear time, similar in spirit to linear attention or state space models.
+**Background**: Matrix Recurrent Units (MRUs) are a linear-time sequence architecture that replaces attention with cumulative matrix multiplication across the sequence. They use a parallel associative scan for efficiency on modern hardware. Training instability on larger datasets has been a known issue, which the author attempts to fix by constraining the input state matrices.
 
 <details><summary>References</summary>
 <ul>
-<li><a href="https://en.wikipedia.org/wiki/Gated_recurrent_unit">Gated recurrent unit - Wikipedia</a></li>
-<li><a href="https://en.wikipedia.org/wiki/Prefix_sum">Prefix sum - Wikipedia</a></li>
-<li><a href="https://arxiv.org/pdf/1704.00784">Online and Linear - Time Attention by Enforcing Monotonic Alignments</a></li>
+<li><a href="https://medium.com/@sparklerussell/gated-recurrent-units-explained-with-matrices-part-2-training-and-loss-function-7e7147b7f2ae">Gated Recurrent Units explained with matrices : Part... | Medium</a></li>
+<li><a href="https://vitalab.github.io/article/2018/09/27/kronecker-recurrent-units.html">Kronecker Recurrent Units</a></li>
 
 </ul>
 </details>
-
-**Discussion**: The Reddit post received comments noting that the MRU's performance on TinyStories is disappointing but not surprising given the difficulty of matching transformers. Some commenters suggested comparing with other linear-time models like Mamba or RWKV.
 
 **Tags**: `#machine learning`, `#sequence modeling`, `#attention alternative`, `#recurrent neural networks`, `#linear-time architecture`
 
 ---
 
-<a id="item-11"></a>
-## [GLM 5.2 vs Opus: One-Shot Coding Test Sparks Debate](https://techstackups.com/comparisons/glm-5.2-vs-opus/) ⭐️ 6.0/10
+<a id="item-10"></a>
+## [GLM 5.2 vs Opus: One-Shot Prompting Sparks Debate](https://techstackups.com/comparisons/glm-5.2-vs-opus/) ⭐️ 6.0/10
 
-A comparison between GLM 5.2 and Claude Opus 4.8 on a one-shot coding task to build a 3D platformer in raw WebGL was published, with GLM 5.2 producing a broken game while Opus's output had bugs but appeared functional at first glance. This comparison highlights the ongoing debate about benchmarking methodologies for LLMs, as one-shot prompts are not representative of real-world collaborative coding, and the results may mislead users about model capabilities. GLM 5.2 lacks multimodality and is slower than Opus, but costs about 1/5 as much; community comments point out that a single prompt cannot capture the complexity of a software project, and that proper evaluation should test reliability and steerability in multi-step agentic workflows.
+A comparison article pitted GLM 5.2 against Claude Opus 4.8 using a single one-shot prompt to build a 3D platformer in raw WebGL, sparking community criticism for unrealistic methodology. The debate highlights the need for more realistic benchmarks that reflect collaborative, multi-step AI usage rather than simplistic one-shot prompts. The one-shot prompt asked the models to build a 3D platformer from scratch without any game engine or library, which critics argue does not represent real-world software development workflows.
 
 hackernews · ritzaco · Jun 22, 07:22 · [Discussion](https://news.ycombinator.com/item?id=48626866)
 
-**Background**: GLM 5.2 is the latest flagship model from Z.ai (formerly Zhipu AI), a Chinese AI company, designed for long-horizon agentic tasks with a 1M-token context. Claude Opus 4.8 is Anthropic's most powerful coding model, scoring 69.2% on SWE Pro and fixing its own errors 4x more often. One-shot coding, where a single prompt generates an entire application, is often criticized as unrealistic because real development involves iterative collaboration and debugging.
+**Background**: GLM 5.2 is a large language model by Zhipu AI with a 1-million-token context window, while Claude Opus is Anthropic's high-capability tier. One-shot prompting uses a single input to generate a complete output, which is often insufficient for complex tasks like game development.
 
 <details><summary>References</summary>
 <ul>
-<li><a href="https://openlm.ai/glm-5.2/">GLM-5.2 | OpenLM.ai</a></li>
-<li><a href="https://z.ai/blog/glm-5.2">GLM-5.2: Built for Long-Horizon Tasks</a></li>
-<li><a href="https://eclipsesource.com/blogs/2025/09/09/task-engineering-ai-coding/">Task Engineering in AI Coding : How to Break Problems Into AI-Ready...</a></li>
+<li><a href="https://docs.z.ai/guides/llm/glm-5.2">GLM - 5 . 2 - Overview - Z.AI DEVELOPER DOCUMENT</a></li>
+<li><a href="https://felloai.com/glm-5-2/">What Is GLM 5 . 2 ? Zhipu's 1M-Context Open Model | Fello AI</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Claude_(language_model)">Claude ( AI ) - Wikipedia</a></li>
 
 </ul>
 </details>
 
-**Discussion**: Commenters largely criticized the one-shot methodology, arguing it does not reflect real-world usage and that proper benchmarks should test reliability and steerability in multi-step tasks. Some noted that despite its flaws, GLM 5.2 offers good value at a lower cost, while others pointed out that both models produced buggy outputs, making the comparison inconclusive.
+**Discussion**: Commenters criticized the one-shot approach as unrealistic, with one noting that real agent usage is collaborative and requires reliability and steerability. Another suggested using Opus to plan and GLM to execute for a best-of-both-worlds approach.
 
-**Tags**: `#AI`, `#LLM`, `#benchmarking`, `#coding`
+**Tags**: `#AI`, `#LLM`, `#benchmark`, `#coding`
+
+---
+
+<a id="item-11"></a>
+## [Fine-Tuning Qwen 0.6B for Question Categorization](https://www.teachmecoolstuff.com/viewarticle/fine-tuning-a-local-llm-to-categorize-questions) ⭐️ 6.0/10
+
+A practical guide demonstrates fine-tuning the small language model Qwen 3:0.6B to categorize user questions, achieving effective classification with a local, lightweight model. This approach enables on-device text classification without relying on large cloud APIs, making it suitable for privacy-sensitive or offline applications. It also highlights the growing trend of using small, specialized models for specific tasks. The fine-tuning process uses Qwen 3:0.6B, a 0.6-billion-parameter model, and the article provides hands-on steps for training it on a custom question categorization dataset. Community comments suggest that simpler classifiers like scikit-learn's SGDClassifier may achieve comparable results with far less resource overhead.
+
+hackernews · dev-experiments · Jun 21, 22:55 · [Discussion](https://news.ycombinator.com/item?id=48623434)
+
+**Background**: Fine-tuning adapts a pre-trained language model to a specific task by training it on a small, task-specific dataset. Small language models (SLMs) like Qwen 0.6B are designed to run on edge devices, offering a balance between performance and efficiency. Text classification is a common NLP task where models assign predefined categories to text inputs.
+
+<details><summary>References</summary>
+<ul>
+<li><a href="https://huggingface.co/Qwen/Qwen3-0.6B">Qwen / Qwen 3 - 0 . 6 B · Hugging Face</a></li>
+<li><a href="https://openlaboratory.ai/models/qwen3-0_6b">Qwen 3 0 . 6 B | Open Laboratory</a></li>
+<li><a href="https://medium.com/@liana.napalkova/fine-tuning-small-language-models-practical-recommendations-68f32b0535ca">Fine - Tuning Small Language Models : Practical... | Medium</a></li>
+
+</ul>
+</details>
+
+**Discussion**: Commenters debate the necessity of fine-tuning an LLM for simple classification, with some advocating for traditional ML classifiers like scikit-learn's SGDClassifier or ModernBERT plus a classifier. Others suggest exploring zero-shot encoders, GRPO training, or using embedding models with a separate classifier. The discussion reflects a healthy skepticism about over-engineering simple tasks.
+
+**Tags**: `#fine-tuning`, `#small language models`, `#text classification`, `#practical ML`
 
 ---
 
 <a id="item-12"></a>
-## [Fine-Tuning Qwen 3:0.6B for Question Categorization](https://www.teachmecoolstuff.com/viewarticle/fine-tuning-a-local-llm-to-categorize-questions) ⭐️ 6.0/10
+## [Best Methods for Fine-Tuning Whisper on Domain-Specific Spanish Vocabulary](https://www.reddit.com/r/MachineLearning/comments/1ubvmdx/best_current_methods_for_finetuning_whisper_on/) ⭐️ 6.0/10
 
-A practical guide demonstrates fine-tuning the Qwen 3:0.6B small language model to categorize user questions, using a custom dataset and LoRA for efficient training. This approach enables developers to deploy lightweight, locally-run classifiers for tasks like question routing, reducing reliance on large cloud APIs and improving privacy. The guide uses Qwen 3:0.6B, a 0.6 billion parameter model with 32,768 token context length, and applies LoRA fine-tuning on a small labeled dataset of questions.
+A Reddit user asked the community for the best current methods and data requirements for fine-tuning OpenAI's Whisper model on domain-specific Spanish vocabulary, mentioning techniques like LoRA, QLoRA, and Spectrum. Domain-specific fine-tuning of Whisper is crucial for applications like medical or legal transcription where accuracy on specialized terms is essential. The discussion helps practitioners identify efficient methods and estimate data needs. The user specifically works with Spanish technical terms and asks about newer methods beyond LoRA, QLoRA, and Spectrum. They also inquire about the amount of labeled audio hours needed for convergence.
 
-hackernews · dev-experiments · Jun 21, 22:55 · [Discussion](https://news.ycombinator.com/item?id=48623434)
+reddit · r/MachineLearning · /u/gothenjoyer_ · Jun 21, 17:18
 
-**Background**: Fine-tuning adapts a pre-trained language model to a specific task by updating its weights on task-specific data. LoRA (Low-Rank Adaptation) is a parameter-efficient technique that only trains small adapter matrices, reducing memory and compute requirements. Small LLMs like Qwen 3:0.6B can run on consumer hardware, making them suitable for edge or embedded applications.
+**Background**: Whisper is a general-purpose speech recognition model from OpenAI that performs well on many languages but may struggle with domain-specific vocabulary. Fine-tuning adapts the model to specialized domains using labeled audio. LoRA and QLoRA are parameter-efficient fine-tuning techniques that reduce memory and compute requirements, while Spectrum is another adaptation method.
 
 <details><summary>References</summary>
 <ul>
-<li><a href="https://huggingface.co/Qwen/Qwen3-0.6B">Qwen/Qwen3-0.6B · Hugging Face</a></li>
-<li><a href="https://huggingface.co/Qwen/Qwen3-0.6B-GGUF">Qwen/Qwen3-0.6B-GGUF · Hugging Face</a></li>
-<li><a href="https://www.omdena.com/blog/fine-tuning-small-language-models">A Practical Guide to Fine-Tuning Small Language Models</a></li>
+<li><a href="https://medium.com/@chris.xg.wang/a-guide-to-fine-tune-whisper-model-with-hyper-parameter-tuning-c13645ba2dba">Whisper Precision: A Comprehensive Guide to Fine - Tuning ... | Medium</a></li>
+<li><a href="https://huggingface.co/blog/fine-tune-whisper">Fine - Tune Whisper For Multilingual ASR with Transformers</a></li>
+<li><a href="https://github.com/Vaibhavs10/fast-whisper-finetuning">GitHub - Vaibhavs10/fast- whisper - finetuning · GitHub</a></li>
 
 </ul>
 </details>
 
-**Discussion**: Commenters noted that traditional ML methods like sklearn's SGDClassifier on n-grams can achieve similar results with smaller model sizes, while others suggested exploring zero-shot encoders, embedding-based classifiers, or newer small models like Gemma 3:270M. One user questioned how categorization improves retrieval, and another proposed deeper projects like GRPO training or synthetic data generation.
-
-**Tags**: `#fine-tuning`, `#small language models`, `#text classification`, `#LLM`, `#practical guide`
+**Tags**: `#Whisper`, `#fine-tuning`, `#domain adaptation`, `#speech recognition`, `#Spanish`
 
 ---
 
 <a id="item-13"></a>
-## [ECCV 2026 Paper Decision Appeals Discussion](https://www.reddit.com/r/MachineLearning/comments/1uc0m1e/eccv_2026_paper_decision_appeals_discussion_d/) ⭐️ 6.0/10
+## [EMA on LoRA for Self-Distillation: Query](https://www.reddit.com/r/MachineLearning/comments/1ubv0f5/ema_on_lora_r/) ⭐️ 6.0/10
 
-A Reddit user initiated a discussion about the ECCV 2026 paper decision appeal process, sharing that they received a rejection despite meeting the criteria for their contribution type and noting that the meta-review did not override the declared type. This discussion highlights potential inconsistencies in the review process and provides a platform for authors to share experiences, which may influence future conference policies and improve fairness. The appeal form allows submissions for policy errors, clerical errors, and obvious major misunderstandings, with the latter being historically rare. The user's paper had scores 6/4/3 and all reviewers agreed with the declared contribution type.
+A Reddit user asks if there are papers that successfully apply Exponential Moving Average (EMA) on LoRA adapters for self-distillation, where the EMA adapter acts as a self-teacher generating soft labels for the trainable adapter. This question highlights a gap in parameter-efficient fine-tuning research: combining EMA-based self-distillation with LoRA could improve performance without full fine-tuning, benefiting resource-constrained practitioners. The user references the paper 'On-Policy Self-Distillation' (arXiv:2601.19897) which uses EMA for the teacher but with full fine-tuning, and seeks empirical results specifically for LoRA or left models.
 
-reddit · r/MachineLearning · /u/Muted-Ad4511 · Jun 21, 20:39
+reddit · r/MachineLearning · /u/South-Conference-395 · Jun 21, 16:54
 
-**Background**: ECCV (European Conference on Computer Vision) is a top-tier conference in computer vision. After meta-reviews are released, authors can appeal decisions via a Google Form for specific reasons. The contribution type (e.g., theory, application) affects review criteria.
+**Background**: LoRA (Low-Rank Adaptation) is a parameter-efficient fine-tuning method that adds small trainable matrices to a frozen pre-trained model, reducing memory and storage costs. EMA is a technique that maintains a moving average of model parameters, often used to stabilize training or as a teacher in self-distillation. Self-distillation uses a teacher model (often an EMA of the student) to generate soft labels for the student to learn from.
 
 <details><summary>References</summary>
 <ul>
-<li><a href="https://eccv.ecva.net/Conferences/2026/ReviewerGuide">Reviewer Guide - eccv.ecva.net</a></li>
-<li><a href="https://eccv.ecva.net/Conferences/2026/ReviewerFAQs">ECCV 2026 Reviewer FAQs</a></li>
-<li><a href="https://openreview.net/group?id=thecvf.com/ECCV">ECCV - OpenReview</a></li>
+<li><a href="https://www.emergentmind.com/topics/low-rank-adaptation-lora-adapters">LoRA Adapters : Efficient Fine-Tuning</a></li>
+<li><a href="https://www.ibm.com/think/topics/lora">What is LoRA (Low-Rank Adaption)? | IBM</a></li>
 
 </ul>
 </details>
 
-**Discussion**: The thread includes the original post and likely comments from other authors considering appeals or sharing similar experiences, though no specific comments are provided in the content.
-
-**Tags**: `#ECCV`, `#conference`, `#paper appeal`, `#machine learning`
-
----
-
-<a id="item-14"></a>
-## [Improved JEPA Demo Adds Environment Noise and Fair Baseline](https://www.reddit.com/r/MachineLearning/comments/1ubtf09/a_slightly_improved_dvdjepa_demo_p/) ⭐️ 6.0/10
-
-A Reddit user improved an existing JEPA demo by adding environment noise and a fair pixel-space baseline, better illustrating JEPA's ability to ignore irrelevant details. This incremental improvement clarifies JEPA's key advantage—ignoring unpredictable environment noise—which is central to Yann LeCun's vision for self-supervised learning and could influence future research directions. The demo uses a Joint-Embedding Predictive Architecture (JEPA) to predict representations of target blocks from a context block, with added noise to the environment and a pixel-space baseline with similar parameter count and compute budget.
-
-reddit · r/MachineLearning · /u/Kirne · Jun 21, 15:49
-
-**Background**: JEPA (Joint-Embedding Predictive Architecture) is a self-supervised learning method that predicts abstract embeddings rather than reconstructing pixels. It was introduced by Meta AI and championed by Yann LeCun as a more human-like learning approach that can ignore irrelevant details.
-
-<details><summary>References</summary>
-<ul>
-<li><a href="https://arxiv.org/abs/2301.08243">[2301.08243] Self - Supervised Learning from Images with...</a></li>
-<li><a href="https://en.wikipedia.org/wiki/Joint_Embedding_Predictive_Architecture">Joint Embedding Predictive Architecture</a></li>
-
-</ul>
-</details>
-
-**Tags**: `#JEPA`, `#self-supervised learning`, `#machine learning`, `#demo`
-
----
-
-<a id="item-15"></a>
-## [Best methods for fine-tuning Whisper on domain-specific Spanish](https://www.reddit.com/r/MachineLearning/comments/1ubvmdx/best_current_methods_for_finetuning_whisper_on/) ⭐️ 6.0/10
-
-A Reddit user is asking for the best current methods to fine-tune OpenAI's Whisper speech recognition model on domain-specific Spanish vocabulary, mentioning LoRA, QLoRA, and Spectrum as known approaches. Fine-tuning Whisper for domain-specific vocabulary is crucial for applications like medical or legal transcription where accuracy on specialized terms is essential. The discussion can guide practitioners on efficient adaptation techniques and data requirements. The user is working with Spanish domain-specific speech and wants to know how many hours of labeled audio are needed for convergence. They are aware of LoRA, QLoRA, and Spectrum but seek newer or better methods.
-
-reddit · r/MachineLearning · /u/gothenjoyer_ · Jun 21, 17:18
-
-**Background**: Whisper is a general-purpose speech recognition model from OpenAI that can be fine-tuned for specific domains or languages. LoRA (Low-Rank Adaptation) and QLoRA (Quantized LoRA) are parameter-efficient fine-tuning methods that reduce memory usage, making it feasible to adapt large models on consumer GPUs. Domain adaptation techniques like self-training and BEST-RQ can also improve performance on specialized vocabulary.
-
-<details><summary>References</summary>
-<ul>
-<li><a href="https://grokipedia.com/page/Fine-tuning_Whisper_for_Libyan_Arabic_Using_LoRA">Fine-tuning Whisper for Libyan Arabic Using LoRA</a></li>
-<li><a href="https://grokipedia.com/page/QLoRA">QLoRA</a></li>
-<li><a href="https://github.com/iumemon5/domain_adpating_whisper">GitHub - iumemon5/ domain _adpating_ whisper</a></li>
-
-</ul>
-</details>
-
-**Tags**: `#Whisper`, `#fine-tuning`, `#speech recognition`, `#domain adaptation`, `#Spanish`
+**Tags**: `#LoRA`, `#EMA`, `#self-distillation`, `#fine-tuning`, `#parameter-efficient`
 
 ---

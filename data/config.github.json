@@ -3,7 +3,7 @@
   "ai": {
     "provider": "deepseek",
     "languages": ["zh"],
-"model": "deepseek-chat",
+"model": "deepseek-reasoner",
 "api_key_env": "DEEPSEEK_API_KEY",
     "temperature": 0.3,
     "max_tokens": 4096,

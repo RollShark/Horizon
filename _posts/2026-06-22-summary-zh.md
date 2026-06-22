@@ -5,323 +5,358 @@ date: 2026-06-22
 lang: zh
 ---
 
-> 从 23 条内容中筛选出 13 条重要资讯。
+> 从 22 条内容中筛选出 16 条重要资讯。
 
 ---
 
-1. [Codex 日志漏洞可能导致 SSD 写入数 TB 数据](#item-1) ⭐️ 8.0/10
-2. [我的旧工作只是因为欺诈而存在吗？](#item-2) ⭐️ 8.0/10
-3. [文章探讨对数在自然与数学中的普遍性](#item-3) ⭐️ 8.0/10
-4. [Cloudflare 推出临时 60 分钟账户](#item-4) ⭐️ 8.0/10
-5. [Deno Desktop 支持多后端构建桌面应用](#item-5) ⭐️ 7.0/10
-6. [Apertus：欧洲主权 AI 开放基础模型](#item-6) ⭐️ 7.0/10
-7. [转向开放模型几乎没有缺点](#item-7) ⭐️ 7.0/10
-8. [sqlite-utils 4.0rc1 新增迁移和嵌套事务](#item-8) ⭐️ 7.0/10
-9. [矩阵循环单元更新：稳定性修复与并行扫描](#item-9) ⭐️ 7.0/10
-10. [微调 Qwen 0.6B 模型进行问题分类](#item-10) ⭐️ 6.0/10
-11. [ECCV 2026 论文决定申诉讨论](#item-11) ⭐️ 6.0/10
-12. [微调 Whisper 以适应领域特定词汇的最佳方法](#item-12) ⭐️ 6.0/10
-13. [探索在 LoRA 上使用 EMA 进行自蒸馏](#item-13) ⭐️ 6.0/10
+1. [Deno 推出支持 CEF 和 Webview 的桌面应用构建功能](#item-1) ⭐️ 8.0/10
+2. [Codex 日志 bug 可写入 TB 级数据到 SSD](#item-2) ⭐️ 8.0/10
+3. [我的旧工作是否仅因欺诈而存在？](#item-3) ⭐️ 8.0/10
+4. [转向开源权重模型几乎没有劣势](#item-4) ⭐️ 8.0/10
+5. [Hashimoto 向 Zig 基金会追加捐款 40 万美元](#item-5) ⭐️ 7.0/10
+6. [GLM 5.2 对比 Opus：一次性提示基准测试争议](#item-6) ⭐️ 7.0/10
+7. [Apertus：面向主权 AI 的开放基础模型](#item-7) ⭐️ 7.0/10
+8. [Sakana Fugu：多模型编排系统](#item-8) ⭐️ 7.0/10
+9. [sqlite-utils 4.0rc1 增加迁移和嵌套事务功能](#item-9) ⭐️ 7.0/10
+10. [Cloudflare 推出临时账户用于 Workers 部署](#item-10) ⭐️ 7.0/10
+11. [ECCV 2026 论文申诉流程在 Reddit 引发讨论](#item-11) ⭐️ 7.0/10
+12. [矩阵循环单元更新：稳定性改进与分析](#item-12) ⭐️ 7.0/10
+13. [增强版 JEPA 演示：加入环境噪声与公平基线对比](#item-13) ⭐️ 6.0/10
+14. [微调 Whisper 处理领域西班牙语的最佳方法](#item-14) ⭐️ 6.0/10
+15. [关于 LoRA 上 EMA 自蒸馏的查询](#item-15) ⭐️ 6.0/10
+16. [WeightsLab：开源神经网络数据调试工具](#item-16) ⭐️ 6.0/10
 
 ---
 
 <a id="item-1"></a>
-## [Codex 日志漏洞可能导致 SSD 写入数 TB 数据](https://github.com/openai/codex/issues/28224) ⭐️ 8.0/10
+## [Deno 推出支持 CEF 和 Webview 的桌面应用构建功能](https://docs.deno.com/runtime/desktop/) ⭐️ 8.0/10
 
-OpenAI Codex 存在一个日志漏洞，可能向本地 SSD 写入数 TB 数据，同时一个旋转动画会导致 GPU 使用率达到 100%。社区成员提供了变通方案，例如使用 SQLite 触发器阻止日志插入。 该漏洞可能显著缩短 SSD 寿命并降低用户体验，尤其对于依赖 Codex 进行 AI 辅助编码的开发者。这也引发了对广泛使用的 AI 工具软件质量的担忧。 该漏洞在 GitHub 上跟踪，已开放近六个月。一位用户报告称，对 SQLite 日志文件执行 VACUUM FULL 后，文件从 27GB 缩小到 73MB，表明日志严重膨胀。
+Deno 宣布了一项名为 Deno Desktop 的新功能，允许开发者使用多个后端选项（包括 Chromium Embedded Framework (CEF) 和 Webview）构建桌面应用程序。这使 Deno 从服务器端运行时扩展到创建跨平台桌面图形用户界面的平台。 这一举措显著扩展了 Deno 的能力，使 JavaScript/TypeScript 开发者无需切换到 Electron 或其他框架即可创建桌面应用程序。它利用了 Deno 强大的权限系统，并通过计划中的共享 CEF 运行时可能减小应用程序体积。 Deno Desktop 目前支持三种后端：CEF、Webview 和原始窗口后端。跨应用程序共享 CEF 运行时已在路线图中，以避免每个应用捆绑 CEF，从而将二进制文件大小减小到几兆字节。
 
-hackernews · vantareed · 6月22日 07:30 · [社区讨论](https://news.ycombinator.com/item?id=48626930)
+hackernews · GeneralMaximus · 6月22日 05:38 · [社区讨论](https://news.ycombinator.com/item?id=48626137)
 
-**背景**: OpenAI Codex 是一款本地运行的 AI 编码助手，会将交互记录到 SQLite 数据库中。配置错误的日志接收器可能导致过度写入，可能超过典型 SSD 的寿命（例如每年 640 TB）。旋转动画漏洞是另一个独立问题，在等待模型响应时导致 GPU 高使用率。
+**背景**: Deno 是一个 JavaScript 和 TypeScript 运行时，通过显式权限强调安全性。Chromium Embedded Framework (CEF) 允许在应用程序中嵌入完整的 Chromium 浏览器，而 Webview 则使用系统原生引擎（如 WebKit 或 Edge WebView2）提供轻量级嵌入式浏览器。这两种都是使用 Web 技术构建桌面界面的常见方法。
 
 <details><summary>参考链接</summary>
 <ul>
-<li><a href="https://www.notebookcheck.net/OpenAI-Codex-has-a-bug-that-could-kill-your-SSD-in-under-a-year.1326191.0.html">OpenAI Codex has a bug that could kill your... - Notebookcheck News</a></li>
-<li><a href="https://news.ycombinator.com/item?id=48626930">Codex logging bug may write TBs to local SSDs | Hacker News</a></li>
-<li><a href="https://github.com/openai/codex/issues/16857">High GPU usage while the app is “thinking” due to tiny ...</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Chromium_Embedded_Framework">Chromium Embedded Framework</a></li>
+<li><a href="https://en.wikipedia.org/wiki/WebView">WebView - Wikipedia</a></li>
+<li><a href="https://github.com/webview/webview">GitHub - webview/webview: Tiny cross-platform webview library for C/C++. Uses WebKit (GTK/Cocoa) and Edge WebView2 (Windows). · GitHub</a></li>
 
 </ul>
 </details>
 
-**社区讨论**: 社区情绪普遍批评，用户称 Codex 为“垃圾软件”，并对长期存在的漏洞表示沮丧。一些用户赞赏 Codex 是开源的且可以修补，而另一些用户则指出 Claude Code 等竞争工具性能更好。
+**社区讨论**: 评论者对 Deno Desktop 表示兴奋，特别是共享 CEF 运行时以减少应用体积的前景。一些人提出了关于共享运行时版本管理以及编译时如何向用户展示权限的问题。总体情绪积极，用户欣赏 Deno 的持续创新。
 
-**标签**: `#OpenAI`, `#Codex`, `#bug`, `#performance`, `#AI tools`
+**标签**: `#deno`, `#desktop-apps`, `#webview`, `#cross-platform`, `#javascript-runtime`
 
 ---
 
 <a id="item-2"></a>
-## [我的旧工作只是因为欺诈而存在吗？](https://david.newgas.net/did-my-old-job-only-exist-because-of-fraud/) ⭐️ 8.0/10
+## [Codex 日志 bug 可写入 TB 级数据到 SSD](https://github.com/openai/codex/issues/28224) ⭐️ 8.0/10
 
-一篇个人文章及 Hacker News 上的社区讨论探讨了许多技术岗位可能并非源于真实业务需求，而是由欺诈性账单、政府拨款滥用和承包商计划所维持。 这一发现挑战了技术就业的合法性认知，并引发了对纳税人资金被用于虚假岗位的道德担忧，可能影响行业信任和政策监管。 作者描述了自己之前的一份工作几乎无实际任务，却通过虚增合同和政府拨款获得资金。社区评论提供了具体案例，例如承包商通过外包公司以更高费率重新入职，以及经理在政府项目中篡改工时记录。
+OpenAI 的 Codex 客户端中的一个日志记录 bug 可能会向用户本地 SSD 写入数 TB 的日志数据。社区成员分享了一个临时解决方法，通过 SQLite 触发器阻止日志插入。 这个 bug 可能导致严重的 SSD 磨损，缩短用户驱动器的寿命，影响所有 Codex 用户。它也凸显了 OpenAI AI 编程工具持续存在的质量问题。 解决方法是通过运行 SQLite 命令创建一个忽略日志插入的触发器。一位用户报告说，使用 VACUUM FULL 将 27GB 的日志文件缩小到 73MB。
 
-hackernews · advisedwang · 6月21日 21:40 · [社区讨论](https://news.ycombinator.com/item?id=48622867)
+hackernews · vantareed · 6月22日 07:30 · [社区讨论](https://news.ycombinator.com/item?id=48626930)
 
-**背景**: 政府合同和拨款通常授予大型科技公司，这些公司可能通过分包方式虚增成本。欺诈性账单，如虚报工时或为未完成的工作收费，是政府采购中的已知问题。科技行业还严重依赖承包商和外包，为创造无实际价值的岗位提供了机会。
+**背景**: Codex 是 OpenAI 推出的 AI 编程助手，可在编辑器中提供代码建议。其日志系统将事件写入 SQLite 数据库文件，但由于一个 bug，该文件可能无限增长，消耗大量磁盘空间。
 
-<details><summary>参考链接</summary>
-<ul>
-<li><a href="https://oig.hhs.gov/fraud/contract-fraud/">Contract Fraud | Office of Inspector General | Government Oversight | U.S. Department of Health and Human Services</a></li>
-<li><a href="https://fedpractice.com/practice-areas/government-contracts/government-contract-procurement-fraud-false-claims-act/">Government Contract Procurement Fraud and False Claims Act</a></li>
-<li><a href="https://rm-firm.com/legal-blog/government-procurement-fraud/">10 Examples of Government Procurement Fraud | Reese Marketos LLP</a></li>
+**社区讨论**: 评论者对 Codex 的整体质量表示失望，提到了旋转动画导致的 GPU 高占用等其他问题。一些人赞赏 Codex 是开源的并且可以修补，而另一些人则批评 OpenAI 快速行动的文化。
 
-</ul>
-</details>
-
-**社区讨论**: 评论者分享了技术岗位中的欺诈经历，包括加拿大政府拨款滥用、英国银行的承包商重新雇佣计划以及政府项目中的工时欺诈。普遍观点认为此类做法广泛存在且常不受惩罚，一些人指出欺诈可能是系统性的而非孤立的。
-
-**标签**: `#fraud`, `#tech industry`, `#government contracts`, `#software engineering`, `#ethics`
+**标签**: `#bug`, `#codex`, `#openai`, `#logging`, `#ssd`
 
 ---
 
 <a id="item-3"></a>
-## [文章探讨对数在自然与数学中的普遍性](https://alexkritchevsky.com/2026/05/25/everything-is-logarithms.html) ⭐️ 8.0/10
+## [我的旧工作是否仅因欺诈而存在？](https://david.newgas.net/did-my-old-job-only-exist-because-of-fraud/) ⭐️ 8.0/10
 
-一篇题为《一切都是对数》的文章认为，对数是许多自然和数学现象背后的基本结构，从信息论到测量单位。 这一视角为理解不同领域提供了统一的框架，可能影响数学教学和测量系统的设计。 文章讨论了“无底对数”，并将其与 torsor（主齐性空间）这一数学概念联系起来，其中值在任意缩放或平移下定义。
+一篇个人文章指出，政府与咨询领域的许多科技岗位依赖系统性欺诈、浪费和计费计划来维持。 这一分析引发了关于科技行业和政府合同中伦理问题的重要讨论，影响人们对岗位合法性和信任的看法。 文章基于作者个人经历，社区评论揭示了政府项目中的欺诈计费、预算虚增和承包商回扣等问题。
 
-hackernews · E-Reverance · 6月21日 21:10 · [社区讨论](https://news.ycombinator.com/item?id=48622626)
+hackernews · advisedwang · 6月21日 21:40 · [社区讨论](https://news.ycombinator.com/item?id=48622867)
 
-**背景**: 对数将乘法转化为加法，简化复杂计算。它们出现在信息论（比特、奈特）、物理学（分贝）等许多领域。Torsor 是一个像群一样运作但没有特定单位元的集合，常用于描述位置或货币等量。
+**背景**: 政府 IT 项目合同通常涉及大额资金和复杂的监督机制。咨询公司和供应商可能通过虚增账单、设置多余岗位或欺诈手段来利用这些系统，导致普遍的效率低下和伦理问题。
 
-<details><summary>参考链接</summary>
-<ul>
-<li><a href="https://en.wikipedia.org/wiki/Principal_homogeneous_space">Principal homogeneous space - Wikipedia</a></li>
-<li><a href="https://en.wikipedia.org/wiki/Logarithm">Logarithm - Wikipedia</a></li>
+**社区讨论**: 评论者分享了他们在政府项目中遇到的第一手欺诈计费经历，包括经理篡改时间记录以及承包商以不同名义返回并收取更高费用，揭示了系统性问题的存在。
 
-</ul>
-</details>
-
-**社区讨论**: 社区评论强调了对数的 torsor 视角、对数表的历史使用，并批评文章缺乏类型系统来明确对数的对象和参照。一些评论者推荐进一步阅读李群理论和失传的对数艺术。
-
-**标签**: `#mathematics`, `#logarithms`, `#information theory`, `#measurement`, `#essay`
+**标签**: `#fraud`, `#government contracts`, `#tech industry`, `#consulting`, `#ethics`
 
 ---
 
 <a id="item-4"></a>
-## [Cloudflare 推出临时 60 分钟账户](https://simonwillison.net/2026/Jun/21/temporary-cloudflare-accounts/#atom-everything) ⭐️ 8.0/10
+## [转向开源权重模型几乎没有劣势](https://www.marble.onl/posts/cancel_claude.html) ⭐️ 8.0/10
 
-Cloudflare 现在允许任何人通过命令 `npx wrangler deploy --temporary` 在不注册的情况下部署 Workers 项目，部署持续 60 分钟。该部署是临时的，之后可以认领以获取永久所有权。 此功能大幅降低了开发者和 AI 代理测试和部署无服务器代码的门槛，使 Cloudflare Workers 更易上手。同时，它还为实验和自动化提供了临时环境。 临时账户持续 60 分钟，之后部署将被删除。用户可通过生成的 URL 认领项目以永久保留，该功能适用于任何使用 Wrangler CLI 的 Workers 项目。
+一篇博客文章主张，从专有 AI 模型转向开源权重模型几乎没有劣势，因为开源模型现在的性能已经与几个月前的专有模型相当。 这一观点挑战了专有模型显著更优的假设，可能鼓励更广泛采用开源模型以节省成本、保护隐私和进行定制，尤其对开发者和企业而言。 作者强调，开源权重模型可以在本地或通过第三方服务运行，但 API 调用的隐私问题仍然存在。该文章带有'开源'、'LLM'、'AI'、'机器学习'标签。
 
-rss · Simon Willison · 6月21日 22:01
+hackernews · amarble · 6月21日 20:56 · [社区讨论](https://news.ycombinator.com/item?id=48622518)
 
-**背景**: Cloudflare Workers 是一个在边缘运行代码的无服务器计算平台。Wrangler 是管理 Workers 项目的官方 CLI。此前，部署 Worker 需要创建 Cloudflare 账户并登录，这给快速测试或自动化工作流增加了障碍。
+**背景**: 开源权重模型发布神经网络最终训练好的参数，允许用户在本地运行模型，而闭源专有模型仅提供 API 访问。虽然开源权重提供了更高的透明度和控制力，但其性能通常落后于最先进的专有模型几个月。
 
 <details><summary>参考链接</summary>
 <ul>
-<li><a href="https://developers.cloudflare.com/workers/wrangler/commands/">Commands - Wrangler · Cloudflare Workers docs</a></li>
-<li><a href="https://developers.cloudflare.com/workers/platform/claim-deployments/">Claim deployments (temporary accounts) · Cloudflare Workers docs</a></li>
+<li><a href="https://opensource.org/ai/open-weights">Open Weights: not quite what you’ve been told</a></li>
 
 </ul>
 </details>
 
-**社区讨论**: Hacker News 上的讨论（文章中有链接）普遍称赞该功能简单实用，对 AI 代理和人类开发者都很有用。一些评论者指出 60 分钟的限制对于临时测试来说很宽松，而另一些人则讨论了潜在的滥用场景。
+**社区讨论**: 社区评论表达多种观点：有人认为开源模型对许多任务已足够，并强调隐私优势；另一些人批评开源权重 LLM 并未完全体现自由软件原则，因为用户无法轻松修改模型。几位评论者指出，第三方 API 提供商的隐私问题仍然是关键考虑因素。
 
-**标签**: `#Cloudflare`, `#serverless`, `#deployment`, `#AI agents`, `#developer tools`
+**标签**: `#open source`, `#LLMs`, `#AI`, `#machine learning`
 
 ---
 
 <a id="item-5"></a>
-## [Deno Desktop 支持多后端构建桌面应用](https://docs.deno.com/runtime/desktop/) ⭐️ 7.0/10
+## [Hashimoto 向 Zig 基金会追加捐款 40 万美元](https://mitchellh.com/writing/zig-donation-2026) ⭐️ 7.0/10
 
-Deno Desktop 是一项新功能，允许开发者使用 Deno 构建原生桌面应用，支持 CEF、Webview 和 Raw 后端。它可将 Deno 项目编译为自包含的二进制文件，捆绑代码、Deno 运行时和渲染引擎。 该功能解决了桌面应用开发中的关键痛点，如捆绑大型浏览器引擎和管理权限。它通过提供共享运行时选项并利用 Deno 内置的权限系统，成为 Electron 的轻量级替代方案。 该功能支持三个后端：CEF（Chromium 嵌入式框架）、Webview（系统 Webview）和 Raw（无渲染）。跨应用的共享 CEF 运行时已在路线图中，这将使每个应用的二进制文件大小降至几兆字节。
+Mitchell Hashimoto 承诺向 Zig 软件基金会额外捐赠 40 万美元，以支持 Zig 编程语言的持续开发。 这一重要的财务承诺展示了社区对 Zig（一门新兴的系统编程语言）的强力支持，有助于确保其长期可持续发展和开发动力。 该捐款被描述为追加捐赠，URL 中提及了 2026 年的捐赠周期，暗示这是一项对 Zig 软件基金会的多年期资助承诺。
 
-hackernews · GeneralMaximus · 6月22日 05:38 · [社区讨论](https://news.ycombinator.com/item?id=48626137)
+hackernews · tosh · 6月22日 13:43 · [社区讨论](https://news.ycombinator.com/item?id=48630020)
 
-**背景**: Deno 是一个基于 V8、Rust 和 Tokio 的 JavaScript/TypeScript 运行时，以其安全优先的权限系统而闻名。传统的桌面应用开发需要捆绑整个浏览器引擎（如 Electron 捆绑 Chromium），导致二进制文件体积庞大。Deno Desktop 旨在通过提供多个后端和潜在的共享运行时来解决这个问题。
+**背景**: Zig 是由 Andrew Kelley 创建的一门通用系统编程语言，于 2016 年首次发布。它被设计为 C 语言的改进版本，提供编译期泛型、无宏以及手动内存管理等功能。Zig 软件基金会 (ZSF) 是一个非营利组织，负责监督该语言的开发，资金来源于企业赞助和捐赠。
 
 <details><summary>参考链接</summary>
 <ul>
-<li><a href="https://docs.deno.com/runtime/desktop/">Desktop apps | Deno Docs</a></li>
-<li><a href="https://en.wikipedia.org/wiki/Chromium_Embedded_Framework">Chromium Embedded Framework - Wikipedia</a></li>
-<li><a href="https://docs.deno.com/runtime/reference/cli/desktop/">deno desktop | Deno Docs</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Zig_(programming_language)">Zig (programming language)</a></li>
+<li><a href="https://ziglang.org/">Home ⚡ Zig Programming Language</a></li>
 
 </ul>
 </details>
 
-**社区讨论**: 社区总体持积极态度，用户称赞 Deno 的持续创新和共享运行时的潜力。一些用户请求增加“在浏览器中启动”选项，并对编译后二进制文件的权限透明度表示担忧。
+**社区讨论**: 社区评论普遍非常积极，用户们对这笔捐款表示赞赏，并对 Zig 的发展方向表示感谢。其中一条评论特别赞赏了“怪异也没关系”的态度，这种态度鼓励了大胆尝试。
 
-**标签**: `#Deno`, `#Desktop`, `#CEF`, `#Webview`, `#Runtime`
+**标签**: `#Zig`, `#programming languages`, `#open source funding`, `#donation`, `#systems programming`
 
 ---
 
 <a id="item-6"></a>
-## [Apertus：欧洲主权 AI 开放基础模型](https://apertvs.ai/) ⭐️ 7.0/10
+## [GLM 5.2 对比 Opus：一次性提示基准测试争议](https://techstackups.com/comparisons/glm-5.2-vs-opus/) ⭐️ 7.0/10
 
-由苏黎世联邦理工学院及其合作伙伴开发的 Apertus，作为一个完全开放、透明且多语言的基础模型，已作为欧洲主权 AI 倡议的一部分发布。 Apertus 是少数达到规模且完全开放的 LLM 之一，也是首个将多语言、透明性和合规性作为核心设计原则的模型，为欧洲部署提供了美国主导模型的法律上干净的替代方案。 该模型的 V1 版本性能不佳，团队正在开发 V2。社区反馈指出其多语言可靠性存在问题，例如幻觉生成不存在的词汇。
+一项对比 GLM 5.2 和 Claude Opus 4.8 的测试，使用一次性提示用原生 WebGL 构建 3D 平台游戏，引发了关于此类基准测试有效性的争论。批评者认为一次性提示不能反映 LLM 在实际协作中的使用情况。 这场讨论凸显了 AI 评估中的一个根本问题：一次性基准测试是否能代表实际使用情况。其结果可能影响社区对模型能力的看法，并推动评估方法的改进。 GLM 5.2 采用混合专家架构，总参数达 7440 亿，而 Claude Opus 4.8 是 Anthropic 能力最强的模型，上下文窗口为 100 万。GLM 模型的成本约为 Opus 的五分之一，且为开放权重模型，而 Opus 是专有的。
 
-hackernews · T-A · 6月21日 21:29 · [社区讨论](https://news.ycombinator.com/item?id=48622778)
+hackernews · ritzaco · 6月22日 07:22 · [社区讨论](https://news.ycombinator.com/item?id=48626866)
 
-**背景**: 主权 AI 指国家或地区独立开发和部署 AI 的能力，以减少对外国供应商的依赖。Apertus 旨在提供一个完全开放的模型，可在欧洲基础设施上运行，无需依赖美国公司或政策。
+**背景**: 一次性提示是一种向模型提供一个示例以指导其输出的技术。GLM 5.2 是智谱 AI 开发的开放权重大型语言模型，而 Claude Opus 是 Anthropic 的旗舰专有模型。该对比使用单个提示从零生成一个复杂游戏，但一些人认为这并不能代表迭代协作的编码工作流程。
 
 <details><summary>参考链接</summary>
 <ul>
-<li><a href="https://news.ycombinator.com/item?id=48622778">Apertus – Open Foundation Model for Sovereign AI | Hacker News</a></li>
-<li><a href="https://ethz.ch/en/news-and-events/eth-news/news/2025/09/press-release-apertus-a-fully-open-transparent-multilingual-language-model.html">Apertus: a fully open, transparent, multilingual language model | ETH Zurich</a></li>
-<li><a href="https://www.aimadetools.com/blog/what-is-apertus-swiss-sovereign-ai-model/">What Is Apertus? Europe's Open Sovereign AI Model Explained</a></li>
+<li><a href="https://docs.z.ai/guides/llm/glm-5.2">GLM - 5 . 2 - Overview - Z.AI DEVELOPER DOCUMENT</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Claude_(language_model)">Claude (language model)</a></li>
+<li><a href="https://www.anthropic.com/claude/opus">Claude Opus \ Anthropic</a></li>
 
 </ul>
 </details>
 
-**社区讨论**: 社区情绪复杂：有人称赞该项目的主权雄心，但许多人批评其进展缓慢，且与 OLMo、K2 Think V2 和 Nemotron 等其他开放模型相比缺乏竞争力。用户报告多语言性能不可靠，并指出该团队与成熟的 LLM 提供商相比经验不足。
+**社区讨论**: 社区评论对一次性方法持批评态度，用户如 meander_water 指出这并非基准测试，也不能代表实际使用。其他用户如 lukaslalinsky 则称赞 Opus 的协作能力，并指出一次性测试忽略了迭代交互的价值。
 
-**标签**: `#open-source`, `#AI`, `#foundation model`, `#sovereignty`, `#LLM`
+**标签**: `#AI`, `#LLM`, `#Model Comparison`, `#Benchmarking`, `#AI Evaluation`
 
 ---
 
 <a id="item-7"></a>
-## [转向开放模型几乎没有缺点](https://www.marble.onl/posts/cancel_claude.html) ⭐️ 7.0/10
+## [Apertus：面向主权 AI 的开放基础模型](https://apertvs.ai/) ⭐️ 7.0/10
 
-一篇博客文章认为，开放权重 LLM 是专有模型的可行替代方案，几乎没有缺点，引发了关于隐私、延迟和开源哲学的讨论。 这一讨论突显了开放模型与专有模型之间差距的缩小，可能推动企业转向更透明、更具成本效益的 AI 解决方案。 开放权重模型与真正的开源不同，它们保留训练数据和代码的秘密，但可以自托管以获得更好的隐私和更低的延迟。性能差距已从 20-30%缩小到某些基准测试中的接近持平。
+2025 年 9 月 2 日，瑞士 AI 倡议发布了 Apertus，一个训练覆盖 1800 多种语言的开源大语言模型，提供 80 亿和 700 亿参数版本，采用 Apache 2.0 许可证。 Apertus 是首批将 AI 作为公共物品的案例之一，强调透明性和主权，并符合欧盟 AI 法案。它引发了关于开源 AI 竞争力和地缘政治影响的辩论，因为各国希望减少对美国科技巨头的依赖。 尽管 Apertus V1 是当时最大的完全开放模型，但其性能远落后于前沿模型，在翻译和动词变位等语言任务上表现不佳，经常幻觉出不存在的词汇。
 
-hackernews · amarble · 6月21日 20:56 · [社区讨论](https://news.ycombinator.com/item?id=48622518)
+hackernews · T-A · 6月21日 21:29 · [社区讨论](https://news.ycombinator.com/item?id=48622778)
 
-**背景**: 开放权重 LLM 仅发布模型权重，而不发布训练数据或代码，这使得它们比专有 API 更透明，但不如真正的开源开放。FOSS 哲学强调用户研究、修改和共享软件的自由，这在开放权重模型中部分受到损害。最近的进展使开放权重模型与较旧的专有模型具有竞争力，从而减少了切换的缺点。
+**背景**: 主权 AI 指国家努力发展独立的 AI 基础设施、数据控制和模型，以减少对外国技术的依赖。Apertus 由瑞士多家机构（EPFL、苏黎世联邦理工学院、瑞士国家超级计算中心）联合创建，旨在提供透明、多语言的替代方案，同时遵守欧洲版权法和欧盟 AI 法案。
 
 <details><summary>参考链接</summary>
 <ul>
-<li><a href="https://www.solarwinds.com/blog/open-source-llms-vs-open-weight-llms-vs-proprietary-llms">Open Source LLMs vs Open Weight LLMs vs Proprietary LLMs - SolarWinds Blog</a></li>
-<li><a href="https://callsphere.ai/blog/open-weight-models-vs-proprietary-2026-enterprise-comparison">Open-Weight Models vs Proprietary: A 2026 Comparison ...</a></li>
-<li><a href="https://www.bentoml.com/blog/navigating-the-world-of-open-source-large-language-models">The Best Open-Source LLMs in 2026</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Apertus_AI">Apertus AI</a></li>
+<li><a href="https://ethz.ch/en/news-and-events/eth-news/news/2025/09/press-release-apertus-a-fully-open-transparent-multilingual-language-model.html">Apertus: a fully open, transparent, multilingual language model | ETH Zurich</a></li>
 
 </ul>
 </details>
 
-**社区讨论**: 评论者就第三方 API 提供商的隐私问题进行了辩论，有人建议对敏感数据使用路由规则。其他人指出，如果开放模型与较旧的专有版本匹配，则几乎没有理由不切换，而一些人批评开放权重模型缺乏真正的 FOSS 原则。
+**社区讨论**: 社区评论褒贬不一：有人赞赏这一倡议但怀疑其竞争力（“以委员会的速度前进”），也有人强调团队未来改进的潜力。用户指出 Apertus V1 在多语言任务中表现不佳并产生幻觉，但期待 V2 版本。
 
-**标签**: `#open-source`, `#LLM`, `#AI`, `#privacy`, `#FOSS`
+**标签**: `#open source`, `#AI`, `#foundation model`, `#sovereignty`, `#LLM`
 
 ---
 
 <a id="item-8"></a>
-## [sqlite-utils 4.0rc1 新增迁移和嵌套事务](https://simonwillison.net/2026/Jun/21/sqlite-utils-40rc1/#atom-everything) ⭐️ 7.0/10
+## [Sakana Fugu：多模型编排系统](https://sakana.ai/fugu/) ⭐️ 7.0/10
 
-Simon Willison 发布了 sqlite-utils 4.0rc1，这是 4.0 版本的第一个候选发布版，引入了内置的数据库迁移功能和通过 db.atomic() 实现的嵌套事务支持。 此次更新显著增强了 sqlite-utils（一个广泛使用的 SQLite Python 库和命令行工具），通过添加关键的数据库管理功能，简化了开发者的模式演化和事务处理。 迁移功能移植自 sqlite-migrate 包，不支持反向迁移；嵌套事务通过 SQLite 保存点实现，允许在事务内部分回滚。
+Sakana AI 推出了 Fugu，这是一个多智能体编排系统，通过单一 API 协调多个前沿 AI 模型，声称在编码、数学和科学推理方面达到最先进性能（2026 年 4 月）。 Fugu 代表了 AI 模型使用的新范式，可能通过将请求路由到未受限模型来降低出口管制风险，但社区批评质疑其相对于现有解决方案（如 OpenRouter Fusion）的新颖性和价值。 Fugu Ultra 在不受出口管制影响的情况下，性能与 Fable 和 Mythos 等领先模型相当，但技术报告显示改进幅度有限，在某些情况下编排器表现不如单个模型。
 
-rss · Simon Willison · 6月21日 23:35
+hackernews · Finbarr · 6月22日 02:08 · [社区讨论](https://news.ycombinator.com/item?id=48624782)
 
-**背景**: sqlite-utils 是一个 Python 库和命令行工具，在 Python 内置的 sqlite3 模块之上提供更高级的操作。它支持复杂的表转换、从 JSON 自动创建表等功能。4.0 版本是一个主版本，包含一些不向后兼容的更改。
+**背景**: 模型编排是一种融合多个 AI 模型输出以提高准确性和鲁棒性的技术，与集成学习和模型融合相关。Sakana AI 是由前高盛董事总经理兼 Google ML 研究员 David Ha 联合创立的初创公司，旨在打造“前沿 AI 实验室”。Fugu 系统作为一个单一 API，内部决定是直接回答还是组建一个专业模型团队。
 
 <details><summary>参考链接</summary>
 <ul>
-<li><a href="https://simonwillison.net/2026/Jun/21/sqlite-utils-40rc1/">sqlite-utils 4.0rc1 adds migrations and nested transactions</a></li>
-<li><a href="https://github.com/simonw/sqlite-migrate">GitHub - simonw/sqlite-migrate: A simple database migration system for SQLite, based on sqlite-utils · GitHub</a></li>
-<li><a href="https://pypi.org/project/sqlite-migrate/">sqlite-migrate · PyPI</a></li>
+<li><a href="https://sakana.ai/fugu-beta/">Sakana Fugu: A Multi-Agent Orchestration System as a Foundation Model</a></li>
+<li><a href="https://www.explainx.ai/blog/sakana-fugu-multi-agent-orchestration-model-2026">Sakana Fugu: One Model API to Orchestrate All the Others (2026) | explainx.ai Blog | explainx.ai</a></li>
+<li><a href="https://x.com/SakanaAILabs/status/2068861630327443966">Introducing Sakana Fugu: A full multi-agent orchestration ...</a></li>
 
 </ul>
 </details>
 
-**标签**: `#python`, `#sqlite`, `#database`, `#open source`, `#release`
+**社区讨论**: 社区情绪复杂。一些用户报告了在特定任务（如市场研究）上的正面体验，但许多人嘲笑该产品定价过高（每月 200 美元）且缺乏新颖性，并与其与 OpenRouter Fusion 比较后持负面看法。技术批评指出基准测试改进甚微，在某些情况下编排器性能甚至不如单个模型。
+
+**标签**: `#AI`, `#model fusion`, `#orchestration`, `#startup`, `#Hacker News`
 
 ---
 
 <a id="item-9"></a>
-## [矩阵循环单元更新：稳定性修复与并行扫描](https://www.reddit.com/r/MachineLearning/comments/1ubz5o8/an_update_on_matrix_recurrent_units_an_attention/) ⭐️ 7.0/10
+## [sqlite-utils 4.0rc1 增加迁移和嵌套事务功能](https://simonwillison.net/2026/Jun/21/sqlite-utils/#atom-everything) ⭐️ 7.0/10
 
-作者更新了矩阵循环单元（MRU），这是一种线性时间的注意力替代方案，通过实现新的输入状态矩阵创建方法（如斜对称、LDU、QR）来解决训练不稳定性，并引入了并行扫描以实现高效的 GPU 计算。 这项工作探索了一种新颖的线性时间架构，可能降低 Transformer 的二次复杂度，从而实现高效的长序列建模。然而，在 TinyStories 等较大数据集上的初步结果显示，MRU 的性能不如 Transformer，凸显了扩展此类替代方案的挑战。 作者测试了四种矩阵构造方法：斜对称结合矩阵指数/Cayley 映射、LDU 分解加行列式约束、QR 分解以及标量因子除法。LDU 方法表现最佳，而强制正交矩阵（通过 Cayley 映射）反而阻碍了学习，表明剪切变换至关重要。
+sqlite-utils v4 的第一个发布候选版本引入了对数据库迁移的支持（从 sqlite-migrate 移植而来）以及通过保存点实现的嵌套事务功能。 此版本显著增强了 sqlite-utils 作为一个强大的 SQLite 模式管理工具，使开发者能够更容易地应用版本控制的模式变更，而无需手动编写迁移脚本。 迁移系统不支持逆向迁移，因此错误必须通过创建新的正向迁移来修复。嵌套事务通过保存点模拟实现，因为 SQLite 不支持真正的嵌套事务。
 
-reddit · r/MachineLearning · /u/mikayahlevi · 6月21日 19:39
+rss · Simon Willison · 6月21日 23:30
 
-**背景**: Transformer 依赖的注意力机制随序列长度呈二次方扩展，导致长序列效率低下。Mamba 和线性注意力等线性时间替代方案旨在解决这一问题。矩阵循环单元（MRU）是一种循环架构，通过累积矩阵乘法实现线性复杂度，但早期版本存在训练不稳定性。
+**背景**: 数据库迁移是一种管理数据库模式增量、版本控制变化的方式。sqlite-utils 是一个 Python 库和命令行工具，在 Python 的 sqlite3 模块之上提供更高级的操作，包括表转换和导入 JSON 数据。
 
 <details><summary>参考链接</summary>
 <ul>
-<li><a href="https://github.com/mikayahlevi/mru-lm">GitHub - mikayahlevi/mru-lm: An LM forked from my transformer ...</a></li>
-<li><a href="https://arxiv.org/abs/2312.00752">Mamba: Linear - Time Sequence Modeling with Selective State Spaces</a></li>
-<li><a href="https://en.wikipedia.org/wiki/Prefix_sum">Prefix sum - Wikipedia</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Database_migration">Database migration</a></li>
+<li><a href="https://www.slingacademy.com/article/using-nested-transactions-to-simplify-complex-workflows-in-sqlite/">Using Nested Transactions to Simplify Complex Workflows in SQLite</a></li>
 
 </ul>
 </details>
 
-**标签**: `#attention alternative`, `#recurrent neural networks`, `#linear-time architecture`, `#deep learning`, `#sequence modeling`
+**标签**: `#sqlite-utils`, `#release`, `#SQLite`, `#Python`, `#migrations`
 
 ---
 
 <a id="item-10"></a>
-## [微调 Qwen 0.6B 模型进行问题分类](https://www.teachmecoolstuff.com/viewarticle/fine-tuning-a-local-llm-to-categorize-questions) ⭐️ 6.0/10
+## [Cloudflare 推出临时账户用于 Workers 部署](https://simonwillison.net/2026/Jun/21/temporary-cloudflare-accounts/#atom-everything) ⭐️ 7.0/10
 
-一篇教程展示了如何微调 Qwen 3:0.6B 小型语言模型来对用户问题进行分类，使用自定义数据集和 LLaMA-Factory 工具。该方法旨在通过将问题映射到预定义类别后再查询数据库，从而提升检索效果。 这份实用指南降低了将小型 LLM 应用于文本分类任务的门槛，这些模型可在普通硬件上本地运行。它引发了关于微调小型 LLM 是否比使用更简单、更轻量的方法（如 sklearn 分类器）更值得投入的讨论。 该教程使用了 Qwen 3:0.6B（一个 6 亿参数的因果语言模型），并通过 LLaMA-Factory 进行微调。作者将问题映射到如“pool”等类别后再进行索引，但社区评论质疑对如此简单的任务进行微调的必要性。
+Cloudflare 推出了临时账户功能，开发者无需创建账户即可部署 Workers 项目，使用命令 `npx wrangler deploy --temporary`，部署持续 60 分钟。 该功能极大简化了临时测试和与 AI 代理工作流的集成，降低了在 Cloudflare 边缘平台进行快速实验和自动部署的门槛。 部署是临时的，持续 60 分钟，但用户可以通过申领将项目转为永久。该功能适用于 Wrangler CLI，并支持任何 Workers 项目。
 
-hackernews · dev-experiments · 6月21日 22:55 · [社区讨论](https://news.ycombinator.com/item?id=48623434)
+rss · Simon Willison · 6月21日 22:01
 
-**背景**: 微调是指使用小型标注数据集将预训练 LLM 适配到特定任务。像 Qwen 0.6B 这样的小型模型对于设备端或成本敏感的应用很有吸引力。替代方法包括使用嵌入模型配合简单分类器（如 SVM），或使用零样本方法如 GliNER。
+**背景**: Cloudflare Workers 是一个无服务器计算平台，允许开发者在 Cloudflare 边缘网络上运行代码。Wrangler 是管理 Workers 项目的官方命令行工具。此前，部署 Worker 需要 Cloudflare 账户和身份验证，这给快速测试或自动化代理带来了不便。
 
 <details><summary>参考链接</summary>
 <ul>
-<li><a href="https://huggingface.co/Qwen/Qwen3-0.6B">Qwen / Qwen 3 - 0 . 6 B · Hugging Face</a></li>
-<li><a href="https://blogs.novita.ai/qwen-3-0-6-why-small-models-still-matter-today/">Qwen 3 0 . 6 : Why Small Models Still Matter Today - Novita</a></li>
-<li><a href="https://ai.learnmodernpython.com/fine-tune-small-open-models-for-custom-text-classification/">Fine - Tune Small Open Models For Custom Text Classification</a></li>
+<li><a href="https://grokipedia.com/page/Cloudflare_Workers">Cloudflare Workers</a></li>
+<li><a href="https://developers.cloudflare.com/workers/wrangler/">Wrangler · Cloudflare Workers docs</a></li>
 
 </ul>
 </details>
 
-**社区讨论**: 评论者指出，对于简单的文本分类任务，传统机器学习方法（如基于 n-gram 的 sklearn SGDClassifier）效率更高，生成的模型不到 1MB，训练时间不到一分钟。其他人提出了项目思路，如使用零样本编码器、GRPO 训练或基于嵌入的分类器。一位用户询问分类如何改善检索，质疑其实际收益。
-
-**标签**: `#fine-tuning`, `#LLM`, `#text classification`, `#small models`, `#practical ML`
+**标签**: `#cloudflare`, `#workers`, `#developer-tools`, `#ephemeral`, `#ai-agents`
 
 ---
 
 <a id="item-11"></a>
-## [ECCV 2026 论文决定申诉讨论](https://www.reddit.com/r/MachineLearning/comments/1uc0m1e/eccv_2026_paper_decision_appeals_discussion_d/) ⭐️ 6.0/10
+## [ECCV 2026 论文申诉流程在 Reddit 引发讨论](https://www.reddit.com/r/MachineLearning/comments/1uc0m1e/eccv_2026_paper_decision_appeals_discussion_d/) ⭐️ 7.0/10
 
-ECCV 2026 已开放 Google 表单，允许作者基于政策错误、文书错误或明显的重大误解对论文决定提出申诉。一位 Reddit 用户报告称，尽管审稿人同意其贡献类型，且根据 ECCV 政策该类型不应受到惩罚，但其论文仍被拒绝。 此次讨论凸显了顶级计算机视觉会议的程序公正性，影响作者对审稿过程的信任。其结果可能影响未来会议如何处理申诉以及执行贡献类型指南。 申诉理由包括政策错误（例如应用不存在或不适用的政策）、文书错误（例如本意接收但被拒绝）以及明显的重大误解（历史上极为罕见）。该用户的论文得分为 6/4/3，且领域主席未推翻声明的贡献类型，但论文仍被拒绝。
+Reddit 上的一篇帖子讨论了 ECCV 2026 新推出的申诉表格，允许作者基于政策错误、文书错误或重大误解对拒稿决定提出异议。 这一申诉机制为作者提供了纠正潜在不公正拒稿的正式渠道，可能影响计算机视觉领域许多研究人员的录用决定。 申诉仅限于三个具体理由：政策错误、文书错误和明显的重大误解，其中后者历史上极为罕见。原帖作者指出一个案例：评审者同意了声明的贡献类型，但论文因不适用于该类型的标准而被拒。
 
 reddit · r/MachineLearning · /u/Muted-Ad4511 · 6月21日 20:39
 
-**背景**: ECCV（欧洲计算机视觉会议）是顶级的双年度会议。作者必须选择贡献类型（例如算法/通用、理论/基础）以对齐审稿人期望。评审标准的解释因类型而异，政策规定，除非领域主席明确反对，否则论文不应因其声明类型之外的方面受到惩罚。
+**背景**: ECCV（欧洲计算机视觉会议）是顶级的两年期会议。论文决策过程包括评审者、领域主席的元评审以及最终决定。申诉表格与元评审一同发布，允许作者在有限理由下对决定提出异议。
 
-<details><summary>参考链接</summary>
-<ul>
-<li><a href="https://eccv.ecva.net/Conferences/2026/SubmissionPolicies">ECCV 2026 Submission Policies</a></li>
-<li><a href="https://eccv.ecva.net/Conferences/2026/AuthorContributionTypes">ECCV 2026 Author Contribution Types</a></li>
-<li><a href="https://eccv.ecva.net/Conferences/2026/ACGuidance">Guidance to Area Chairs on Contribution Types - eccv.ecva.net</a></li>
-
-</ul>
-</details>
-
-**社区讨论**: Reddit 帖子中的情绪不一：一些用户表示同情并考虑申诉，而另一些则指出申诉很少成功。少数评论者认为，某一标准上的低分（3）可能足以证明拒绝合理，无论贡献类型如何。
-
-**标签**: `#ECCV`, `#conference`, `#paper appeal`, `#machine learning`
+**标签**: `#ECCV`, `#conference`, `#paper decision`, `#appeal`, `#machine learning`
 
 ---
 
 <a id="item-12"></a>
-## [微调 Whisper 以适应领域特定词汇的最佳方法](https://www.reddit.com/r/MachineLearning/comments/1ubvmdx/best_current_methods_for_finetuning_whisper_on/) ⭐️ 6.0/10
+## [矩阵循环单元更新：稳定性改进与分析](https://www.reddit.com/r/MachineLearning/comments/1ubz5o8/an_update_on_matrix_recurrent_units_an_attention/) ⭐️ 7.0/10
 
-一位 Reddit 用户询问针对领域特定西班牙语词汇微调 OpenAI 的 Whisper 语音识别模型的最佳当前方法和数据需求，并提到 LoRA、QLoRA 和 Spectrum 等已知技术。 这个问题对许多需要将 Whisper 适配到医疗或技术等专业领域的从业者很有意义，在这些领域准确识别特定术语至关重要。 该用户正在做一个需要可靠检测西班牙语特定单词和技术术语的项目，并希望了解除 LoRA、QLoRA 和 Spectrum 之外更新的或更好的适配方法。
+矩阵循环单元（MRU）的作者发布了更新，详细介绍了通过实验不同的输入状态矩阵构建方法（如使用 Cayley 映射或矩阵指数生成正交矩阵、带行列式归一化的 LDU 分解以及标量因子校正）来改进稳定性的过程。更新还包含了在 TinyStories 数据集上的训练结果，显示 MRU 的性能不如 Transformer 基线。 像 MRU 这样的线性时间注意力替代方案对于将序列模型扩展到长上下文至关重要，因为二次注意力变得难以承受。这次更新提供了关于 MRU 稳定性和有效性的实证见解，突出了与 Transformer 等成熟架构竞争必须解决的挑战。 作者测试了五种输入状态矩阵生成方法：重塑（原始）、通过指数/Cayley 的反对称矩阵、带行列式激活的 LDU 分解、通过指数/Cayley 的 QR 分解以及标量因子除法。LDU 方法表现最佳，而强制正交性（通过指数/Cayley）导致模型学习效果差，表明剪切变换（非正交）对 MRU 的表达能力至关重要。
 
-reddit · r/MachineLearning · /u/gothenjoyer_ · 6月21日 17:18
+reddit · r/MachineLearning · /u/mikayahlevi · 6月21日 19:39
 
-**背景**: Whisper 是 OpenAI 开发的通用自动语音识别（ASR）模型，在多种音频上表现良好，但可能难以处理领域特定词汇。微调通过使用标注音频数据使模型适应专业领域。LoRA 和 QLoRA 等参数高效方法通过仅更新一小部分权重来降低计算成本。
+**背景**: 循环神经网络（RNN）通过在每个步骤更新隐藏状态来处理序列数据，但存在顺序计算和梯度消失问题。Transformer 中的注意力机制允许并行处理，但复杂度为二次方，这推动了像线性循环单元这样的高效替代方案的研究。MRU 就是这样一种架构，它使用矩阵乘法以线性时间建模序列交互，并利用并行扫描算法在 GPU 上实现高效训练。
 
 <details><summary>参考链接</summary>
 <ul>
-<li><a href="https://huggingface.co/blog/fine-tune-whisper">Fine - Tune Whisper For Multilingual ASR with Transformers</a></li>
-<li><a href="https://github.com/Vaibhavs10/fast-whisper-finetuning">GitHub - Vaibhavs10/fast- whisper - finetuning · GitHub</a></li>
-<li><a href="https://github.com/kartikmunjal/whisper-domain-adaptation">GitHub - kartikmunjal/ whisper - domain - adaptation · GitHub</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Recurrent_neural_network">Recurrent neural network - Wikipedia</a></li>
+<li><a href="https://liner.com/review/parallelizing-linear-recurrent-neural-nets-over-sequence-length">Parallelizing Linear Recurrent Neural Nets Over Sequence Length...</a></li>
 
 </ul>
 </details>
 
-**标签**: `#Whisper`, `#fine-tuning`, `#speech recognition`, `#domain adaptation`
+**标签**: `#Machine Learning`, `#Sequence Models`, `#Attention Alternatives`, `#Recurrent Units`, `#Research`
 
 ---
 
 <a id="item-13"></a>
-## [探索在 LoRA 上使用 EMA 进行自蒸馏](https://www.reddit.com/r/MachineLearning/comments/1ubv0f5/ema_on_lora_r/) ⭐️ 6.0/10
+## [增强版 JEPA 演示：加入环境噪声与公平基线对比](https://www.reddit.com/r/MachineLearning/comments/1ubtf09/a_slightly_improved_dvdjepa_demo_p/) ⭐️ 6.0/10
 
-一位 Reddit 用户正在寻找关于在 LoRA 适配器上使用指数移动平均（EMA）作为自教师进行在线自蒸馏的论文或实证结果，并引用了一篇最近使用 EMA 进行全参数微调的论文。 如果成功，在 LoRA 上应用 EMA 可以实现高效的自蒸馏微调大型模型，降低计算成本同时保持性能，这对资源受限的场景非常有价值。 引用的论文（arXiv:2601.19897）使用 EMA 进行在线自蒸馏，但采用的是全参数微调，而非 LoRA。用户特别询问 EMA 适配器为可训练适配器生成软标签的情况。
+一位 Reddit 用户发布了一个改进版的 JEPA 最小化演示，加入了环境噪声以及参数数量匹配的像素空间基线对比。 这一渐进式的改进有助于阐明 JEPA 相对于像素空间方法的优势，尤其是它对环境噪声的鲁棒性，这是 JEPA 设计的关键动机之一。 该演示为 JEPA 模型和像素空间基线使用了大致相同的参数数量和计算预算，并加入环境噪声以突出 JEPA 忽略无关细节的能力。
 
-reddit · r/MachineLearning · /u/South-Conference-395 · 6月21日 16:54
+reddit · r/MachineLearning · /u/Kirne · 6月21日 15:49
 
-**背景**: LoRA（低秩适配）是一种参数高效的微调方法，向冻结的预训练模型添加小型可训练矩阵。EMA（指数移动平均）维护模型权重的移动平均，常用于稳定训练或作为自蒸馏中的教师模型。自蒸馏利用模型自身生成软标签进行训练，以提升泛化能力。
+**背景**: JEPA（联合嵌入预测架构）是一种自监督学习方法，通过预测潜在动态而不重建像素来学习表征。它旨在仅对数据的可预测部分进行建模，忽略无关细节。此演示基于先前的最小化 JEPA 演示，并通过添加环境噪声和公平基线回应了社区反馈。
 
 <details><summary>参考链接</summary>
 <ul>
-<li><a href="https://colab.research.google.com/github/codelion/ellora/blob/main/Ellora_Recipe_1_Self_Distillation_For_Quantization_Recovery.ipynb">Ellora_Recipe_1_Self_Distillation_For_Quantization_Recovery ...</a></li>
-<li><a href="https://arxiv.org/abs/2605.29726">SLAD : Shared LoRA Adapters for Task Specific Distillation</a></li>
+<li><a href="https://medium.com/@frinktyler1445/the-anatomy-of-jepa-the-architecture-behind-embedded-predictive-representation-learning-994bfa0bffe0">The Anatomy of JEPA : The Architecture Behind embedded... | Medium</a></li>
+<li><a href="https://www.turingpost.com/p/jepamap">All JEPA Models: 14 Milestones From I- JEPA to ThinkJEPA</a></li>
 
 </ul>
 </details>
 
-**标签**: `#LoRA`, `#EMA`, `#self-distillation`, `#fine-tuning`, `#machine learning`
+**标签**: `#JEPA`, `#representation learning`, `#demo`, `#environment noise`
+
+---
+
+<a id="item-14"></a>
+## [微调 Whisper 处理领域西班牙语的最佳方法](https://www.reddit.com/r/MachineLearning/comments/1ubvmdx/best_current_methods_for_finetuning_whisper_on/) ⭐️ 6.0/10
+
+一位 Reddit 用户询问当前微调 OpenAI Whisper 语音识别模型以处理特定领域西班牙语词汇的最佳方法，提到了 LoRA、QLoRA 和 Spectrum，并询问更新颖的方法和所需数据量。 提高 Whisper 对专业词汇的准确性对于西班牙语医疗转录、法律听写或技术支持等应用至关重要。这一讨论凸显了在性能和计算成本之间取得平衡的高效微调技术的持续需求。 用户特别要求领域特定的西班牙语音频，并询问大约需要多少小时的标记音频才能收敛。他们已知晓 LoRA、QLoRA 和 Spectrum，表明对参数高效微调等后续进展感兴趣。
+
+reddit · r/MachineLearning · /u/gothenjoyer_ · 6月21日 17:18
+
+**背景**: Whisper 是 OpenAI 开发的多语言通用语音识别模型。微调是将预训练模型适应特定领域或词汇的过程，通常使用 LoRA（低秩适应）等技术添加可训练的低秩矩阵，或 QLoRA 通过量化模型减少内存占用。方法和数据量的选择取决于领域复杂度和资源限制。
+
+<details><summary>参考链接</summary>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Fine-tuning_(deep_learning)">Fine - tuning (deep learning) - Wikipedia</a></li>
+<li><a href="https://arxiv.org/abs/2305.14314">[2305.14314] QLoRA : Efficient Finetuning of Quantized LLMs</a></li>
+<li><a href="https://grokipedia.com/page/Fine-tuning_Whisper_for_Libyan_Arabic_Using_LoRA">Fine-tuning Whisper for Libyan Arabic Using LoRA</a></li>
+
+</ul>
+</details>
+
+**标签**: `#fine-tuning`, `#Whisper`, `#speech recognition`, `#domain adaptation`, `#Spanish`
+
+---
+
+<a id="item-15"></a>
+## [关于 LoRA 上 EMA 自蒸馏的查询](https://www.reddit.com/r/MachineLearning/comments/1ubv0f5/ema_on_lora_r/) ⭐️ 6.0/10
+
+一位 Reddit 用户询问是否有论文成功将指数移动平均（EMA）应用于 LoRA 适配器，作为自教师为可训练适配器生成软标签，并参考了在线策略自蒸馏。 将 EMA 与 LoRA 相结合，可以为大模型微调实现高效、稳定的自蒸馏，降低内存和计算需求，同时提升泛化能力。 该用户特别引用了使用 EMA 但进行全参数微调的在线策略自蒸馏（arXiv:2601.19897），并询问同样的想法是否适用于 LoRA 或其他低秩适应方法。
+
+reddit · r/MachineLearning · /u/South-Conference-395 · 6月21日 16:54
+
+**背景**: LoRA（低秩适应）是一种参数高效的微调方法，仅训练少量低秩矩阵，同时冻结预训练权重。EMA（指数移动平均）维护模型参数的移动平均值，常作为自蒸馏中的教师以生成稳定的软标签。在线策略自蒸馏使用学生自身生成的样本进行训练，并通过 EMA 教师避免分布偏移。
+
+<details><summary>参考链接</summary>
+<ul>
+<li><a href="https://huggingface.co/docs/peft/conceptual_guides/adapter">Adapters · Hugging Face</a></li>
+<li><a href="https://docs.lm-kit.com/lm-kit-net/guides/glossary/LoRA-adapters.html">LM-Kit.NET LoRA Adapters Guide: Low-Rank Adaptation for LLMs in...</a></li>
+<li><a href="https://liner.com/review/why-does-selfdistillation-sometimes-degrade-reasoning-capability-llms">Why Does Self - Distillation (Sometimes) Degrade the Reasoning...</a></li>
+
+</ul>
+</details>
+
+**标签**: `#LoRA`, `#EMA`, `#Self-Distillation`, `#Fine-Tuning`, `#Machine Learning`
+
+---
+
+<a id="item-16"></a>
+## [WeightsLab：开源神经网络数据调试工具](https://www.reddit.com/r/MachineLearning/comments/1ubwcat/datacentric_debugging_for_teams_training_neural/) ⭐️ 6.0/10
+
+WeightsLab 是一个开源的、原生 PyTorch 的数据中心调试工具，经过重大改进后，允许团队在训练中途暂停，检查实时损失信号，并发现标签错误、类别不平衡等数据问题。 数据问题是模型失败的常见原因，WeightsLab 通过在训练过程中实现实时数据调试，直接解决这一痛点，可能为计算机视觉工程师节省大量排查时间。 该工具专为计算机视觉任务构建，支持图像、视频和 LiDAR 点云数据，并在 GitHub 上以 GrayboxTech 下的开源项目形式提供。
+
+reddit · r/MachineLearning · /u/taranpula39 · 6月21日 17:47
+
+**背景**: 数据中心调试侧重于识别和修复数据问题，而非模型架构问题。常见的数据问题包括标签错误、类别不平衡和异常值。像 WeightsLab 这样的工具旨在将调试集成到训练过程中，让从业者及早发现数据问题。原生 PyTorch 意味着该工具设计用于与 PyTorch 深度学习框架无缝协作，无需额外依赖。
+
+<details><summary>参考链接</summary>
+<ul>
+<li><a href="https://vinaykumarkonda.medium.com/text-creation-basic-modelling-data-centric-debugging-3b6a9152258">Text Creation: Basic Modelling & Data Centric Debugging | Medium</a></li>
+<li><a href="https://openaccess.thecvf.com/content/WACV2024/papers/Singla_Data-Centric_Debugging_Mitigating_Model_Failures_via_Targeted_Image_Retrieval_WACV_2024_paper.pdf">Data - Centric Debugging : Mitigating Model Failures via Targeted...</a></li>
+<li><a href="https://www.lizardtech.com/post/laspy-tutorial-process-lidar-point-cloud-data-step-by-step-in-python">LasPy Tutorial: Process LiDAR Point Cloud Data Step by Step in...</a></li>
+
+</ul>
+</details>
+
+**标签**: `#machine learning`, `#debugging`, `#open source`, `#data-centric AI`
 
 ---

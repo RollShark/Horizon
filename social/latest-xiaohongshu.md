@@ -18,20 +18,20 @@ date: 2026-06-23
 
 今天帮你从技术资讯里捞了几条真正值得看的：
 
-1）提示注入即角色混淆：LLM 更看重文本风格而非角色标签
-研究人员 Charles Ye、Jasmine Cui 和 Dylan Hadfield-Menell 发表论文，证明大语言模型优先考虑文本风格而非显式角色标签（如 和 ），从而导致严重的越狱攻击。他们展示，模仿内部思考块的风格可以欺骗模型执行有害指令，而将文本'去风格化'会大幅降低攻击成功率。
+1）开源 WYSIWYG TikZ 编辑器，实现代码与可视化同步
+新的开源 TikZ 所见即所得编辑器让用户可以可视化地创建和编辑 LaTeX 图形，同时保持源代码同步。拖动元素会更新代码中的坐标，而不会改变格式。 该工具填补了 LaTeX/TikZ 生态系统长期以来的空白，为手动编码和反复编译的繁琐循环提供了高效替代方案。
 
-2）Valve 发布新款 Steam Machine 游戏 PC
-Valve 今日发布了新款 Steam Machine，一款运行 SteamOS 的类似游戏主机的 PC。其采用开放平台，允许用户安装其他应用或操作系统，并通过随机预订系统确保公平购买。
+2）Unlimited OCR 实现单次长文档解析
+百度发布了 Unlimited OCR，通过将解码器 LLM 的注意力机制修改为有界的循环滑动窗口注意力（R-SWA），使得在单次前向传播中即可解析任意长度的文档，而不会出现显存溢出。
 
-3）使用 Unsloth 本地运行 GLM-5.2
-新指南详细介绍了如何使用 Unsloth 库在本地运行 GLM-5.2 开源模型，社区成员测试了 Q4_K_XL 量化、MoE 卸载等配置。 本地部署 GLM-5.2 等最先进模型减少了对云 API 的依赖，可节省成本并保护隐私，尽管对硬件要求仍然很高。
+3）年龄验证系统引发大规模监控争议
+文章指出，强制在线活动年龄验证将导致对所有用户（不仅仅是儿童）的普遍监控，从而损害隐私。这一立场引发了关于此类系统影响的激烈讨论。 这场辩论涉及数字权利的根本问题，因为年龄验证法律在全球范围内正被越来越多地提出。如果实施不当，这类系统可能创建影响所有人的监控基础设施，可能导致滥用并侵蚀公民自由。
 
-4）2026 年加密货币：噢，真是个糟糕之地
-斯蒂芬·迪尔 2026 年的文章《加密货币 2026：哦，这个糟糕的地方》认为，经过多年炒作，加密货币领域仍充斥着骗局和欺诈，唯一真正的用例是发展中国家获取稳定币。 它突显了加密货币未能在投机之外实现主流应用，强化了监管机构和投资者对该行业合法性的担忧。
+4）麦迪逊广场花园为反对面部识别的活动人士编订档案
+麦迪逊广场花园编制了一份关于反对其面部识别系统的活动人士的档案，凸显了企业监控的过度扩张。
 
-5）VibeThinker：3B 参数模型通过 SFT+GRPO 在推理上超越 Opus 4.5
-研究者推出了 VibeThinker-3B，这是一个 30 亿参数的模型，通过监督微调和群体相对策略优化训练后，在数学、编程和 STEM 等推理任务上达到或超越了 Claude Opus 4.5 等大得多的模型的性能。
+5）2026 年的加密货币：哦，这是一个糟糕的地方
+史蒂芬·迪尔的新文章对 2026 年的加密货币进行了严厉批评，指出其依然充斥着骗局和赌博，且去中心化的实际用途仅限于发展中国家对稳定币的访问。 该分析可能会影响公众舆论和监管策略，因为它呼应了人们对加密行业未能实现超越投机的有意义现实应用的失望情绪。
 
 如果只看一条，我会先看第 1 条；如果你做开发/AI 产品，第 2、3 条也值得顺手收藏。
 
@@ -41,8 +41,8 @@ Valve 今日发布了新款 Steam Machine，一款运行 SteamOS 的类似游戏
 
 ## 链接备查
 
-- 提示注入即角色混淆：LLM 更看重文本风格而非角色标签: https://simonwillison.net/2026/Jun/22/prompt-injection-as-role-confusion/#atom-everything
-- Valve 发布新款 Steam Machine 游戏 PC: https://store.steampowered.com/news/group/45479024/view/685257114654870245
-- 使用 Unsloth 本地运行 GLM-5.2: https://unsloth.ai/docs/models/glm-5.2
-- 2026 年加密货币：噢，真是个糟糕之地: https://www.stephendiehl.com/posts/bad_place_2026/
-- VibeThinker：3B 参数模型通过 SFT+GRPO 在推理上超越 Opus 4.5: https://arxiv.org/abs/2606.16140
+- 开源 WYSIWYG TikZ 编辑器，实现代码与可视化同步: https://tikz.dev/editor/
+- Unlimited OCR 实现单次长文档解析: https://github.com/baidu/Unlimited-OCR
+- 年龄验证系统引发大规模监控争议: https://pluralistic.net/2026/06/23/destroy-the-village/
+- 麦迪逊广场花园为反对面部识别的活动人士编订档案: https://www.404media.co/madison-square-garden-made-dossier-on-activists-who-opposed-facial-recognition/
+- 2026 年的加密货币：哦，这是一个糟糕的地方: https://www.stephendiehl.com/posts/bad_place_2026/

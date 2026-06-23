@@ -1,4 +1,7 @@
 from scripts.generate_social_posts import (
+    generate_cover_image,
+    generate_poster_image,
+    page_url,
     parse_items,
     render_feishu_text,
     render_xiaoheihe,
@@ -67,3 +70,24 @@ def test_render_feishu_text_strips_page_front_matter():
     assert "小红书文案" in text
     assert "小黑盒文案" in text
     assert "layout: default" not in text
+
+
+def test_page_url_for_pages_paths():
+    assert (
+        page_url("https://rollshark.github.io/Horizon", "docs/social/latest-cover.png")
+        == "https://rollshark.github.io/Horizon/social/latest-cover.png"
+    )
+
+
+def test_generate_social_images(tmp_path):
+    items = parse_items(SAMPLE_ZH_SUMMARY)
+    cover = tmp_path / "cover.png"
+    poster = tmp_path / "poster.png"
+
+    generate_cover_image(cover, "2026-06-23", items)
+    generate_poster_image(poster, "2026-06-23", items)
+
+    assert cover.exists()
+    assert poster.exists()
+    assert cover.stat().st_size > 1000
+    assert poster.stat().st_size > 1000

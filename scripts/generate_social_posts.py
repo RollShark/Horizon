@@ -35,6 +35,27 @@ class SummaryItem:
     summary: str
 
 
+FONT_CANDIDATES = {
+    "regular": [
+        "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
+        "/usr/share/fonts/opentype/noto/NotoSansCJKsc-Regular.otf",
+        "/System/Library/Fonts/STHeiti Medium.ttc",
+        "/System/Library/Fonts/Hiragino Sans GB.ttc",
+        "/System/Library/Fonts/PingFang.ttc",
+        "/Library/Fonts/Arial Unicode.ttf",
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+    ],
+    "bold": [
+        "/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc",
+        "/usr/share/fonts/opentype/noto/NotoSansCJKsc-Bold.otf",
+        "/System/Library/Fonts/STHeiti Medium.ttc",
+        "/System/Library/Fonts/Hiragino Sans GB.ttc",
+        "/System/Library/Fonts/PingFang.ttc",
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+    ],
+}
+
+
 def strip_front_matter(markdown: str) -> str:
     if markdown.startswith("---\n"):
         parts = markdown.split("---\n", 2)
@@ -218,27 +239,49 @@ def with_front_matter(title: str, date: str, content: str) -> str:
     )
 
 
-def render_feishu_text(date: str, xiaohongshu: str, xiaoheihe: str) -> str:
-    return "\n".join(
-        [
-            f"📣 Horizon 平台文案｜{date}",
+def page_url(site_url: str | None, path: Path | str) -> str:
+    if not site_url:
+        return ""
+    path_text = Path(path).as_posix().removeprefix("docs/")
+    return f"{site_url.rstrip('/')}/{path_text}"
+
+
+def render_feishu_text(
+    date: str,
+    xiaohongshu: str,
+    xiaoheihe: str,
+    image_links: dict[str, str] | None = None,
+) -> str:
+    lines = [
+        f"📣 Horizon 平台文案｜{date}",
+        "",
+        "下面两段是给文字平台直接复制用的草稿。",
+    ]
+
+    if image_links:
+        lines += [
             "",
-            "下面两段是给文字平台直接复制用的草稿。",
-            "",
-            "====================",
-            "小红书文案",
-            "====================",
-            "",
-            strip_front_matter(xiaohongshu).strip(),
-            "",
-            "====================",
-            "小黑盒文案",
-            "====================",
-            "",
-            strip_front_matter(xiaoheihe).strip(),
-            "",
+            "🖼️ 配图链接：",
+            f"封面图：{image_links.get('cover', '')}",
+            f"长图：{image_links.get('poster', '')}",
         ]
-    )
+
+    lines += [
+        "",
+        "====================",
+        "小红书文案",
+        "====================",
+        "",
+        strip_front_matter(xiaohongshu).strip(),
+        "",
+        "====================",
+        "小黑盒文案",
+        "====================",
+        "",
+        strip_front_matter(xiaoheihe).strip(),
+        "",
+    ]
+    return "\n".join(lines)
 
 
 def send_feishu_text(text: str, webhook_url: str) -> None:
@@ -270,7 +313,164 @@ def send_feishu_text(text: str, webhook_url: str) -> None:
             raise RuntimeError(f"Feishu webhook rejected message: {body}")
 
 
-def write_posts(summary_path: Path, output_dir: Path, *, send_feishu: bool = False) -> list[Path]:
+def load_font(size: int, *, bold: bool = False):
+    try:
+        from PIL import ImageFont
+    except ImportError as exc:
+        raise RuntimeError("Pillow is required to generate images. Run with `uv run --with pillow`.") from exc
+
+    for candidate in FONT_CANDIDATES["bold" if bold else "regular"]:
+        path = Path(candidate)
+        if not path.exists():
+            continue
+        try:
+            return ImageFont.truetype(str(path), size=size)
+        except OSError:
+            continue
+
+    return ImageFont.load_default(size=size)
+
+
+def draw_wrapped_text(
+    draw,
+    xy: tuple[int, int],
+    text: str,
+    font,
+    *,
+    fill: str,
+    max_width: int,
+    line_spacing: int = 8,
+    max_lines: int | None = None,
+) -> int:
+    x, y = xy
+    normalized = clean_text(text)
+    lines: list[str] = []
+    current = ""
+
+    for char in normalized:
+        candidate = current + char
+        if current and draw.textlength(candidate, font=font) > max_width:
+            lines.append(current)
+            current = char
+            if max_lines and len(lines) >= max_lines:
+                break
+        else:
+            current = candidate
+
+    if (not max_lines or len(lines) < max_lines) and current:
+        lines.append(current)
+
+    if max_lines and len(lines) > max_lines:
+        lines = lines[:max_lines]
+
+    if max_lines and lines and len(normalized) > sum(len(line) for line in lines):
+        lines[-1] = lines[-1].rstrip("，,。；;：: ") + "…"
+
+    bbox = font.getbbox("国")
+    line_height = bbox[3] - bbox[1] + line_spacing
+    for line in lines:
+        draw.text((x, y), line, font=font, fill=fill)
+        y += line_height
+    return y
+
+
+def draw_vertical_gradient(image, top: tuple[int, int, int], bottom: tuple[int, int, int]) -> None:
+    from PIL import ImageDraw
+
+    draw = ImageDraw.Draw(image)
+    width, height = image.size
+    for y in range(height):
+        ratio = y / max(height - 1, 1)
+        color = tuple(int(top[i] * (1 - ratio) + bottom[i] * ratio) for i in range(3))
+        draw.line([(0, y), (width, y)], fill=color)
+
+
+def generate_cover_image(path: Path, date: str, items: list[SummaryItem]) -> None:
+    from PIL import Image, ImageDraw
+
+    width, height = 1200, 675
+    image = Image.new("RGB", (width, height), "#fff8ef")
+    draw_vertical_gradient(image, (255, 249, 239), (255, 237, 219))
+    draw = ImageDraw.Draw(image)
+
+    font_title = load_font(74, bold=True)
+    font_subtitle = load_font(34, bold=True)
+    font_body = load_font(28)
+    font_small = load_font(22)
+    font_badge = load_font(24, bold=True)
+
+    draw.rounded_rectangle((70, 62, 1130, 610), radius=36, fill="#fffdf8", outline="#f2d7bd", width=3)
+    draw.rounded_rectangle((94, 86, 220, 128), radius=21, fill="#ff7a1a")
+    draw.text((124, 95), "NEWS", font=font_badge, fill="white")
+    draw.text((910, 95), date, font=font_small, fill="#8a6a52")
+
+    headline = items[0].title if items else "今日 AI / 开发者圈重点"
+    draw.text((112, 170), "AI 日报精选", font=font_title, fill="#241915")
+    draw.text((112, 265), "替你筛出今天值得看的技术动态", font=font_subtitle, fill="#ff6b00")
+    draw_wrapped_text(draw, (112, 326), headline, font_body, fill="#3a2b22", max_width=780, max_lines=2)
+
+    card_x, card_y = 760, 300
+    accent_colors = ["#7b61ff", "#ff8b3d", "#21a67a"]
+    for idx, item in enumerate(items[:3], start=1):
+        y = card_y + (idx - 1) * 78
+        draw.rounded_rectangle((card_x, y, 1058, y + 54), radius=18, fill="#fff3e3", outline="#f2d7bd")
+        draw.ellipse((card_x + 14, y + 13, card_x + 42, y + 41), fill=accent_colors[idx - 1])
+        draw.text((card_x + 23, y + 15), str(idx), font=font_small, fill="white")
+        draw_wrapped_text(draw, (card_x + 58, y + 13), item.title, font_small, fill="#3a2b22", max_width=220, max_lines=1)
+
+    draw.text((112, 540), "Horizon 自动生成 · 复制正文即可发布", font=font_small, fill="#9a7760")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    image.save(path)
+
+
+def generate_poster_image(path: Path, date: str, items: list[SummaryItem]) -> None:
+    from PIL import Image, ImageDraw
+
+    top_items = items[:9]
+    width = 1200
+    card_height = 168
+    height = 260 + len(top_items) * card_height + 120
+    image = Image.new("RGB", (width, height), "#fff8ef")
+    draw_vertical_gradient(image, (255, 249, 239), (255, 239, 223))
+    draw = ImageDraw.Draw(image)
+
+    font_title = load_font(54, bold=True)
+    font_subtitle = load_font(27)
+    font_item_title = load_font(27, bold=True)
+    font_body = load_font(22)
+    font_index = load_font(24, bold=True)
+    font_small = load_font(19)
+
+    draw.rounded_rectangle((70, 56, 1130, height - 58), radius=34, fill="#fffdf8", outline="#f0d6bd", width=3)
+    draw.text((108, 100), f"{date} AI 日报精选", font=font_title, fill="#2c1f1a")
+    draw.text((108, 174), f"从今日信息流中筛出 {len(top_items)} 条重点，适合小黑盒 / 小红书配图。", font=font_subtitle, fill="#8a6042")
+    draw.line((108, 226, 1092, 226), fill="#ead2bd", width=2)
+
+    y = 256
+    for idx, item in enumerate(top_items, start=1):
+        draw.rounded_rectangle((108, y, 1092, y + 126), radius=20, fill="#fff6eb", outline="#efd8c1")
+        draw.ellipse((132, y + 30, 190, y + 88), fill="#ff7a1a")
+        label = f"{idx:02d}"
+        label_w = draw.textlength(label, font=font_index)
+        draw.text((132 + (58 - label_w) / 2, y + 43), label, font=font_index, fill="white")
+        draw_wrapped_text(draw, (216, y + 24), item.title, font_item_title, fill="#2f221b", max_width=780, max_lines=1)
+        draw_wrapped_text(draw, (216, y + 66), compact(item.summary, 110), font_body, fill="#5f4b40", max_width=790, max_lines=2)
+        draw.text((970, y + 38), f"{item.score}/10", font=font_small, fill="#ff7a1a")
+        y += card_height
+
+    draw.text((108, height - 96), "Generated by Horizon · AI-curated daily digest", font=font_small, fill="#a17f68")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    image.save(path)
+
+
+def write_posts(
+    summary_path: Path,
+    output_dir: Path,
+    *,
+    send_feishu: bool = False,
+    generate_images: bool = False,
+    site_url: str | None = None,
+) -> list[Path]:
     markdown = summary_path.read_text(encoding="utf-8")
     date = infer_date(summary_path)
     items = parse_items(markdown)
@@ -314,13 +514,25 @@ def write_posts(summary_path: Path, output_dir: Path, *, send_feishu: bool = Fal
         path.write_text(content, encoding="utf-8")
         written.append(path)
 
+    image_links: dict[str, str] = {}
+    if generate_images:
+        image_outputs = [
+            (output_dir / f"{date}-cover.png", output_dir / "latest-cover.png", generate_cover_image, "cover"),
+            (output_dir / f"{date}-poster.png", output_dir / "latest-poster.png", generate_poster_image, "poster"),
+        ]
+        for dated_path, latest_path, renderer, key in image_outputs:
+            renderer(dated_path, date, items)
+            latest_path.write_bytes(dated_path.read_bytes())
+            written.extend([dated_path, latest_path])
+            image_links[key] = page_url(site_url, latest_path)
+
     if send_feishu:
         webhook_url = os.environ.get("HORIZON_WEBHOOK_URL", "").strip()
         if not webhook_url:
             raise RuntimeError("Missing HORIZON_WEBHOOK_URL for --send-feishu.")
 
         send_feishu_text(
-            text=render_feishu_text(date, xiaohongshu, xiaoheihe),
+            text=render_feishu_text(date, xiaohongshu, xiaoheihe, image_links=image_links),
             webhook_url=webhook_url,
         )
 
@@ -332,10 +544,18 @@ def main() -> int:
     parser.add_argument("--summary", type=Path, help="Path to a Chinese Horizon summary Markdown file.")
     parser.add_argument("--output-dir", type=Path, default=Path("docs/social"))
     parser.add_argument("--send-feishu", action="store_true", help="Send generated drafts to Feishu/Lark.")
+    parser.add_argument("--generate-images", action="store_true", help="Generate cover and long-poster PNG images.")
+    parser.add_argument("--site-url", help="Public GitHub Pages base URL used in Feishu image links.")
     args = parser.parse_args()
 
     summary_path = args.summary or find_latest_summary()
-    written = write_posts(summary_path, args.output_dir, send_feishu=args.send_feishu)
+    written = write_posts(
+        summary_path,
+        args.output_dir,
+        send_feishu=args.send_feishu,
+        generate_images=args.generate_images,
+        site_url=args.site_url,
+    )
 
     print(f"Generated social drafts from: {summary_path}")
     for path in written:

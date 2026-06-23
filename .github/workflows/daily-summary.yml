@@ -38,6 +38,10 @@ jobs:
           HORIZON_WEBHOOK_URL: ${{ secrets.HORIZON_WEBHOOK_URL }}
         run: uv run horizon --hours 24
 
+      - name: Generate social post drafts
+        continue-on-error: true
+        run: uv run python scripts/generate_social_posts.py
+
       - name: Set current date as environment variable
         run: echo "DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
 

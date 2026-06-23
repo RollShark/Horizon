@@ -1,5 +1,6 @@
 from scripts.generate_social_posts import (
     parse_items,
+    render_feishu_text,
     render_xiaoheihe,
     render_xiaohongshu,
 )
@@ -53,3 +54,16 @@ def test_render_social_posts():
     assert "#AI" in xiaohongshu
     assert "小黑盒文案｜2026-06-23" in xiaoheihe
     assert "原文：https://example.com/codex" in xiaoheihe
+
+
+def test_render_feishu_text_strips_page_front_matter():
+    items = parse_items(SAMPLE_ZH_SUMMARY)
+    xiaohongshu = render_xiaohongshu("2026-06-23", items)
+    xiaoheihe = render_xiaoheihe("2026-06-23", items)
+
+    text = render_feishu_text("2026-06-23", xiaohongshu, xiaoheihe)
+
+    assert "Horizon 平台文案｜2026-06-23" in text
+    assert "小红书文案" in text
+    assert "小黑盒文案" in text
+    assert "layout: default" not in text

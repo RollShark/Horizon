@@ -2,7 +2,7 @@
 """Generate copy-and-paste social posts from the Chinese Horizon summary.
 
 This script is intentionally conservative:
-- it does not call any external API;
+- it only calls Feishu/Lark webhook when explicitly asked;
 - it does not publish to any platform;
 - it reads the generated Chinese daily summary and writes platform-ready drafts.
 """
@@ -11,7 +11,10 @@ from __future__ import annotations
 
 import argparse
 import html
+import json
+import os
 import re
+import urllib.request
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -215,7 +218,59 @@ def with_front_matter(title: str, date: str, content: str) -> str:
     )
 
 
-def write_posts(summary_path: Path, output_dir: Path) -> list[Path]:
+def render_feishu_text(date: str, xiaohongshu: str, xiaoheihe: str) -> str:
+    return "\n".join(
+        [
+            f"📣 Horizon 平台文案｜{date}",
+            "",
+            "下面两段是给文字平台直接复制用的草稿。",
+            "",
+            "====================",
+            "小红书文案",
+            "====================",
+            "",
+            strip_front_matter(xiaohongshu).strip(),
+            "",
+            "====================",
+            "小黑盒文案",
+            "====================",
+            "",
+            strip_front_matter(xiaoheihe).strip(),
+            "",
+        ]
+    )
+
+
+def send_feishu_text(text: str, webhook_url: str) -> None:
+    payload = {
+        "msg_type": "text",
+        "content": {
+            "text": text,
+        },
+    }
+    data = json.dumps(payload, ensure_ascii=False).encode("utf-8")
+    request = urllib.request.Request(
+        webhook_url,
+        data=data,
+        headers={"Content-Type": "application/json; charset=utf-8"},
+        method="POST",
+    )
+
+    with urllib.request.urlopen(request, timeout=30) as response:
+        body = response.read().decode("utf-8", errors="replace")
+        if response.status >= 400:
+            raise RuntimeError(f"Feishu webhook returned HTTP {response.status}: {body}")
+
+        try:
+            result = json.loads(body)
+        except json.JSONDecodeError:
+            return
+
+        if result.get("code", 0) != 0:
+            raise RuntimeError(f"Feishu webhook rejected message: {body}")
+
+
+def write_posts(summary_path: Path, output_dir: Path, *, send_feishu: bool = False) -> list[Path]:
     markdown = summary_path.read_text(encoding="utf-8")
     date = infer_date(summary_path)
     items = parse_items(markdown)
@@ -224,22 +279,33 @@ def write_posts(summary_path: Path, output_dir: Path) -> list[Path]:
         raise ValueError(f"No summary items found in {summary_path}.")
 
     output_dir.mkdir(parents=True, exist_ok=True)
+    xiaohongshu = with_front_matter(
+        title=f"小红书文案｜{date}",
+        date=date,
+        content=render_xiaohongshu(date, items),
+    )
+    xiaoheihe = with_front_matter(
+        title=f"小黑盒文案｜{date}",
+        date=date,
+        content=render_xiaoheihe(date, items),
+    )
+
     outputs = [
         (
             output_dir / f"{date}-xiaohongshu.md",
-            with_front_matter(
-                title=f"小红书文案｜{date}",
-                date=date,
-                content=render_xiaohongshu(date, items),
-            ),
+            xiaohongshu,
         ),
         (
             output_dir / f"{date}-xiaoheihe.md",
-            with_front_matter(
-                title=f"小黑盒文案｜{date}",
-                date=date,
-                content=render_xiaoheihe(date, items),
-            ),
+            xiaoheihe,
+        ),
+        (
+            output_dir / "latest-xiaohongshu.md",
+            xiaohongshu,
+        ),
+        (
+            output_dir / "latest-xiaoheihe.md",
+            xiaoheihe,
         ),
     ]
 
@@ -248,6 +314,16 @@ def write_posts(summary_path: Path, output_dir: Path) -> list[Path]:
         path.write_text(content, encoding="utf-8")
         written.append(path)
 
+    if send_feishu:
+        webhook_url = os.environ.get("HORIZON_WEBHOOK_URL", "").strip()
+        if not webhook_url:
+            raise RuntimeError("Missing HORIZON_WEBHOOK_URL for --send-feishu.")
+
+        send_feishu_text(
+            text=render_feishu_text(date, xiaohongshu, xiaoheihe),
+            webhook_url=webhook_url,
+        )
+
     return written
 
 
@@ -255,14 +331,17 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--summary", type=Path, help="Path to a Chinese Horizon summary Markdown file.")
     parser.add_argument("--output-dir", type=Path, default=Path("docs/social"))
+    parser.add_argument("--send-feishu", action="store_true", help="Send generated drafts to Feishu/Lark.")
     args = parser.parse_args()
 
     summary_path = args.summary or find_latest_summary()
-    written = write_posts(summary_path, args.output_dir)
+    written = write_posts(summary_path, args.output_dir, send_feishu=args.send_feishu)
 
     print(f"Generated social drafts from: {summary_path}")
     for path in written:
         print(f"  - {path}")
+    if args.send_feishu:
+        print("Sent social drafts to Feishu/Lark.")
     return 0
 
 

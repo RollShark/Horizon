@@ -18,20 +18,20 @@ date: 2026-06-23
 
 今天帮你从技术资讯里捞了几条真正值得看的：
 
-1）Valve 发布全新 Steam Machine，坚持开放平台
-Valve 今天正式推出了 Steam Machine，这是一款运行 SteamOS 的游戏 PC，并采用随机预订系统，旨在优先考虑公平性而非速度。 此次发布标志着 Valve 重新进军客厅游戏硬件市场，在封闭式主机主导的市场中强调开放性和用户自由。
+1）Valve 今日发布新款 Steam Machine
+Valve 于 2026 年 6 月 29 日正式发布了新款 Steam Machine，这是一款针对客厅优化的游戏 PC，运行 SteamOS，并采用随机预订系统以确保公平。 此次发布重振了 Valve 的类游戏主机 PC 愿景，采用开放硬件，可能与传统游戏主机竞争，并将 PC 游戏生态扩展到客厅。
 
-2）Fable AI 模型在代码缺陷检测中表现卓越
-社区测试表明，Fable AI 模型（Claude Fable 5）在识别代码库中的细微缺陷（包括数据损坏问题）方面显著优于之前的 Opus 等模型及竞争对手。 这标志着 AI 辅助代码分析的重大飞跃，有望提升软件可靠性和开发人员效率，并为大语言模型在软件工程领域的能力设定新标杆。
+2）GLM-5.2 本地部署：硬件需求与性能权衡
+一个 HackerNews 讨论详细介绍了在本地运行 GLM-5.2 的硬件要求，包括具体的内存、显存和 CPU 配置，并分享了实测性能指标，如在双 3090 GPU 和 512GB 内存下可达 6 tokens/秒。
 
-3）GLM-5.2 本地运行指南：MoE 卸载方案
-一份详细指南已发布，介绍如何使用 MoE 卸载方案在本地运行开源权重 GLM-5.2 混合专家模型，包括硬件要求、配置技巧和性能预估。 该指南使拥有高端消费级硬件的个人和小团队能够在本地运行强大的 MoE 模型，减少对云端 API 的依赖并降低推理成本。
+3）VibeThinker：3B 参数模型通过 SFT+GRPO 超越 Opus 4.5 推理能力
+研究人员推出了 VibeThinker-3B，一个 30 亿参数模型，通过结合监督微调（SFT）和组相对策略优化（GRPO）的新型训练流程，在推理基准上超越了 Claude Opus 4.5。
 
-4）Memcached 因其简洁性优于 Redis 而受赞誉
-一篇博文赞扬了 memcached 的简洁性和 O(1 操作，并与 Redis 日益增加的复杂性和可靠性问题进行了对比。 这凸显了缓存系统设计中的基本权衡，影响开发者在系统可靠性和性能方面的选择。
+4）缓存之争：Memcached 因简洁性受赞誉，胜过 Redis
+一篇题为《赞颂 memcached》的近期博客文章引发了开发者之间的高质量讨论，突出 memcached 作为专用缓存层的简洁性和可靠性，对比 Redis 兼顾缓存与持久化存储的复杂性。
 
-5）提示注入即角色混淆
-一篇名为《提示注入即角色混淆》的新研究论文揭示，大型语言模型无法区分系统上下文和用户输入，反而将文本的样式视为比实际角色标签更具权威性。作者证明，附加模仿模型内部思维风格的文字可以绕过安全措施，攻击成功率达到 61%，而当样式改变时，成功率降至 10%。
+5）提示注入利用大语言模型角色混淆漏洞
+一项新研究表明，大语言模型无法可靠地通过特殊标签区分系统、助手和用户角色；它们实际上通过文字风格来识别角色，这使得攻击者可以注入伪造的推理文本块，绕过安全护栏。
 
 如果只看一条，我会先看第 1 条；如果你做开发/AI 产品，第 2、3 条也值得顺手收藏。
 
@@ -41,8 +41,8 @@ Valve 今天正式推出了 Steam Machine，这是一款运行 SteamOS 的游戏
 
 ## 链接备查
 
-- Valve 发布全新 Steam Machine，坚持开放平台: https://store.steampowered.com/news/group/45479024/view/685257114654870245
-- Fable AI 模型在代码缺陷检测中表现卓越: https://swelljoe.com/post/will-it-mythos/
-- GLM-5.2 本地运行指南：MoE 卸载方案: https://unsloth.ai/docs/models/glm-5.2
-- Memcached 因其简洁性优于 Redis 而受赞誉: https://jchri.st/blog/in-praise-of-memcached/
-- 提示注入即角色混淆: https://simonwillison.net/2026/Jun/22/prompt-injection-as-role-confusion/#atom-everything
+- Valve 今日发布新款 Steam Machine: https://store.steampowered.com/news/group/45479024/view/685257114654870245
+- GLM-5.2 本地部署：硬件需求与性能权衡: https://unsloth.ai/docs/models/glm-5.2
+- VibeThinker：3B 参数模型通过 SFT+GRPO 超越 Opus 4.5 推理能力: https://arxiv.org/abs/2606.16140
+- 缓存之争：Memcached 因简洁性受赞誉，胜过 Redis: https://jchri.st/blog/in-praise-of-memcached/
+- 提示注入利用大语言模型角色混淆漏洞: https://simonwillison.net/2026/Jun/22/prompt-injection-as-role-confusion/#atom-everything

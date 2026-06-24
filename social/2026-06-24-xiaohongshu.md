@@ -18,20 +18,20 @@ date: 2026-06-24
 
 今天帮你从技术资讯里捞了几条真正值得看的：
 
-1）漏洞报告因 LLM 滥报而不再特殊
-LLM 被广泛用于自动生成漏洞报告，导致低质量提交泛滥，让维护者不堪重负，真实报告常被忽视或当成垃圾邮件。 这破坏了漏洞披露流程，可能导致严重缺陷被忽视，更凸显了采用内存安全语言和自动化预防等工程解决方案的必要性。
+1）泄露文件揭露俄罗斯机构污染 AI 训练数据的行动
+泄露文件显示，俄罗斯社会设计机构（SDA）正在实施“2026 项目”，创建虚假参考平台（包括一个德语维基百科克隆和一个庞大的 AI 驱动知识库），旨在将宣传注入 AI 训练数据和搜索引擎索引中。
 
-2）FUTO 键盘新滑动输入模型媲美 Gboard 精度
-FUTO 为其注重隐私的离线 Android 键盘发布了一款新的滑动输入模型，根据用户反馈，其准确性已可与 Google 的 Gboard 相媲美。 这一进步为滑动输入提供了注重隐私的可靠替代方案，使用户无需将击键数据发送给 Google，并证明开源离线键盘有能力与专有方案竞争。
+2）树莓派 Pico W 变身 USB Wi-Fi 适配器
+一个开源项目使树莓派 Pico W 能够作为 USB Wi-Fi 适配器使用，为缺乏内置 Wi-Fi 的设备提供无线连接。 这种低成本方案将流行的微控制器重新利用于常见需求，有可能延长旧硬件的使用寿命，并简化嵌入式系统的无线集成。
 
-3）纪念拼写检查波浪下划线的发明者
-一篇博客文章向微软开发人员 Tony Krueger 致敬，他设计了红色和绿色的波浪下划线，这一设计成为拼写检查的标准惯例。 这突显了一个看似微小的用户界面决策如何对软件设计和用户体验产生持久且全球性的影响。
+3）漏洞报告已不再特殊
+漏洞报告生态系统已功能失调，真正的安全研究人员常被忽视，而公司却面临大量垃圾信息和 LLM 生成的琐碎报告。 这种崩溃削弱了软件安全，导致严重漏洞得不到修补，资源浪费在无意义的报告上，最终损害开发者、公司和用户的利益。
 
-4）Swift Package Index 被苹果收购
-社区运营的 Swift Package Index（Swift 包搜索引擎）已被苹果收购，其维护者 Dave Verwer 将加入苹果。这标志着该项目从独立运营转变为苹果官方资源。
+4）Qwen-AgentWorld：面向通用智能体的语言世界模型
+这篇论文提出了 Qwen-AgentWorld-35B，这是首个能够通过长链思维推理在七个统一领域（MCP、搜索、终端、软件工程、安卓、网页、操作系统）中模拟智能体环境的语言世界模型，使智能体能够预测未来环境状态和后果。 该模型解决了当前基于大语言模型的智能体的一个主要局限：无法预测行为后果。
 
-5）TikZ 编辑器：所见即所得的 LaTeX 插图工具
-一款新的开源所见即所得 TikZ 编辑器发布，允许用户通过拖拽等可视化方式编辑 LaTeX 插图，并与源代码实时同步。该工具几乎完全由 Codex 构建，重新实现了 TikZ 的大部分功能，以实现精确的坐标操控。
+5）Swift Package Index 加盟苹果，承诺保持开源
+社区运营的 Swift Package Index 宣布加入 Apple，团队将继续维护，并承诺保持开源，短期内对开发者的改动很小。 苹果的收购可能重塑 Swift 软件包发现及开源生态，同时因其过往在开源和开发者服务上的表现不一，引发担忧，但可能促进与苹果工具的深度整合。
 
 如果只看一条，我会先看第 1 条；如果你做开发/AI 产品，第 2、3 条也值得顺手收藏。
 
@@ -41,8 +41,8 @@ FUTO 为其注重隐私的离线 Android 键盘发布了一款新的滑动输入
 
 ## 链接备查
 
-- 漏洞报告因 LLM 滥报而不再特殊: https://words.filippo.io/vuln-reports/
-- FUTO 键盘新滑动输入模型媲美 Gboard 精度: https://swipe.futo.tech/
-- 纪念拼写检查波浪下划线的发明者: https://devblogs.microsoft.com/oldnewthing/20260622-00/?p=112451
-- Swift Package Index 被苹果收购: https://swiftpackageindex.com/blog/swift-package-index-joins-apple
-- TikZ 编辑器：所见即所得的 LaTeX 插图工具: https://tikz.dev/editor/
+- 泄露文件揭露俄罗斯机构污染 AI 训练数据的行动: https://www.reddit.com/r/artificial/comments/1udvuhe/leaked_files_detail_russias_social_design_agency/
+- 树莓派 Pico W 变身 USB Wi-Fi 适配器: https://gitlab.com/baiyibai/pico-usb-wifi
+- 漏洞报告已不再特殊: https://words.filippo.io/vuln-reports/
+- Qwen-AgentWorld：面向通用智能体的语言世界模型: https://arxiv.org/abs/2606.24597
+- Swift Package Index 加盟苹果，承诺保持开源: https://swiftpackageindex.com/blog/swift-package-index-joins-apple

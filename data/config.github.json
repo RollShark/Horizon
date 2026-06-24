@@ -34,12 +34,60 @@
         "owner": "astral-sh",
         "repo": "uv",
         "enabled": true
+      },
+      {
+        "type": "repo_releases",
+        "owner": "openai",
+        "repo": "codex",
+        "enabled": true
+      },
+      {
+        "type": "repo_releases",
+        "owner": "openai",
+        "repo": "openai-python",
+        "enabled": true
+      },
+      {
+        "type": "repo_releases",
+        "owner": "huggingface",
+        "repo": "transformers",
+        "enabled": true
+      },
+      {
+        "type": "repo_releases",
+        "owner": "vllm-project",
+        "repo": "vllm",
+        "enabled": true
+      },
+      {
+        "type": "repo_releases",
+        "owner": "ggml-org",
+        "repo": "llama.cpp",
+        "enabled": true
+      },
+      {
+        "type": "repo_releases",
+        "owner": "pytorch",
+        "repo": "pytorch",
+        "enabled": true
+      },
+      {
+        "type": "repo_releases",
+        "owner": "microsoft",
+        "repo": "playwright",
+        "enabled": true
+      },
+      {
+        "type": "repo_releases",
+        "owner": "vercel",
+        "repo": "next.js",
+        "enabled": true
       }
     ],
     "hackernews": {
       "enabled": true,
-      "fetch_top_stories": 20,
-      "min_score": 100
+      "fetch_top_stories": 30,
+      "min_score": 80
     },
     "rss": [
       {
@@ -47,6 +95,72 @@
         "url": "https://simonwillison.net/atom/everything/",
         "enabled": true,
         "category": "ai-tools"
+      },
+      {
+        "name": "OpenAI News",
+        "url": "https://openai.com/news/rss.xml",
+        "enabled": true,
+        "category": "ai-official"
+      },
+      {
+        "name": "Google DeepMind Blog",
+        "url": "https://deepmind.google/blog/rss.xml",
+        "enabled": true,
+        "category": "ai-research"
+      },
+      {
+        "name": "Hugging Face Blog",
+        "url": "https://huggingface.co/blog/feed.xml",
+        "enabled": true,
+        "category": "ai-models"
+      },
+      {
+        "name": "GitHub Blog",
+        "url": "https://github.blog/feed/",
+        "enabled": true,
+        "category": "developer-tools"
+      },
+      {
+        "name": "GitHub Changelog",
+        "url": "https://github.blog/changelog/feed/",
+        "enabled": true,
+        "category": "developer-tools"
+      },
+      {
+        "name": "Cloudflare Blog",
+        "url": "https://blog.cloudflare.com/rss/",
+        "enabled": true,
+        "category": "cloud-infra"
+      },
+      {
+        "name": "Vercel Blog",
+        "url": "https://vercel.com/blog/rss.xml",
+        "enabled": true,
+        "category": "developer-tools"
+      },
+      {
+        "name": "Deno Blog",
+        "url": "https://deno.com/feed",
+        "enabled": true,
+        "category": "developer-tools"
+      },
+      {
+        "name": "Docker Blog",
+        "url": "https://www.docker.com/blog/feed/",
+        "enabled": true,
+        "category": "developer-tools"
+      },
+      {
+        "name": "Latent Space",
+        "url": "https://www.latent.space/feed",
+        "enabled": true,
+        "category": "ai-analysis"
+      },
+      {
+        "name": "InfoQ AI, ML & Data Engineering",
+        "url": "https://feed.infoq.com/ai-ml-data-eng",
+        "enabled": true,
+        "category": "ai-engineering"
       },
       {
         "name": "LWN.net (subscriber full-text)",
@@ -65,6 +179,30 @@
           "time_filter": "day",
           "fetch_limit": 15,
           "min_score": 50
+        },
+        {
+          "subreddit": "LocalLLaMA",
+          "enabled": true,
+          "sort": "hot",
+          "time_filter": "day",
+          "fetch_limit": 15,
+          "min_score": 80
+        },
+        {
+          "subreddit": "OpenAI",
+          "enabled": true,
+          "sort": "hot",
+          "time_filter": "day",
+          "fetch_limit": 10,
+          "min_score": 150
+        },
+        {
+          "subreddit": "artificial",
+          "enabled": true,
+          "sort": "hot",
+          "time_filter": "day",
+          "fetch_limit": 10,
+          "min_score": 200
         }
       ],
       "users": [
@@ -75,7 +213,7 @@
           "fetch_limit": 10
         }
       ],
-      "fetch_comments": 5
+      "fetch_comments": 3
     },
     "twitter": {
       "enabled": false,
@@ -102,12 +240,12 @@
       ]
     },
     "ossinsight": {
-      "enabled": false,
+      "enabled": true,
       "period": "past_24_hours",
-      "languages": ["All", "Python", "TypeScript"],
-      "keywords": [],
-      "min_stars": 10,
-      "max_items": 30
+      "languages": ["All", "Python", "TypeScript", "Rust"],
+      "keywords": ["ai", "llm", "agent", "model", "developer", "tool", "runtime", "database", "cloud"],
+      "min_stars": 50,
+      "max_items": 20
     }
   },
   "filtering": {

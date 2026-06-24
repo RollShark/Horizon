@@ -2,7 +2,8 @@ name: Daily Horizon Summary
 
 on:
   schedule:
-    - cron: '50 7 * * *'
+    # Queue early to absorb GitHub Actions schedule delays; the job waits until 08:00 if it starts early.
+    - cron: '5 7 * * *'
       timezone: 'Asia/Shanghai'
   workflow_dispatch:  # Allow manual trigger
 
@@ -29,6 +30,21 @@ jobs:
 
       - name: Prepare GitHub Actions config
         run: cp data/config.github.json data/config.json
+
+      - name: Wait until 08:00 Asia/Shanghai
+        if: github.event_name == 'schedule'
+        run: |
+          now=$(date +%s)
+          target=$(TZ=Asia/Shanghai date -d "$(TZ=Asia/Shanghai date +%F) 08:00:00" +%s)
+          echo "UTC now: $(date -u '+%Y-%m-%d %H:%M:%S')"
+          echo "Asia/Shanghai now: $(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S')"
+          if [ "$now" -lt "$target" ]; then
+            wait_seconds=$((target - now))
+            echo "Waiting ${wait_seconds}s until 08:00 Asia/Shanghai..."
+            sleep "$wait_seconds"
+          else
+            echo "Already past 08:00 Asia/Shanghai; running immediately."
+          fi
 
       - name: Run Horizon
         env:

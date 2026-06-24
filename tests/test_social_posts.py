@@ -70,7 +70,7 @@ def test_render_feishu_text_strips_page_front_matter():
     assert "小红书文案" in text
     assert "小黑盒文案" in text
     assert "ChatGPT 生图提示词" in text
-    assert "横版封面图，16:9" in text
+    assert "图片 01｜Codex 日志漏洞可能导致 SSD 写入数 TB 数据" in text
     assert "layout: default" not in text
 
 
@@ -78,7 +78,8 @@ def test_render_image_prompt_mentions_daily_topics():
     items = parse_items(SAMPLE_ZH_SUMMARY)
     prompt = render_image_prompt("2026-06-23", items)
 
-    assert "请生成 4 张图" in prompt
+    assert "今天共有 2 条新闻" in prompt
+    assert prompt.count("### 图片 ") == 2
     assert "Codex 日志漏洞可能导致 SSD 写入数 TB 数据" in prompt
     assert "Cloudflare 推出临时 60 分钟账户" in prompt
     assert "不要生成二维码、水印、真实人物" in prompt

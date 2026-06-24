@@ -5,205 +5,250 @@ date: 2026-06-24
 lang: zh
 ---
 
-> 从 24 条内容中筛选出 9 条重要资讯。
+> 从 26 条内容中筛选出 12 条重要资讯。
 
 ---
 
-1. [所见即所得的 TikZ 编辑器，源码与可视化同步编辑](#item-1) ⭐️ 8.0/10
-2. [AI 编码循环需要清晰的人工规范](#item-2) ⭐️ 8.0/10
-3. [Unlimited OCR：实现无分块长文档一次性解析](#item-3) ⭐️ 8.0/10
-4. [FUTO Swipe：全新的隐私保护滑动输入模型](#item-4) ⭐️ 7.0/10
-5. [Swift Package Index 加入苹果](#item-5) ⭐️ 7.0/10
-6. [Datasette 1.0a35 新增创建和修改表格功能](#item-6) ⭐️ 7.0/10
-7. [uv 0.11.24 发布：支持 CPython 3.15.0b3 及可重定位环境预览](#item-7) ⭐️ 6.0/10
-8. [平衡分析：维生素 D 的“无用论”被夸大](#item-8) ⭐️ 6.0/10
-9. [浏览器内持久化 SQLite 编辑测试工具](#item-9) ⭐️ 6.0/10
+1. [漏洞报告因 LLM 滥报而不再特殊](#item-1) ⭐️ 8.0/10
+2. [FUTO 键盘新滑动输入模型媲美 Gboard 精度](#item-2) ⭐️ 8.0/10
+3. [纪念拼写检查波浪下划线的发明者](#item-3) ⭐️ 8.0/10
+4. [Swift Package Index 被苹果收购](#item-4) ⭐️ 8.0/10
+5. [TikZ 编辑器：所见即所得的 LaTeX 插图工具](#item-5) ⭐️ 8.0/10
+6. [AI 生成代码导致的自我强化循环](#item-6) ⭐️ 8.0/10
+7. [DeepSWE：无污染、多样化的真实世界编码基准](#item-7) ⭐️ 8.0/10
+8. [维生素 D 的‘无用’被轻度夸大](#item-8) ⭐️ 7.0/10
+9. [Datasette 1.0a35 新增建表和改表界面与 API](#item-9) ⭐️ 7.0/10
+10. [极端高温会议因极端高温预警取消](#item-10) ⭐️ 6.0/10
+11. [Simon Willison 的 OPFS + Pyodide SQLite 测试工具](#item-11) ⭐️ 6.0/10
+12. [七天计算机视觉实习准备清单](#item-12) ⭐️ 6.0/10
 
 ---
 
 <a id="item-1"></a>
-## [所见即所得的 TikZ 编辑器，源码与可视化同步编辑](https://tikz.dev/editor/) ⭐️ 8.0/10
+## [漏洞报告因 LLM 滥报而不再特殊](https://words.filippo.io/vuln-reports/) ⭐️ 8.0/10
 
-发布了一款开源的可视化 TikZ 图形编辑器，通过拖拽和调整元素大小实现可视化编辑，并与 LaTeX 源代码保持同步。该工具几乎完全由 Codex 构建，解析 TikZ 代码以追踪源码位置，实现精准坐标更新。 该工具大幅降低了在 LaTeX 中创建出版级图形的难度，有望提升学术界和研究人员的工作效率。其双视图模式为代码生成型所见即所得工具树立了新范式。 编辑器重新实现了大部分 TikZ 功能，以精确追踪源码位置，实现坐标更新而不影响格式。它还内置了 SVG、ppt 和 ipe 格式转换器，重新实现了 LaTeX 断词算法以支持多行节点，并提供了支持 LaTeX 调色符号的颜色选择器。
+LLM 被广泛用于自动生成漏洞报告，导致低质量提交泛滥，让维护者不堪重负，真实报告常被忽视或当成垃圾邮件。 这破坏了漏洞披露流程，可能导致严重缺陷被忽视，更凸显了采用内存安全语言和自动化预防等工程解决方案的必要性。 这些报告常标记琐碎的 CSS 问题，或属敲诈尝试；核心建议是通过工程设计消除漏洞类别，而非单纯过滤报告。
 
-hackernews · DominikPeters · 6月23日 14:24 · [社区讨论](https://news.ycombinator.com/item?id=48645437)
+hackernews · goranmoomin · 6月23日 23:42 · [社区讨论](https://news.ycombinator.com/item?id=48653216)
 
-**背景**: TikZ 是一个广泛使用的 LaTeX 宏包，用于在学术论文中直接创建矢量图形。用户通常通过编写绘图命令来生成图形，这需要反复调整坐标并重新编译文档，过程繁琐。由于 TikZ 的编程特性，所见即所得编辑非常困难，因此该编辑器的出现是一项重要进展。
+**背景**: LLM（如 GPT-4）能分析代码但常出误报。漏洞报告传统上依赖可信研究者。自动化扫描早已存在，但 LLM 降低了门槛，导致报告大量产生，压垮人工筛选。
 
 <details><summary>参考链接</summary>
 <ul>
-<li><a href="https://www.overleaf.com/learn/latex/TikZ_package">TikZ package - Overleaf, Online LaTeX Editor</a></li>
+<li><a href="https://www.emergentmind.com/topics/security-of-llm-generated-code">LLM - Generated Code Security</a></li>
+<li><a href="https://www.sentinelone.com/cybersecurity-101/cybersecurity/automated-vulnerability-management/">Automated Vulnerability Management: An Easy Guide... | SentinelOne</a></li>
 
 </ul>
 </details>
 
-**社区讨论**: 社区反馈赞赏了项目的界面和创意，但也指出生成的 TikZ 代码存在不足（如不必要地使用绝对坐标）。用户表达了希望支持 Typst 等其他格式的意愿，并分享了 quiver 等类似工具。开发者强调了通过 ChatGPT 订阅实现低成本开发的亮点。
+**社区讨论**: 评论者指出垃圾和敲诈使报告可信度降低；有人认为这只是暂时的，未来 LLM 会提前修复漏洞；另有人强调内存安全语言等工程改进。总体认为这既是挑战，也是推动软件工程进步的机遇。
 
-**标签**: `#TikZ`, `#LaTeX`, `#editor`, `#WYSIWYG`, `#open-source`
+**标签**: `#security`, `#vulnerability-reports`, `#llm`, `#software-engineering`, `#ai`
 
 ---
 
 <a id="item-2"></a>
-## [AI 编码循环需要清晰的人工规范](https://lucumr.pocoo.org/2026/6/23/the-coming-loop/) ⭐️ 8.0/10
+## [FUTO 键盘新滑动输入模型媲美 Gboard 精度](https://swipe.futo.tech/) ⭐️ 8.0/10
 
-2026 年 6 月 23 日，Armin Ronacher 发布的一篇博客文章探讨了与 AI 编码代理的迭代开发循环，指出人工编写的规范仍然是生成高质量代码的关键瓶颈。 这一见解挑战了 AI 将取代开发者的说法；相反，它提升了精确规范编写的重要性，可能重塑 AI 编码工具融入专业工作流程的方式。 即使给出了计划，LLM 也常引入不必要的空检查和不良结构；目前工具无法绕过人类为完全理解问题所需的 5-6 次失败迭代。
-
-hackernews · ingve · 6月23日 11:06 · [社区讨论](https://news.ycombinator.com/item?id=48643180)
-
-**背景**: 像 Claude Code 和 Cursor 这样的 AI 编码代理利用大语言模型从自然语言提示生成代码。在传统开发中，规范、实现和审查的循环是标准做法。而使用代理时，人类编写高层规范，代理生成代码，人类根据结果完善规范，从而将瓶颈转移到了人类的清晰度上。
-
-<details><summary>参考链接</summary>
-<ul>
-<li><a href="https://www.faros.ai/blog/best-ai-coding-agents-2026">Best AI Coding Agents for 2026: Real-World Developer Reviews</a></li>
-<li><a href="https://www.augmentcode.com/tools/8-top-ai-coding-assistants-and-their-best-use-cases">8 Best AI Coding Assistants [Updated May 2026] | Augment Code</a></li>
-
-</ul>
-</details>
-
-**社区讨论**: 评论普遍认同规范编写是主要瓶颈；当规范清晰时代理表现良好，但常生成美学较差的代码，且有过度的错误处理。大家一致认为人类理解问题的过程无法被加速，引导代理需要大量手动工作。
-
-**标签**: `#ai coding`, `#developer workflow`, `#llm`, `#software development`, `#specifications`
-
----
-
-<a id="item-3"></a>
-## [Unlimited OCR：实现无分块长文档一次性解析](https://github.com/baidu/Unlimited-OCR) ⭐️ 8.0/10
-
-百度发布了 Unlimited OCR，一种内存高效的架构，无需分块即可一次性解析任意长度文档，解决了传统 OCR 模型中 KV 缓存线性增长带来的内存瓶颈。 此突破消除了文档 AI 的可扩展性瓶颈，能够处理整本书、长篇报告或连续数据流而不会出现内存溢出，有望变革数字化和分析流程。 该模型无论文档长度如何均保持恒定内存占用，基于 Deepseek-OCR 和 PaddleOCR 构建，并以 MIT 许可证开源。
-
-hackernews · ingve · 6月23日 11:35 · [社区讨论](https://news.ycombinator.com/item?id=48643426)
-
-**背景**: 传统端到端 OCR 系统需逐页处理文档，每页后重置记忆，打断了跨页上下文。对于长文档，存储先前 token 的键值（KV）缓存线性增长，最终耗尽 GPU 显存。Unlimited OCR 引入流式处理方法，高效压缩或丢弃过往信息同时保留关键上下文，实现真正的一次性长文档解析。
-
-<details><summary>参考链接</summary>
-<ul>
-<li><a href="https://huggingface.co/baidu/Unlimited-OCR">baidu/Unlimited-OCR · Hugging Face</a></li>
-<li><a href="https://www.xugj520.cn/en/archives/unlimited-ocr-constant-memory.html">Unlimited OCR: One - Shot Long - Horizon Document Parsing with...</a></li>
-
-</ul>
-</details>
-
-**社区讨论**: 社区反响非常积极，称赞该架构巧妙解决了内存膨胀问题。用户指出光学乐谱识别和本地 RAG 等应用场景，并赞赏项目对其他 OCR 工作的致谢。有人提到名称源自 Fate/stay night 的梗。
-
-**标签**: `#OCR`, `#document-ai`, `#memory-optimization`, `#long-context-processing`, `#ml-architecture`
-
----
-
-<a id="item-4"></a>
-## [FUTO Swipe：全新的隐私保护滑动输入模型](https://swipe.futo.tech/) ⭐️ 7.0/10
-
-FUTO 为其 Android 键盘应用发布了一款新的滑动输入模型，利用用户贡献的滑动数据训练而成，提高了准确性，但在处理撇号和句子大写等方面仍不及 Gboard。 该模型为 Gboard 等专有滑动输入键盘提供了一个完全离线、尊重隐私的替代方案，在支持高效单手输入的同时，回应了日益增长的数据收集担忧。 底层滑动库采用 GPLv3 许可证，但 Android 键盘应用本身使用限制更多的 FUTO 许可证。该模型完全在设备端运行，无需联网。
+FUTO 为其注重隐私的离线 Android 键盘发布了一款新的滑动输入模型，根据用户反馈，其准确性已可与 Google 的 Gboard 相媲美。 这一进步为滑动输入提供了注重隐私的可靠替代方案，使用户无需将击键数据发送给 Google，并证明开源离线键盘有能力与专有方案竞争。 新模型已集成至完全离线的 FUTO 键盘中。滑动库采用 GPLv3 许可，而键盘应用使用限制性较强的 Futo 许可证。用户反映存在随机大写和缺乏上下文单词预测等问题。
 
 hackernews · futohq · 6月23日 17:50 · [社区讨论](https://news.ycombinator.com/item?id=48648619)
 
-**背景**: 滑动输入通过手指在键盘上滑动拼写单词，实现更快的移动输入。Gboard 占据市场主导，但为闭源且收集用户数据。FUTO 键盘是一个开源的、注重隐私的替代方案，由致力于用户主权的软件组织 FUTO 开发。
+**背景**: 滑动输入允许用户通过在虚拟键盘上滑过字母来输入单词。Google 的 Gboard 以精准的滑动识别而闻名，但会收集用户数据。FUTO 键盘是一款注重隐私的开源离线 Android 键盘。新模型使用社区滑动训练工具提供的数据训练而成。
 
 <details><summary>参考链接</summary>
 <ul>
 <li><a href="https://swipe.futo.tech/">FUTO Swipe</a></li>
 <li><a href="https://keyboard.futo.org/">FUTO Keyboard</a></li>
-<li><a href="https://github.com/futo-org/android-keyboard/releases">Releases · futo -org/android- keyboard</a></li>
 
 </ul>
 </details>
 
-**社区讨论**: 用户称赞其进步，有些人已从 Gboard 转投而来。常见怨言包括随机大写、上下文感知差以及缩写词问题（如将'what's'误输为'whats'）。一些人批评键盘应用使用的 FUTO 许可证不如滑动库的 GPLv3 那样开放。
+**社区讨论**: 社区反馈总体积极，许多用户从 Gboard 迁移而来。用户赞赏准确性提升，但也指出问题，如句子中间随机大写、偶尔出现错误单词（如“whats”而非“what’s”），以及缺乏上下文感知建议。部分用户对双重许可模式提出批评。
 
-**标签**: `#keyboard`, `#swipe-typing`, `#open-source`, `#privacy`, `#mobile`
+**标签**: `#swipe-typing`, `#keyboard`, `#privacy`, `#machine-learning`, `#open-source`
+
+---
+
+<a id="item-3"></a>
+## [纪念拼写检查波浪下划线的发明者](https://devblogs.microsoft.com/oldnewthing/20260622-00/?p=112451) ⭐️ 8.0/10
+
+一篇博客文章向微软开发人员 Tony Krueger 致敬，他设计了红色和绿色的波浪下划线，这一设计成为拼写检查的标准惯例。 这突显了一个看似微小的用户界面决策如何对软件设计和用户体验产生持久且全球性的影响。 文章指出了一个有趣的循环引用：维基百科关于波浪下划线的条目将这篇博客作为来源，而博客本身又参考了维基百科。
+
+hackernews · saikatsg · 6月23日 18:10 · [社区讨论](https://news.ycombinator.com/item?id=48648959)
+
+**背景**: 红色波浪下划线表示拼写错误，绿色表示语法错误——这一功能由 Microsoft Word 在 20 世纪 90 年代初引入，如今在各种文本编辑器中随处可见。
+
+**社区讨论**: 评论中既有对维基百科循环引用的莞尔，也有对微小设计决策深远影响的由衷赞赏，同时一些用户指出了多语言环境下的实际使用困扰。
+
+**标签**: `#software-history`, `#UI-design`, `#Microsoft`, `#spell-check`, `#nostalgia`
+
+---
+
+<a id="item-4"></a>
+## [Swift Package Index 被苹果收购](https://swiftpackageindex.com/blog/swift-package-index-joins-apple) ⭐️ 8.0/10
+
+社区运营的 Swift Package Index（Swift 包搜索引擎）已被苹果收购，其维护者 Dave Verwer 将加入苹果。这标志着该项目从独立运营转变为苹果官方资源。 此次收购对 Swift 开发者生态系统影响重大，可能改善包的发现和与苹果工具链的集成，但也引发了人们对苹果开源承诺以及可能对包进行策展或限制的担忧。 目前 Swift Package Index 仅索引来自 GitHub 的超过 11,000 个包；被苹果收购后，可能扩展到其他平台并引入开发者身份功能，但具体细节尚不明确。
+
+hackernews · JDevlieghere · 6月23日 18:00 · [社区讨论](https://news.ycombinator.com/item?id=48648779)
+
+**背景**: Swift Package Index（SPI）曾是一个独立的社区维护的搜索引擎，用于查找支持 Swift 包管理器（SPM）的 Swift 包。SPM 是苹果官方的依赖管理工具。SPI 填补了 SPM 在可发现性和质量洞察方面的空白。苹果的收购使其成为官方项目，可能更深入地集成到 Swift 开发工具链中。
+
+<details><summary>参考链接</summary>
+<ul>
+<li><a href="https://swiftpackageindex.com/">Swift Package Index</a></li>
+<li><a href="https://www.swift.org/packages/">Packages | Swift.org</a></li>
+
+</ul>
+</details>
+
+**社区讨论**: 社区反应不一：许多人祝贺维护者，但部分人质疑苹果的开源记录，担心会引入监管和强调开发者身份。还有人指出 SPI 目前仅支持 GitHub 的局限，并视此为创建替代索引的机会。
+
+**标签**: `#swift`, `#apple`, `#open-source`, `#package-management`, `#acquisition`
 
 ---
 
 <a id="item-5"></a>
-## [Swift Package Index 加入苹果](https://swiftpackageindex.com/blog/swift-package-index-joins-apple) ⭐️ 7.0/10
+## [TikZ 编辑器：所见即所得的 LaTeX 插图工具](https://tikz.dev/editor/) ⭐️ 8.0/10
 
-社区驱动的 Swift 包发现与索引工具 Swift Package Index 正式并入苹果，其维护者已加入该公司。 此举将关键的开发者资源集中到苹果手中，可能改善维护与集成，但也引发了对开源治理和未来包索引限制的担忧。 SPI 收录了数千个主要托管于 GitHub 的 Swift 包，并提供跨平台兼容性信息；苹果现掌控其开发，并暗示未来将加入身份相关功能。
+一款新的开源所见即所得 TikZ 编辑器发布，允许用户通过拖拽等可视化方式编辑 LaTeX 插图，并与源代码实时同步。该工具几乎完全由 Codex 构建，重新实现了 TikZ 的大部分功能，以实现精确的坐标操控。 该工具显著减少了为 LaTeX 文档创建精确矢量图形所需的时间和精力，使 TikZ 更易为更广泛的用户所使用，并可能提升学术和技术插图的质量。 该编辑器重新实现了 TikZ 的解析，以在可视化编辑时保持源代码完整性，但目前使用绝对坐标，这可能不符合 TikZ 常用的相对定位惯例。它包含从 SVG、pptx 和 ipe 格式的转换器，并使用 Codex 消耗了 7 亿个 token，个人成本约 500 美元。
 
-hackernews · JDevlieghere · 6月23日 18:00 · [社区讨论](https://news.ycombinator.com/item?id=48648779)
+hackernews · DominikPeters · 6月23日 14:24 · [社区讨论](https://news.ycombinator.com/item?id=48645437)
 
-**背景**: Swift Package Index（SPI）是一个用于 Swift 包的开源搜索引擎，弥补了 Swift Package Manager 生态中包发现能力的不足。苹果此次收购沿袭了其吸收社区工具的模式，但由于其开源过往记录，引发了复杂情绪。
+**背景**: TikZ 是一个强大的 LaTeX 宏包，用于程序化地创建矢量图形，因其精确性和一致性而在学术和技术文档中广泛使用。但需要用户手动指定坐标并反复编译以得到理想布局，过程繁琐耗时。所见即所得编辑器允许直接视觉操作，但将其与 TikZ 基于代码的方法相结合颇具挑战。该编辑器独特地以同步方式融合了代码和可视化编辑。
 
 <details><summary>参考链接</summary>
 <ul>
-<li><a href="https://sesamedisk.com/apple-joins-swift-package-index/">What Happened: Apple Joins Swift Package Index - Sesame Disk</a></li>
-<li><a href="https://www.swift.org/packages/">Packages | Swift .org</a></li>
+<li><a href="https://en.wikipedia.org/wiki/TikZ">TikZ</a></li>
+<li><a href="https://en.wikipedia.org/wiki/WYSIWYG">WYSIWYG</a></li>
 
 </ul>
 </details>
 
-**社区讨论**: 社区情绪复杂：有人祝贺维护者取得成功，但也有人因苹果的开源历史和对索引监管的担忧表示怀疑。部分人提到与类似网站的混淆，并计划开发替代工具。
+**社区讨论**: 社区反馈总体积极，赞扬了视觉界面和易用性。但也有用户指出生成的代码使用了不必要的绝对坐标，而更惯用的方式是相对定位，并提出了改进建议。还有一些人提到已有的基于 AI 的 TikZ 生成流程，但对该编辑器的同步编辑方式表示赞赏。
 
-**标签**: `#swift`, `#package-management`, `#apple`, `#open-source`, `#developer-tools`
+**标签**: `#LaTeX`, `#TikZ`, `#WYSIWYG`, `#open-source`, `#visualization`
 
 ---
 
 <a id="item-6"></a>
-## [Datasette 1.0a35 新增创建和修改表格功能](https://simonwillison.net/2026/Jun/23/datasette/#atom-everything) ⭐️ 7.0/10
+## [AI 生成代码导致的自我强化循环](https://lucumr.pocoo.org/2026/6/23/the-coming-loop/) ⭐️ 8.0/10
 
-Datasette 1.0a35 引入了新的 JSON API 接口和网页界面，用于创建和修改数据库表，支持列定义、约束、默认值、主键和外键。 此版本大幅扩展了 Datasette 的能力，使其从数据探索工具转变为轻量级数据库管理界面，更适用于快速原型设计、数据新闻和内部工具开发。 `/database/-/create` 和 `/database/table/-/alter` 端点允许创建和修改表，支持 NOT NULL 约束、字面量/表达式默认值和外键。模板上下文文档现由代码生成，确保自定义模板的稳定性。
+这篇文章警告称，AI 辅助编码可能会创造出需要机器参与才能维护的代码库，逐渐侵蚀人类的理解能力和自主性。 这凸显了在软件开发中采用大语言模型的一个关键风险：如果代码变得人类无法理解，我们可能会失去创新、调试或完全掌控系统的能力。 该循环涉及开发者越来越依赖大语言模型生成、解释甚至讨论代码，导致深层技术理解的丧失，并形成只有机器能管理系统的依赖。
 
-rss · Simon Willison · 6月23日 21:34
+hackernews · ingve · 6月23日 11:06 · [社区讨论](https://news.ycombinator.com/item?id=48643180)
 
-**背景**: Datasette 是一个用于发布和探索 SQLite 数据库的开源工具，常用于数据新闻领域。它传统上提供只读访问。此 alpha 版本引入了写入功能，向完整的 CRUD 支持迈进。
+**背景**: 像 GPT-4 这样的大语言模型越来越多地被用于编写和审查代码。虽然它们提高了生产力，但可能产出“正确”但晦涩的代码。技术债务是比喻快速但糟糕的代码选择带来的长期成本。这篇文章预见了未来：AI 生成的代码积累的债务只有 AI 才能偿还。
 
-**标签**: `#datasette`, `#release`, `#api`, `#database`, `#data-journalism`
+**社区讨论**: 社区讨论反映出对失去人类理解的深切担忧，用户指出大语言模型不擅长美学，并且迭代思考没有捷径。一些人主张投入精力编写清晰的规范来引导 AI，但承认这对人类来说负担很重。
+
+**标签**: `#artificial intelligence`, `#software engineering`, `#LLMs`, `#technical debt`, `#automation`
 
 ---
 
 <a id="item-7"></a>
-## [uv 0.11.24 发布：支持 CPython 3.15.0b3 及可重定位环境预览](https://github.com/astral-sh/uv/releases/tag/0.11.24) ⭐️ 6.0/10
+## [DeepSWE：无污染、多样化的真实世界编码基准](https://www.reddit.com/r/MachineLearning/comments/1ue0hlp/deepswe_new_benchmark_looking_at_how_well_todays/) ⭐️ 8.0/10
 
-uv 0.11.24 版本于 2026 年 6 月 23 日发布，新增了对 CPython 3.15.0b3 的支持、可重定位项目环境的预览功能、通过紧凑索引优化惰性版本映射以提升性能，以及多项 bug 修复，包括允许禁用 exclude-newer、改进归档处理和 Fish shell 激活等。 此版本使 uv 与最新的 Python 3.15 beta 保持同步，便于早期测试。可重定位环境特性解决了 Python 虚拟环境管理中一个长期存在的痛点，方便在不同系统间共享和迁移环境。性能优化和 bug 修复提升了整体可靠性。 可重定位环境功能目前处于预览阶段，需要显式启用。惰性版本映射的紧凑索引减少了依赖解析时的查找开销。值得注意的修复包括防止归档 ID 冲突以及正确应用透明的 Python 升级。
+DeepSWE 是一个新发布的开源基准测试，用于评估 AI 编码代理在真实软件工程任务上的表现。它从零编写任务以避免数据污染，涵盖 91 个仓库和五种编程语言，并且相比 SWE-bench Pro 等现有基准，要求编写更多的代码。 该基准重要性在于它解决了以往评估中的关键缺陷，如任务污染和缺乏真实复杂度。其结果能更准确地反映 AI 编码工具在实际开发环境中的表现，从而影响技术采纳和研究方向。 技术上，DeepSWE 任务的提示长度约为 SWE-bench Pro 的一半，但其解决方案需要大约 5.5 倍的代码量和两倍的输出 token 数。它还采用手写验证器来测试软件行为而非实现细节，并且完全开源，由 DataCurve AI 维护。
 
-github · github-actions[bot] · 6月23日 21:16
+reddit · r/MachineLearning · /u/we_are_mammals · 6月24日 02:03
 
-**背景**: uv 是一个用 Rust 编写的快速 Python 包和项目管理器。可重定位虚拟环境允许整个环境目录被移动到不同位置而不破坏脚本或路径，这曾经需要像 virtualenv 的 --relocatable 选项这样的工具。exclude-newer 功能通过忽略在指定日期之后发布的包来实现可重现构建。惰性版本映射是一种高效存储和访问包版本数据的技术。
+**背景**: 现代 AI 编码代理通常通过 SWE-bench 等基准来评测，这类基准测试它们解决真实 GitHub 问题的能力。但这些基准可能存在数据污染——模型在训练时见过答案——并且可能无法反映实际软件工程的复杂性。DeepSWE 正是为解决这些问题而构建，通过全新任务要求跨文件修改和完整的行为测试。
 
 <details><summary>参考链接</summary>
 <ul>
-<li><a href="https://github.com/astral-sh/uv/issues/3587">Add support for --relocatable · Issue #3587 · astral-sh/uv</a></li>
-<li><a href="https://github.com/astral-sh/uv/issues/15751">Support portable mode: config lookup relative to uv binary & relocatable venv Python binaries · Issue #15751 · astral-sh/uv</a></li>
-<li><a href="https://docs.bswen.com/blog/2026-04-02-uv-exclude-newer-supply-chain/">How to Use uv exclude - newer for PyPI Supply Chain Security | BSWEN</a></li>
+<li><a href="https://www.linkedin.com/posts/xiang-d_github-scaleapiswe-benchpro-os-swe-bench-activity-7375744754174771200-WMSV">Introducing SWE - Bench Pro : A New Benchmark for Coding... | LinkedIn</a></li>
+<li><a href="https://medium.com/@kthumma5/the-diminishing-returns-problem-ai-can-now-solve-most-real-bugs-but-each-extra-percent-is-d431d8d181f1">The Diminishing Returns Problem: AI Can Now Solve Most... | Medium</a></li>
+<li><a href="https://github.com/LiveBench/LiveBench">GitHub - LiveBench/LiveBench: LiveBench: A Challenging, Contamination-Free LLM Benchmark · GitHub</a></li>
 
 </ul>
 </details>
 
-**标签**: `#python`, `#uv`, `#release-notes`, `#packaging`, `#performance`
+**标签**: `#coding benchmark`, `#code generation`, `#software engineering`, `#evaluation`, `#open source`
 
 ---
 
 <a id="item-8"></a>
-## [平衡分析：维生素 D 的“无用论”被夸大](https://dynomight.net/vitamin-d/) ⭐️ 6.0/10
+## [维生素 D 的‘无用’被轻度夸大](https://dynomight.net/vitamin-d/) ⭐️ 7.0/10
 
-dynomight.net 的文章对维生素 D 研究进行了平衡综述，认为严重缺乏应予以纠正，但对普通人群的益处往往被夸大，并驳斥了过度宣传。 该分析有助于抵制健康影响者传播的错误信息，引导公众进行循证补充，并强调审查研究设计和避免有缺陷建议的重要性。 文章指出 NHANES 研究设计存在季节和纬度偏差，社区评论引用了一篇指出当前剂量建议基于错误统计方法的论文。还提出了与 K2 协同作用和监测血液水平的必要性。
+文章重新评估了维生素 D 研究，认为虽然其益处常被夸大，但并非完全无效，对于严重缺乏者证据最强。 这种细致视角同时抵抗了健康网红的炒作和过度的怀疑，帮助患者和医生做出更明智的补充决策，突显了营养科学中循证细致的重要性。 分析指出 NHANES 研究设计局限（季节-纬度分层）影响缺乏率估计。评论者补充维生素 K2 可能改善 D3 吸收，研究中常忽视血液水平监测；当前剂量建议可能基于有缺陷的统计方法。
 
 hackernews · surprisetalk · 6月23日 16:30 · [社区讨论](https://news.ycombinator.com/item?id=48647486)
 
-**背景**: 维生素 D 是一种脂溶性维生素（或原激素），主要来自日晒，对骨骼健康和免疫至关重要。尽管被宣传可预防慢性病，但大规模试验显示除纠正严重缺乏外益处有限。该文章对证据进行了清醒评估。
+**背景**: 维生素 D 是一种脂溶性维生素，对骨骼健康至关重要，皮肤经日晒可合成。缺乏症（定义为血液 25-羟基维生素 D 水平低）与佝偻病等有关，也可能与其他疾病相关。补充剂使用普遍，但大型试验常未发现骨骼健康以外的益处。本文对证据进行了批判性审视，既回应了支持者的夸大，也回应了怀疑者的过度否定。
 
-**社区讨论**: 评论者赞赏平衡视角，指出影响者常过度宣传维生素 D 并在研究失败时转而声称普遍缺乏。他们强调一项研究批评了剂量建议中的错误数学，并强调 K2 和血液检测的作用。讨论整体支持严格随机对照试验和对耸人听闻说法的怀疑。
+**社区讨论**: 评论者普遍赞扬文章的均衡性。有人指出 NHANES 设计偏差了缺乏率估计；有人讨论 K2 对吸收的作用和监测血液水平的需要。一名评论者分享过度补充致病的个人经历，还有人强调当前推荐量建立中使用的统计方法有缺陷。
 
-**标签**: `#health`, `#vitamin-d`, `#science`, `#analysis`, `#debate`
+**标签**: `#Vitamin D`, `#medical research`, `#skepticism`, `#evidence-based medicine`, `#health`
 
 ---
 
 <a id="item-9"></a>
-## [浏览器内持久化 SQLite 编辑测试工具](https://simonwillison.net/2026/Jun/23/opfs-pyodide/#atom-everything) ⭐️ 6.0/10
+## [Datasette 1.0a35 新增建表和改表界面与 API](https://simonwillison.net/2026/Jun/23/datasette/#atom-everything) ⭐️ 7.0/10
 
-Simon Willison 发布了一个新的浏览器端测试工具，该工具将 Origin Private File System (OPFS) 与 Pyodide 结合，用于探索直接在浏览器中持久化编辑 SQLite 数据库，旨在扩展其 Datasette Lite 项目。 这项工作有望实现完全在用户端运行的数据库应用，支持离线操作，降低服务器成本，并通过将数据保留在本地来增强用户隐私。 该工具利用 OPFS 实现高性能、同源专属的本地存储，并使用基于 WebAssembly 的 Pyodide Python 运行时来操作 SQLite 文件；它不支持跨源数据访问，并依赖现代浏览器 API。
+Datasette 1.0a35 新增了“创建表”界面和表修改功能，均可通过网页界面和 JSON API 操作，支持定义表结构、约束条件以及修改现有表。 这些功能使 Datasette 更接近一个完整的数据管理工具，用户不仅可以在浏览器中探索，还能直接通过界面或 API 修改 SQLite 数据库，从而简化数据工作流和原型设计。 建表 API 支持列类型、非空约束、默认值（字面量和表达式）及外键；改表 API 可添加、重命名、重排和删除列，更改类型和约束，以及重命名表。
+
+rss · Simon Willison · 6月23日 21:34
+
+**背景**: Datasette 是一个用于通过网页界面和 JSON API 发布和探索 SQLite 数据库的开源工具。1.0 版本开发已持续进行，重点在于稳定 API，如之前的 1.0a33 增强了 JSON 额外功能。此最新 alpha 版本增加了数据库操作功能，补充了其最初以只读探索为主的特性。新的模板上下文文档也为自定义插件和主题提供了稳定性保障。
+
+<details><summary>参考链接</summary>
+<ul>
+<li><a href="https://docs.datasette.io/en/stable/json_api.html">JSON API - Datasette documentation</a></li>
+<li><a href="http://datasette.io/blog/2026/api-extras">Datasette 1.0a33 with JSON extras in the API - Datasette Blog</a></li>
+
+</ul>
+</details>
+
+**标签**: `#datasette`, `#release`, `#api`, `#data-exploration`, `#sqlite`
+
+---
+
+<a id="item-10"></a>
+## [极端高温会议因极端高温预警取消](https://www.lse.ac.uk/granthaminstitute/events/extreme-heat-improving-governance-and-strengthening-action-around-the-world/) ⭐️ 6.0/10
+
+由伦敦政治经济学院葛量洪研究所与苏黎世气候韧性联盟合作举办的极端高温治理国际会议，因伦敦地区发布极端高温预警而取消。 会议因高温取消的讽刺性事件，突显了气候变化对即便是准备充分的机构也产生的实际影响，并强调了制定有效气候适应策略的紧迫性。 该活动原计划包括一场炉边谈话和关于全球高温治理的讨论，但英国气象局的极端高温预警迫使其取消，引起了人们对一个气候韧性活动被极端气候所阻挠的讽刺性关注。
+
+hackernews · rendx · 6月23日 23:26 · [社区讨论](https://news.ycombinator.com/item?id=48653060)
+
+**背景**: 由于气候变化，欧洲经历了日益严重的热浪，许多城市缺乏普遍空调，导致与高温相关的死亡率较高。该会议旨在解决高温适应方面的治理差距，在温带地区如今也面临创纪录高温的情况下，这是一个关键问题。
+
+**社区讨论**: 评论者指出了此事真正的讽刺性，将其与流行文化中表面的讽刺进行对比。一些人强调了高温耐受性和空调使用方面的文化差异，指出由于建筑设计和缺乏制冷基础设施，欧洲人每年因高温死亡的人均比率高于澳大利亚或美国等更炎热地区。
+
+**标签**: `#irony`, `#climate-change`, `#heatwaves`, `#governance`, `#public-health`
+
+---
+
+<a id="item-11"></a>
+## [Simon Willison 的 OPFS + Pyodide SQLite 测试工具](https://simonwillison.net/2026/Jun/23/opfs-pyodide/#atom-everything) ⭐️ 6.0/10
+
+Simon Willison 发布了一个测试工具，结合 Pyodide 与 Origin Private File System (OPFS)，实现在浏览器中直接编辑持久化的 SQLite 文件，探索 Datasette Lite 的潜在增强功能。 该实验可能为 Web 应用开辟直接操作本地数据库的途径，实现完整的读写能力，推动离线优先和隐私保护的浏览器工具发展，顺应 WebAssembly 日益增强的能力。 该工具使用 OPFS 进行无需安全提示的字节级文件存储，并通过 Pyodide 运行 Python 来与 SQLite 交互，但它仍是一个早期实验环境，并非生产工具。
 
 rss · Simon Willison · 6月23日 18:58
 
-**背景**: OPFS 是一种基于浏览器的私有文件系统，专为快速、安全的本地存储设计，性能优于 IndexedDB 等旧方案。Pyodide 允许通过 WebAssembly 在浏览器中直接运行 Python 代码（包括 SQLite）。Datasette Lite 是用于探索 SQLite 数据库的 Datasette 工具的浏览器版本。
+**背景**: OPFS 是一种浏览器 API，提供私有的、与源绑定的文件系统，用于低延迟文件操作。Pyodide 将 Python 编译为 WebAssembly，使 Python 能在浏览器中运行。Datasette Lite 是 Datasette 的浏览器版本，允许用户无需服务器即可探索 SQLite 数据库。
 
 <details><summary>参考链接</summary>
 <ul>
 <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/File_System_API/Origin_private_file_system">Origin private file system - Web APIs | MDN</a></li>
-<li><a href="https://web.dev/articles/origin-private-file-system">The origin private file system | Articles | web.dev</a></li>
-<li><a href="https://pyodide.org/">Pyodide — Version 314.0.0</a></li>
+<li><a href="https://developer.chrome.com/docs/capabilities/web-apis/file-system-access">The File System Access API: simplifying access to local files</a></li>
 
 </ul>
 </details>
 
 **标签**: `#browsers`, `#pyodide`, `#sqlite`, `#webassembly`, `#datasette-lite`
+
+---
+
+<a id="item-12"></a>
+## [七天计算机视觉实习准备清单](https://www.reddit.com/r/MachineLearning/comments/1ud8ovs/just_landed_a_computer_vision_internship_heres/) ⭐️ 6.0/10
+
+一位 Reddit 用户分享了一份压缩为 7 天的清单，涵盖数学、机器学习基础和专业的计算机视觉主题，帮助他们获得了实习机会，并通过 GitHub 仓库共享。 这为有志于计算机视觉实习的求职者提供了实用且省时的资源，解决了在激烈竞争中针对性面试准备的普遍需求。 该清单以 7 天计划的结构呈现，从核心数学和机器学习入手，然后进入计算机视觉，并设计为可个性化和扩展。
+
+reddit · r/MachineLearning · /u/PolarIceBear_ · 6月23日 05:53
+
+**背景**: 计算机视觉实习通常需要掌握线性代数、概率、深度学习以及特定的 CV 架构。求职者经常寻求结构化学习计划，以便在时间有限的情况下高效覆盖这些主题。
+
+**标签**: `#computer vision`, `#internship`, `#machine learning`, `#career preparation`, `#resource`
 
 ---

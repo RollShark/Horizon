@@ -18,20 +18,20 @@ date: 2026-06-24
 
 今天帮你从技术资讯里捞了几条真正值得看的：
 
-1）所见即所得的 TikZ 编辑器，源码与可视化同步编辑
-发布了一款开源的可视化 TikZ 图形编辑器，通过拖拽和调整元素大小实现可视化编辑，并与 LaTeX 源代码保持同步。该工具几乎完全由 Codex 构建，解析 TikZ 代码以追踪源码位置，实现精准坐标更新。 该工具大幅降低了在 LaTeX 中创建出版级图形的难度，有望提升学术界和研究人员的工作效率。
+1）漏洞报告因 LLM 滥报而不再特殊
+LLM 被广泛用于自动生成漏洞报告，导致低质量提交泛滥，让维护者不堪重负，真实报告常被忽视或当成垃圾邮件。 这破坏了漏洞披露流程，可能导致严重缺陷被忽视，更凸显了采用内存安全语言和自动化预防等工程解决方案的必要性。
 
-2）AI 编码循环需要清晰的人工规范
-2026 年 6 月 23 日，Armin Ronacher 发布的一篇博客文章探讨了与 AI 编码代理的迭代开发循环，指出人工编写的规范仍然是生成高质量代码的关键瓶颈。 这一见解挑战了 AI 将取代开发者的说法；相反，它提升了精确规范编写的重要性，可能重塑 AI 编码工具融入专业工作流程的方式。
+2）FUTO 键盘新滑动输入模型媲美 Gboard 精度
+FUTO 为其注重隐私的离线 Android 键盘发布了一款新的滑动输入模型，根据用户反馈，其准确性已可与 Google 的 Gboard 相媲美。 这一进步为滑动输入提供了注重隐私的可靠替代方案，使用户无需将击键数据发送给 Google，并证明开源离线键盘有能力与专有方案竞争。
 
-3）Unlimited OCR：实现无分块长文档一次性解析
-百度发布了 Unlimited OCR，一种内存高效的架构，无需分块即可一次性解析任意长度文档，解决了传统 OCR 模型中 KV 缓存线性增长带来的内存瓶颈。 此突破消除了文档 AI 的可扩展性瓶颈，能够处理整本书、长篇报告或连续数据流而不会出现内存溢出，有望变革数字化和分析流程。
+3）纪念拼写检查波浪下划线的发明者
+一篇博客文章向微软开发人员 Tony Krueger 致敬，他设计了红色和绿色的波浪下划线，这一设计成为拼写检查的标准惯例。 这突显了一个看似微小的用户界面决策如何对软件设计和用户体验产生持久且全球性的影响。
 
-4）FUTO Swipe：全新的隐私保护滑动输入模型
-FUTO 为其 Android 键盘应用发布了一款新的滑动输入模型，利用用户贡献的滑动数据训练而成，提高了准确性，但在处理撇号和句子大写等方面仍不及 Gboard。
+4）Swift Package Index 被苹果收购
+社区运营的 Swift Package Index（Swift 包搜索引擎）已被苹果收购，其维护者 Dave Verwer 将加入苹果。这标志着该项目从独立运营转变为苹果官方资源。
 
-5）Swift Package Index 加入苹果
-社区驱动的 Swift 包发现与索引工具 Swift Package Index 正式并入苹果，其维护者已加入该公司。 此举将关键的开发者资源集中到苹果手中，可能改善维护与集成，但也引发了对开源治理和未来包索引限制的担忧。
+5）TikZ 编辑器：所见即所得的 LaTeX 插图工具
+一款新的开源所见即所得 TikZ 编辑器发布，允许用户通过拖拽等可视化方式编辑 LaTeX 插图，并与源代码实时同步。该工具几乎完全由 Codex 构建，重新实现了 TikZ 的大部分功能，以实现精确的坐标操控。
 
 如果只看一条，我会先看第 1 条；如果你做开发/AI 产品，第 2、3 条也值得顺手收藏。
 
@@ -41,8 +41,8 @@ FUTO 为其 Android 键盘应用发布了一款新的滑动输入模型，利用
 
 ## 链接备查
 
-- 所见即所得的 TikZ 编辑器，源码与可视化同步编辑: https://tikz.dev/editor/
-- AI 编码循环需要清晰的人工规范: https://lucumr.pocoo.org/2026/6/23/the-coming-loop/
-- Unlimited OCR：实现无分块长文档一次性解析: https://github.com/baidu/Unlimited-OCR
-- FUTO Swipe：全新的隐私保护滑动输入模型: https://swipe.futo.tech/
-- Swift Package Index 加入苹果: https://swiftpackageindex.com/blog/swift-package-index-joins-apple
+- 漏洞报告因 LLM 滥报而不再特殊: https://words.filippo.io/vuln-reports/
+- FUTO 键盘新滑动输入模型媲美 Gboard 精度: https://swipe.futo.tech/
+- 纪念拼写检查波浪下划线的发明者: https://devblogs.microsoft.com/oldnewthing/20260622-00/?p=112451
+- Swift Package Index 被苹果收购: https://swiftpackageindex.com/blog/swift-package-index-joins-apple
+- TikZ 编辑器：所见即所得的 LaTeX 插图工具: https://tikz.dev/editor/

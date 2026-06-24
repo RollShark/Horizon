@@ -204,6 +204,7 @@ class HorizonPipelineService:
             "filtering": {
                 "ai_score_threshold": ctx.config.filtering.ai_score_threshold,
                 "time_window_hours": ctx.config.filtering.time_window_hours,
+                "target_items": ctx.config.filtering.target_items,
                 "max_items": ctx.config.filtering.max_items,
                 "category_groups": {
                     key: group.model_dump(mode="json")
@@ -330,27 +331,26 @@ class HorizonPipelineService:
 
         effective_threshold = threshold if threshold is not None else ctx.config.filtering.ai_score_threshold
 
-        important_items = [item for item in items if item.ai_score and item.ai_score >= effective_threshold]
-        important_items.sort(key=lambda x: x.ai_score or 0, reverse=True)
+        storage = make_storage(ctx.runtime, ctx.config_path)
+        orchestrator = make_orchestrator(ctx.runtime, ctx.config, storage)
+        important_items = orchestrator.select_score_candidates(
+            items,
+            threshold=effective_threshold,
+        )
 
         before_dedup = len(important_items)
-        orchestrator = None
         if topic_dedup and important_items:
-            storage = make_storage(ctx.runtime, ctx.config_path)
-            orchestrator = make_orchestrator(ctx.runtime, ctx.config, storage)
             important_items = await orchestrator.merge_topic_duplicates(important_items)
         after_dedup = len(important_items)
 
         filtering = ctx.config.filtering
         balanced_enabled = bool(
             getattr(filtering, "category_groups", {})
+            or getattr(filtering, "target_items", None) is not None
             or getattr(filtering, "max_items", None) is not None
         )
         balanced_group_counts: dict[str, int] = {}
         if balanced_enabled:
-            if orchestrator is None:
-                storage = make_storage(ctx.runtime, ctx.config_path)
-                orchestrator = make_orchestrator(ctx.runtime, ctx.config, storage)
             balanced_result = orchestrator.apply_balanced_digest(
                 important_items,
                 log=False,

@@ -104,6 +104,66 @@ def test_max_items_works_without_category_groups() -> None:
     assert [item.id for item in result.items] == ["higher"]
 
 
+def test_target_items_adds_below_threshold_backfill_candidates() -> None:
+    filtering = FilteringConfig(
+        ai_score_threshold=7.0,
+        target_items=10,
+        max_items=10,
+    )
+    orchestrator = make_orchestrator(filtering)
+    items = [
+        *[make_item(f"above-{idx}", 9.0 - idx * 0.1, None) for idx in range(8)],
+        make_item("below-best", 6.9, None),
+        make_item("below-second", 6.8, None),
+        make_item("below-third", 6.0, None),
+    ]
+
+    candidates = orchestrator.select_score_candidates(items)
+    result = orchestrator.apply_balanced_digest(candidates)
+
+    assert len(result.items) == 10
+    assert [item.id for item in result.items[-2:]] == ["below-best", "below-second"]
+    assert "below-third" not in [item.id for item in result.items]
+
+
+def test_target_items_does_not_include_below_threshold_when_enough_above_threshold() -> None:
+    filtering = FilteringConfig(
+        ai_score_threshold=7.0,
+        target_items=10,
+        max_items=10,
+    )
+    orchestrator = make_orchestrator(filtering)
+    items = [
+        *[make_item(f"above-{idx}", 9.5 - idx * 0.1, None) for idx in range(11)],
+        make_item("below-best", 6.9, None),
+    ]
+
+    candidates = orchestrator.select_score_candidates(items)
+    result = orchestrator.apply_balanced_digest(candidates)
+
+    assert len(result.items) == 10
+    assert all((item.ai_score or 0) >= 7.0 for item in result.items)
+    assert "below-best" not in [item.id for item in result.items]
+
+
+def test_target_items_can_act_as_final_cap_without_max_items() -> None:
+    filtering = FilteringConfig(
+        ai_score_threshold=7.0,
+        target_items=2,
+    )
+    orchestrator = make_orchestrator(filtering)
+    items = [
+        make_item("top", 9.0, None),
+        make_item("second", 8.0, None),
+        make_item("third", 7.5, None),
+    ]
+
+    candidates = orchestrator.select_score_candidates(items)
+    result = orchestrator.apply_balanced_digest(candidates)
+
+    assert [item.id for item in result.items] == ["top", "second"]
+
+
 def test_duplicate_category_warns_and_first_group_wins() -> None:
     filtering = FilteringConfig(
         category_groups={
@@ -125,6 +185,7 @@ def test_duplicate_category_warns_and_first_group_wins() -> None:
 @pytest.mark.parametrize(
     "kwargs",
     [
+        {"target_items": 0},
         {"max_items": 0},
         {"default_group_limit": 0},
         {"category_groups": {"ai": {"limit": 0, "categories": ["ai"]}}},
@@ -188,3 +249,57 @@ def test_run_applies_balanced_digest_before_enrichment(tmp_path, monkeypatch) ->
     asyncio.run(orchestrator.run())
 
     assert enriched_ids == ["ai"]
+
+
+def test_run_backfills_to_target_before_enrichment(tmp_path, monkeypatch) -> None:
+    config = Config(
+        ai=AIConfig(
+            provider="openai",
+            model="test",
+            api_key_env="TEST_API_KEY",
+            languages=[],
+        ),
+        sources=SourcesConfig(),
+        filtering=FilteringConfig(
+            ai_score_threshold=7.0,
+            target_items=10,
+            max_items=10,
+        ),
+    )
+    storage = SimpleNamespace()
+    orchestrator = HorizonOrchestrator(config, storage)
+    items = [
+        *[make_item(f"above-{idx}", 8.9 - idx * 0.1, None) for idx in range(8)],
+        make_item("below-best", 6.9, None),
+        make_item("below-second", 6.8, None),
+        make_item("below-third", 6.0, None),
+    ]
+    enriched_ids: list[str] = []
+
+    async def fetch_all_sources(since):  # type: ignore[no-untyped-def]
+        return items
+
+    async def analyze_content(input_items):  # type: ignore[no-untyped-def]
+        return input_items
+
+    async def merge_topic_duplicates(input_items):  # type: ignore[no-untyped-def]
+        return input_items
+
+    async def expand_twitter_discussion(input_items):  # type: ignore[no-untyped-def]
+        return None
+
+    async def enrich_important_items(input_items):  # type: ignore[no-untyped-def]
+        enriched_ids.extend(item.id for item in input_items)
+
+    monkeypatch.setattr(orchestrator, "fetch_all_sources", fetch_all_sources)
+    monkeypatch.setattr(orchestrator, "_analyze_content", analyze_content)
+    monkeypatch.setattr(orchestrator, "merge_topic_duplicates", merge_topic_duplicates)
+    monkeypatch.setattr(orchestrator, "_expand_twitter_discussion", expand_twitter_discussion)
+    monkeypatch.setattr(orchestrator, "_enrich_important_items", enrich_important_items)
+    monkeypatch.chdir(tmp_path)
+
+    asyncio.run(orchestrator.run())
+
+    assert len(enriched_ids) == 10
+    assert enriched_ids[-2:] == ["below-best", "below-second"]
+    assert "below-third" not in enriched_ids

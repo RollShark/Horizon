@@ -103,16 +103,18 @@ class HorizonOrchestrator:
             analyzed_items = await self._analyze_content(merged_items)
             self.console.print(f"🤖 Analyzed {len(analyzed_items)} items with AI\n")
 
-            # 5. Filter by score threshold
+            # 5. Filter by score threshold, optionally adding a small
+            # below-threshold backfill pool so the final digest can still hit
+            # the configured target count after topic deduplication.
             threshold = self.config.filtering.ai_score_threshold
-            important_items = [
+            above_threshold_count = len([
                 item for item in analyzed_items
-                if item.ai_score and item.ai_score >= threshold
-            ]
-            important_items.sort(key=lambda x: x.ai_score or 0, reverse=True)
+                if item.ai_score is not None and item.ai_score >= threshold
+            ])
+            important_items = self.select_score_candidates(analyzed_items)
 
             self.console.print(
-                f"⭐️ {len(important_items)} items scored ≥ {threshold}\n"
+                f"⭐️ {above_threshold_count} items scored ≥ {threshold}\n"
             )
 
             # 5.5 Semantic deduplication: drop items covering the same topic
@@ -130,6 +132,16 @@ class HorizonOrchestrator:
             # 5.7 Apply per-category and global digest limits before enrichment
             balanced_result = self.apply_balanced_digest(important_items)
             important_items = balanced_result.items
+            below_threshold_selected = [
+                item for item in important_items
+                if item.ai_score is not None and item.ai_score < threshold
+            ]
+            target_items = self.config.filtering.target_items
+            if below_threshold_selected and target_items:
+                self.console.print(
+                    f"🧩 Backfilled {len(below_threshold_selected)} below-threshold items "
+                    f"to keep the digest near {target_items} items\n"
+                )
 
             # Show per-sub-source selection breakdown
             selected_counts: Dict[str, int] = defaultdict(int)
@@ -485,6 +497,39 @@ class HorizonOrchestrator:
 
         return [item for i, item in enumerate(items) if i not in drop_indices]
 
+    def select_score_candidates(
+        self,
+        items: List[ContentItem],
+        threshold: Optional[float] = None,
+    ) -> List[ContentItem]:
+        """Select score-filtered items plus an optional backfill candidate pool.
+
+        Items at or above the threshold are always preferred. When
+        ``filtering.target_items`` is configured, the highest-scored
+        below-threshold items are appended as a candidate pool. A later global
+        cap (``max_items``) keeps the final digest at the desired size, so
+        below-threshold items only survive if there are not enough
+        above-threshold unique items.
+        """
+        filtering = self.config.filtering
+        effective_threshold = (
+            threshold if threshold is not None else filtering.ai_score_threshold
+        )
+        scored_items = [item for item in items if item.ai_score is not None]
+        above_threshold = [
+            item for item in scored_items if (item.ai_score or 0) >= effective_threshold
+        ]
+        below_threshold = [
+            item for item in scored_items if (item.ai_score or 0) < effective_threshold
+        ]
+        above_threshold.sort(key=lambda item: item.ai_score or 0, reverse=True)
+        below_threshold.sort(key=lambda item: item.ai_score or 0, reverse=True)
+
+        if filtering.target_items is None:
+            return above_threshold
+
+        return above_threshold + below_threshold[: filtering.target_items]
+
     def apply_balanced_digest(
         self,
         items: List[ContentItem],
@@ -499,7 +544,7 @@ class HorizonOrchestrator:
         """
         filtering = self.config.filtering
         groups = filtering.category_groups
-        max_items = filtering.max_items
+        max_items = filtering.max_items or filtering.target_items
 
         if not groups and max_items is None:
             return BalancedDigestResult(items=items)

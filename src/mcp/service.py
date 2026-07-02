@@ -202,6 +202,7 @@ class HorizonPipelineService:
                 "api_key_env": ctx.config.ai.api_key_env,
             },
             "filtering": {
+                "ai_relevance_threshold": ctx.config.filtering.ai_relevance_threshold,
                 "ai_score_threshold": ctx.config.filtering.ai_score_threshold,
                 "time_window_hours": ctx.config.filtering.time_window_hours,
                 "target_items": ctx.config.filtering.target_items,
@@ -292,13 +293,27 @@ class HorizonPipelineService:
         scored_items = await analyzer.analyze_batch(items)
 
         self.run_store.save_items(run_id, "scored", items_to_dicts(scored_items))
-        score_threshold = ctx.config.filtering.ai_score_threshold
-        above_threshold = [x for x in scored_items if x.ai_score and x.ai_score >= score_threshold]
+        filtering = ctx.config.filtering
+        score_threshold = filtering.ai_score_threshold
+        relevance_threshold = filtering.ai_relevance_threshold
+        relevant_items = [
+            x for x in scored_items
+            if (
+                x.ai_relevance_score is not None
+                and x.ai_relevance_score >= relevance_threshold
+            )
+        ]
+        above_threshold = [
+            x for x in relevant_items
+            if x.ai_score is not None and x.ai_score >= score_threshold
+        ]
 
         meta = self.run_store.update_meta(
             run_id,
             {
                 "scored_count": len(scored_items),
+                "relevance_threshold": relevance_threshold,
+                "relevant_count": len(relevant_items),
                 "scored_threshold": score_threshold,
                 "scored_above_threshold": len(above_threshold),
             },
@@ -307,6 +322,7 @@ class HorizonPipelineService:
         return {
             "run_id": run_id,
             "scored": len(scored_items),
+            "relevant": len(relevant_items),
             "above_threshold": len(above_threshold),
             "score_distribution": self._score_distribution(scored_items),
             "artifact": str((self.run_store.run_dir(run_id) / "scored_items.json").resolve()),

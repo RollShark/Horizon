@@ -18,7 +18,13 @@ from src.models import (
 from src.orchestrator import HorizonOrchestrator
 
 
-def make_item(item_id: str, score: float, category: str | None) -> ContentItem:
+def make_item(
+    item_id: str,
+    score: float,
+    category: str | None,
+    *,
+    relevance: float = 10.0,
+) -> ContentItem:
     metadata = {"category": category} if category is not None else {}
     return ContentItem(
         id=item_id,
@@ -26,6 +32,7 @@ def make_item(item_id: str, score: float, category: str | None) -> ContentItem:
         title=item_id,
         url=f"https://example.com/{item_id}",
         published_at=datetime.now(timezone.utc),
+        ai_relevance_score=relevance,
         ai_score=score,
         metadata=metadata,
     )
@@ -126,6 +133,34 @@ def test_target_items_adds_below_threshold_backfill_candidates() -> None:
     assert "below-third" not in [item.id for item in result.items]
 
 
+def test_relevance_gate_runs_before_target_backfill() -> None:
+    filtering = FilteringConfig(
+        ai_relevance_threshold=8.0,
+        ai_score_threshold=7.0,
+        target_items=3,
+        max_items=3,
+    )
+    orchestrator = make_orchestrator(filtering)
+    items = [
+        make_item("direct-ai", 9.0, None, relevance=9.0),
+        make_item("ai-backfill", 6.8, None, relevance=8.0),
+        make_item("popular-but-off-topic", 10.0, None, relevance=3.0),
+    ]
+
+    candidates = orchestrator.select_score_candidates(items)
+
+    assert [item.id for item in candidates] == ["direct-ai", "ai-backfill"]
+
+
+def test_missing_relevance_fails_closed() -> None:
+    filtering = FilteringConfig(ai_relevance_threshold=8.0)
+    orchestrator = make_orchestrator(filtering)
+    item = make_item("missing-relevance", 10.0, None)
+    item.ai_relevance_score = None
+
+    assert orchestrator.select_score_candidates([item]) == []
+
+
 def test_target_items_does_not_include_below_threshold_when_enough_above_threshold() -> None:
     filtering = FilteringConfig(
         ai_score_threshold=7.0,
@@ -188,6 +223,8 @@ def test_duplicate_category_warns_and_first_group_wins() -> None:
         {"target_items": 0},
         {"max_items": 0},
         {"default_group_limit": 0},
+        {"ai_relevance_threshold": -0.1},
+        {"ai_relevance_threshold": 10.1},
         {"category_groups": {"ai": {"limit": 0, "categories": ["ai"]}}},
         {"category_groups": {"ai": {"limit": 1, "categories": []}}},
     ],

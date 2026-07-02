@@ -33,6 +33,8 @@ class ContentItem(BaseModel):
     metadata: Dict[str, Any] = Field(default_factory=dict)
 
     # AI analysis results
+    ai_relevance_score: Optional[float] = None  # 0-10 direct AI relevance
+    ai_relevance_reason: Optional[str] = None
     ai_score: Optional[float] = None  # 0-10 importance score
     ai_reason: Optional[str] = None
     ai_summary: Optional[str] = None
@@ -138,6 +140,7 @@ class RSSSourceConfig(BaseModel):
     url: HttpUrl
     enabled: bool = True
     category: Optional[str] = None
+    fetch_limit: Optional[int] = Field(default=None, gt=0)
 
 
 class RedditSubredditConfig(BaseModel):
@@ -372,6 +375,7 @@ class CategoryGroupConfig(BaseModel):
 class FilteringConfig(BaseModel):
     """Content filtering configuration."""
 
+    ai_relevance_threshold: float = Field(default=8.0, ge=0.0, le=10.0)
     ai_score_threshold: float = 7.0
     time_window_hours: int = 24
     target_items: Optional[int] = Field(default=None, gt=0)

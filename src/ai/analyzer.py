@@ -52,6 +52,8 @@ class ContentAnalyzer:
                     await self._analyze_item(item)
                 except Exception as e:
                     print(f"Error analyzing item {item.id}: {e}")
+                    item.ai_relevance_score = 0.0
+                    item.ai_relevance_reason = "Analysis failed"
                     item.ai_score = 0.0
                     item.ai_reason = "Analysis failed"
                     item.ai_summary = item.title
@@ -149,6 +151,8 @@ class ContentAnalyzer:
         result = self._parse_json_response(response)
         if result is None:
             print(f"Warning: could not parse analysis response for {item.id}, using defaults")
+            item.ai_relevance_score = 0.0
+            item.ai_relevance_reason = "Analysis response parse failed"
             item.ai_score = 0.0
             item.ai_reason = "Analysis response parse failed"
             item.ai_summary = item.title
@@ -156,6 +160,13 @@ class ContentAnalyzer:
             return
 
         # Update item with analysis results
+        # Relevance is fail-closed: older/malformed responses without the new
+        # field must not leak general technology news into an AI-only digest.
+        item.ai_relevance_score = float(result.get("ai_relevance_score", 0))
+        item.ai_relevance_reason = result.get(
+            "ai_relevance_reason",
+            "AI relevance was not provided",
+        )
         item.ai_score = float(result.get("score", 0))
         item.ai_reason = result.get("reason", "")
         item.ai_summary = result.get("summary", item.title)

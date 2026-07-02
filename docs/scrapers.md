@@ -81,11 +81,13 @@ Fetches any Atom/RSS feed using the `feedparser` library. Tries multiple date fi
   "name": "Simon Willison",
   "url": "https://simonwillison.net/atom/everything/",
   "enabled": true,
-  "category": "ai-tools"
+  "category": "ai-tools",
+  "fetch_limit": 20
 }
 ```
 
 - `category` — optional tag for grouping (e.g., `"programming"`, `"microblog"`)
+- `fetch_limit` — optional positive maximum entries accepted from this feed per run
 
 **Extracted data**: title, URL, author, content (from `summary`/`description`/`content` fields), feed name, category, and entry tags.
 

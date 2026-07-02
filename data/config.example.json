@@ -45,7 +45,8 @@
         "name": "Simon Willison",
         "url": "https://simonwillison.net/atom/everything/",
         "enabled": true,
-        "category": "ai-tools"
+        "category": "ai-tools",
+        "fetch_limit": 20
       },
       {
         "name": "LWN.net (subscriber full-text)",
@@ -110,6 +111,7 @@
     }
   },
   "filtering": {
+    "ai_relevance_threshold": 8.0,
     "ai_score_threshold": 6.0,
     "time_window_hours": 24,
     "max_items": null,

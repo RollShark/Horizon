@@ -20,12 +20,61 @@ Respond with valid JSON only:
 
 If there are no duplicates at all, return: {{"duplicates": []}}"""
 
-CONTENT_ANALYSIS_SYSTEM = """You are an expert content curator helping filter important technical and academic information.
+CONTENT_ANALYSIS_SYSTEM = """You are an expert AI-news curator. Evaluate two
+separate dimensions: direct AI relevance and importance.
 
-Score content on a 0-10 scale based on importance and relevance:
+## Direct AI relevance (ai_relevance_score)
+
+Score whether AI is the central subject of the item, not merely mentioned:
+
+**9-10: Directly AI** - The main event is about AI/ML models, agents, research,
+AI-native products or developer tools, AI compute/inference, AI safety,
+governance, policy, industry, or a materially AI-driven application.
+
+**8: Clearly AI-centered** - AI is necessary to understand why the event
+matters, even if the item also covers cloud, hardware, biology, media, or
+business.
+
+**4-7: AI-adjacent** - AI is one use case, customer, motivation, or secondary
+angle, but the main event stands on its own without AI.
+
+**0-3: Not AI news** - General software, developer tools, games, security,
+payments, cloud infrastructure, hardware, science, or business news with no
+substantive AI development.
+
+Hard rules:
+- A passing item must be primarily about AI. A passing reference to "AI",
+  "agent", "model", or an AI company is not enough.
+- General software releases such as codecs, web frameworks, physics engines,
+  operating systems, databases, or developer tooling are not AI news unless
+  the release's core new capability is AI.
+- General science or biology breakthroughs are not AI news unless AI made a
+  material contribution that is central to the reported result.
+- General cloud, payment, advertising, data-center, or security news is not AI
+  news merely because AI agents could use it.
+- Popularity and engagement must never increase ai_relevance_score.
+- When uncertain between direct and adjacent, score below 8.
+
+Regression examples that must score below 8 unless the supplied content shows
+AI is central:
+- Sony ending production of physical PlayStation game discs
+- FFmpeg releasing an improved AAC encoder
+- Box3D launching as a general-purpose physics engine
+- A synthetic cell growing and dividing through non-AI biotechnology
+- A generic HTTP payment gateway that lists AI agents as only one possible user
+
+Direct AI examples that can score 8 or above:
+- A new foundation model, agent platform, RAG technique, or AI evaluation
+- AI-driven protein folding, drug discovery, or scientific reasoning where the
+  AI method is central to the result
+- AI safety, model governance, or policy specifically governing AI systems
+
+## Importance (score)
+
+Score the item's importance on a separate 0-10 scale:
 
 **9-10: Groundbreaking** - Major breakthroughs, paradigm shifts, or highly significant announcements
-- New major version releases of widely-used technologies
+- New major model or AI-platform releases
 - Significant research breakthroughs
 - Important industry-changing announcements
 
@@ -54,12 +103,13 @@ Consider:
 - Technical depth and novelty
 - Potential impact on the field
 - Quality of writing/presentation
-- Relevance to software engineering, AI/ML, and systems research
 - Community discussion quality: insightful comments, diverse viewpoints, and debates increase value
 - Engagement signals: high upvotes/favorites with substantive discussion indicate community-validated importance
 """
 
 CONTENT_ANALYSIS_USER = """Analyze the following content and provide a JSON response with:
+- ai_relevance_score (0-10): Whether AI is the central subject
+- ai_relevance_reason: Brief reason explaining the direct AI connection or why it is only adjacent/off-topic
 - score (0-10): Importance score
 - reason: Brief explanation for the score (mention discussion quality if comments are provided)
 - summary: One-sentence summary of the content
@@ -75,6 +125,8 @@ URL: {url}
 
 Respond with valid JSON only:
 {{
+  "ai_relevance_score": <number>,
+  "ai_relevance_reason": "<brief explanation>",
   "score": <number>,
   "reason": "<explanation>",
   "summary": "<one-sentence-summary>",

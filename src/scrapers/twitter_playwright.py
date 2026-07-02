@@ -229,6 +229,10 @@ class TwitterPlaywrightScraper(BaseScraper):
                                     "retweeted_status_result" in obj.get("core", {})
                                     or "retweeted_status_id_str" in legacy
                                 ),
+                                "is_reply": bool(
+                                    legacy.get("in_reply_to_status_id_str")
+                                    or legacy.get("in_reply_to_user_id_str")
+                                ),
                                 "images": images,
                             }
                             try:
@@ -357,6 +361,8 @@ class TwitterPlaywrightScraper(BaseScraper):
             text = tweet.get("text", "")
             if not text:
                 return None
+            if tweet.get("is_retweet") or tweet.get("is_reply"):
+                return None
 
             created_at_raw = tweet.get("datetime", "")
             try:
@@ -381,6 +387,7 @@ class TwitterPlaywrightScraper(BaseScraper):
                 metadata={
                     "tweet_id": tweet_id,
                     "is_retweet": tweet.get("is_retweet", False),
+                    "is_reply": tweet.get("is_reply", False),
                     "images": tweet.get("images", []),
                 },
             )

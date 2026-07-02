@@ -5,17 +5,36 @@ title: Scoring System
 
 # Scoring System
 
-After fetching content from all sources, Horizon uses an AI model to score each item on a 0-10 scale. This determines what appears in the daily summary.
+After fetching content from all sources, Horizon uses an AI model to score each
+item on two independent 0-10 scales: direct AI relevance and importance. An
+item must pass the relevance gate before importance can qualify it for the
+daily summary.
 
 ## Pipeline
 
 1. **Batch processing** — Items are scored in batches of 10 with a progress bar. Failed items receive a score of 0.
 2. **Content preparation** — For each item, the content is truncated (800 chars if comments are present, 1000 otherwise) and engagement metrics are assembled from metadata (HN score, Reddit upvote ratio, etc.).
 3. **AI analysis** — The prepared content is sent to the configured AI model (temperature 0.3) with a system prompt defining the scoring criteria.
-4. **Response parsing** — The AI response is parsed as JSON (with fallbacks for code-block-wrapped JSON). Each item gets: `ai_score` (float), `ai_reason` (string), `ai_summary` (string), and `ai_tags` (list).
+4. **Response parsing** — The AI response is parsed as JSON (with fallbacks for
+   code-block-wrapped JSON). Each item gets `ai_relevance_score`,
+   `ai_relevance_reason`, `ai_score`, `ai_reason`, `ai_summary`, and `ai_tags`.
+   Missing relevance data fails closed with a relevance score of 0.
 5. **Retry** — Failed AI calls are retried up to 3 times with exponential backoff (2-10 seconds).
 
-## Scoring Scale
+## AI Relevance Gate
+
+`ai_relevance_score` measures whether AI is the central subject:
+
+- **8-10**: Directly about AI/ML models, agents, AI research, AI-native tools,
+  AI infrastructure, safety, policy, industry, or materially AI-driven uses.
+- **4-7**: AI-adjacent; AI is only a use case, customer, or secondary angle.
+- **0-3**: General technology, science, business, or software news.
+
+Popularity never increases relevance. General software releases, games,
+payments, cloud services, and biology stories do not pass merely because they
+mention AI or agents.
+
+## Importance Scale
 
 | Score | Tier | Description |
 |-------|------|-------------|
@@ -39,11 +58,15 @@ Engagement metadata is source-specific: HN provides score and comment count, Red
 
 ## Filtering
 
-After scoring, items are filtered by `filtering.ai_score_threshold` (default: `7.0`) and sorted by score descending. Optional balanced digest quotas are then applied before enrichment.
+After scoring, items are filtered first by
+`filtering.ai_relevance_threshold` (default: `8.0`), then by
+`filtering.ai_score_threshold` (default: `7.0`) and sorted by importance.
+Optional balanced digest quotas are then applied before enrichment.
 
 ```json
 {
   "filtering": {
+    "ai_relevance_threshold": 8.0,
     "ai_score_threshold": 7.0,
     "time_window_hours": 24,
     "max_items": 20,

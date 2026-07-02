@@ -4,6 +4,7 @@ from types import SimpleNamespace
 
 import src.ai.analyzer as analyzer_module
 from src.ai.analyzer import ContentAnalyzer
+from src.ai.prompts import CONTENT_ANALYSIS_SYSTEM
 from src.models import ContentItem, SourceType
 
 
@@ -94,3 +95,51 @@ def test_analyze_batch_concurrent_preserves_order(monkeypatch):
     result = asyncio.run(analyzer.analyze_batch(items))
 
     assert [item.id for item in result] == [item.id for item in items]
+
+
+def test_analyze_item_parses_relevance_and_importance() -> None:
+    class Client:
+        async def complete(self, **kwargs):  # type: ignore[no-untyped-def]
+            return """{
+                "ai_relevance_score": 9,
+                "ai_relevance_reason": "The model release is the main event.",
+                "score": 8,
+                "reason": "Important release.",
+                "summary": "A new AI model was released.",
+                "tags": ["AI", "model"]
+            }"""
+
+    item = _make_item("direct-ai")
+    asyncio.run(ContentAnalyzer(Client())._analyze_item(item))
+
+    assert item.ai_relevance_score == 9.0
+    assert item.ai_relevance_reason == "The model release is the main event."
+    assert item.ai_score == 8.0
+
+
+def test_analyze_item_missing_relevance_fails_closed() -> None:
+    class Client:
+        async def complete(self, **kwargs):  # type: ignore[no-untyped-def]
+            return """{
+                "score": 10,
+                "reason": "Popular technology news.",
+                "summary": "A general technology story.",
+                "tags": ["technology"]
+            }"""
+
+    item = _make_item("missing-relevance")
+    asyncio.run(ContentAnalyzer(Client())._analyze_item(item))
+
+    assert item.ai_relevance_score == 0.0
+    assert item.ai_score == 10.0
+
+
+def test_relevance_prompt_keeps_july_2_regression_examples() -> None:
+    for expected in (
+        "PlayStation game discs",
+        "FFmpeg releasing an improved AAC encoder",
+        "Box3D",
+        "synthetic cell",
+        "generic HTTP payment gateway",
+    ):
+        assert expected in CONTENT_ANALYSIS_SYSTEM

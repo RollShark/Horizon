@@ -7,6 +7,7 @@ import httpx
 
 from src.models import TwitterConfig
 from src.scrapers.twitter import TwitterScraper
+from src.scrapers.twitter_playwright import TwitterPlaywrightScraper
 
 
 def _make_config(**kwargs) -> TwitterConfig:
@@ -287,6 +288,42 @@ def test_url_constructed_when_missing(monkeypatch):
     assert "55" in str(result[0].url)
 
 
+def test_playwright_parser_keeps_original_tweet() -> None:
+    scraper = TwitterPlaywrightScraper(
+        _make_config(mode="playwright", users=["OpenAI"])
+    )
+    item = scraper._parse_tweet(
+        {
+            "tweet_id": "123",
+            "text": "We released a new AI model.",
+            "datetime": datetime.now(timezone.utc).isoformat(),
+            "is_retweet": False,
+            "is_reply": False,
+            "images": [],
+        },
+        "OpenAI",
+    )
+
+    assert item is not None
+    assert item.metadata["is_retweet"] is False
+    assert item.metadata["is_reply"] is False
+
+
+def test_playwright_parser_drops_retweets_and_replies() -> None:
+    scraper = TwitterPlaywrightScraper(
+        _make_config(mode="playwright", users=["OpenAI"])
+    )
+    base = {
+        "tweet_id": "123",
+        "text": "Not an original announcement.",
+        "datetime": datetime.now(timezone.utc).isoformat(),
+        "images": [],
+    }
+
+    assert scraper._parse_tweet({**base, "is_retweet": True}, "OpenAI") is None
+    assert scraper._parse_tweet({**base, "is_reply": True}, "OpenAI") is None
+
+
 # ---------------------------------------------------------------------------
 # Reply fetch tests
 # ---------------------------------------------------------------------------
@@ -415,6 +452,5 @@ def test_fetch_replies_no_conversation_id_returns_empty(monkeypatch):
     result = asyncio.run(scraper.fetch_replies_for_item(item))
     asyncio.run(client.aclose())
     assert result == []
-
 
 

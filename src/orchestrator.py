@@ -103,18 +103,31 @@ class HorizonOrchestrator:
             analyzed_items = await self._analyze_content(merged_items)
             self.console.print(f"🤖 Analyzed {len(analyzed_items)} items with AI\n")
 
-            # 5. Filter by score threshold, optionally adding a small
-            # below-threshold backfill pool so the final digest can still hit
-            # the configured target count after topic deduplication.
+            # 5. Apply the strict AI relevance gate before importance scoring.
+            # Optional importance backfill can only draw from this relevant pool.
             threshold = self.config.filtering.ai_score_threshold
+            relevance_threshold = self.config.filtering.ai_relevance_threshold
+            relevant_count = len([
+                item for item in analyzed_items
+                if (
+                    item.ai_relevance_score is not None
+                    and item.ai_relevance_score >= relevance_threshold
+                )
+            ])
             above_threshold_count = len([
                 item for item in analyzed_items
-                if item.ai_score is not None and item.ai_score >= threshold
+                if (
+                    item.ai_relevance_score is not None
+                    and item.ai_relevance_score >= relevance_threshold
+                    and item.ai_score is not None
+                    and item.ai_score >= threshold
+                )
             ])
             important_items = self.select_score_candidates(analyzed_items)
 
             self.console.print(
-                f"⭐️ {above_threshold_count} items scored ≥ {threshold}\n"
+                f"🎯 {relevant_count} items have AI relevance ≥ {relevance_threshold}\n"
+                f"⭐️ {above_threshold_count} relevant items scored ≥ {threshold}\n"
             )
 
             # 5.5 Semantic deduplication: drop items covering the same topic
@@ -504,18 +517,26 @@ class HorizonOrchestrator:
     ) -> List[ContentItem]:
         """Select score-filtered items plus an optional backfill candidate pool.
 
-        Items at or above the threshold are always preferred. When
+        The strict AI relevance gate is always applied first. Items at or above
+        the importance threshold are preferred. When
         ``filtering.target_items`` is configured, the highest-scored
-        below-threshold items are appended as a candidate pool. A later global
-        cap (``max_items``) keeps the final digest at the desired size, so
-        below-threshold items only survive if there are not enough
-        above-threshold unique items.
+        below-importance-threshold but AI-relevant items are appended as a
+        candidate pool. A later global cap (``max_items``) keeps the final
+        digest at the desired size.
         """
         filtering = self.config.filtering
         effective_threshold = (
             threshold if threshold is not None else filtering.ai_score_threshold
         )
-        scored_items = [item for item in items if item.ai_score is not None]
+        relevance_threshold = filtering.ai_relevance_threshold
+        scored_items = [
+            item for item in items
+            if (
+                item.ai_relevance_score is not None
+                and item.ai_relevance_score >= relevance_threshold
+                and item.ai_score is not None
+            )
+        ]
         above_threshold = [
             item for item in scored_items if (item.ai_score or 0) >= effective_threshold
         ]

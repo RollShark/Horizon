@@ -243,12 +243,17 @@ All sources are configured under the top-level `sources` key in `config.json`.
         "name": "Blog Name",
         "url": "https://example.com/feed.xml",
         "enabled": true,
-        "category": "ai-ml"
+        "category": "ai-ml",
+        "fetch_limit": 20
       }
     ]
   }
 }
 ```
+
+`fetch_limit` is an optional positive per-feed cap applied after the time
+window. Leave it unset for normal feeds; use it to prevent unusually active
+feeds from dominating the candidate pool.
 
 ### Reddit
 
@@ -419,6 +424,7 @@ Content is scored 0-10:
 ```json
 {
   "filtering": {
+    "ai_relevance_threshold": 8.0,
     "ai_score_threshold": 7.0,
     "time_window_hours": 24,
     "max_items": 20,
@@ -440,7 +446,8 @@ Content is scored 0-10:
 }
 ```
 
-- `ai_score_threshold`: Only include content scoring >= this value
+- `ai_relevance_threshold`: Only include content where AI is the central subject
+- `ai_score_threshold`: Only include relevant content scoring >= this importance value
 - `time_window_hours`: Fetch content from last N hours
 - `max_items`: Optional final cap after all group limits are applied
 - `category_groups`: Optional map of quota groups. Each group requires a positive
@@ -452,9 +459,10 @@ Content is scored 0-10:
 - `default_group_limit`: Optional positive limit for unmatched items. If omitted,
   unmatched items are unlimited except for `max_items`.
 
-Balanced digest filtering runs after AI score threshold filtering and topic
-deduplication, but before enrichment. This reduces enrichment calls to only the
-items that can appear in the final digest.
+Filtering order is AI relevance, importance, topic deduplication, and balanced
+digest limits. Target-count backfill can only use items that already passed the
+AI relevance gate. This reduces enrichment calls to only the items that can
+appear in the final digest.
 
 Group matching uses the source category stored in `ContentItem.metadata.category`.
 RSS sources expose this through `sources.rss[].category`, and OpenBB watchlists

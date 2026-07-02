@@ -56,13 +56,39 @@ uv run playwright install chromium
     "path": "/",
     "secure": true,
     "httpOnly": false
+  },
+  {
+    "name": "twid",
+    "value": "你的twid值",
+    "domain": ".x.com",
+    "path": "/",
+    "secure": true,
+    "httpOnly": false
   }
 ]
 ```
 
 ---
 
-## 3. 配置文件
+## 3. GitHub Actions Secret（推荐）
+
+不要把 Cookie 文件提交到仓库，也不要通过聊天发送 Cookie。
+
+1. 打开仓库的 **Settings → Secrets and variables → Actions**。
+2. 点击 **New repository secret**。
+3. 名称填写 `X_COOKIES_JSON`。
+4. 值粘贴上一步的完整 JSON 数组。
+
+仓库自带的日报工作流会在运行时把 Secret 临时写入
+`data/x_cookies_1.json`，完成抓取后立即删除。未配置 Secret 或 Cookie
+已经失效时，Twitter/X 抓取会被跳过，其他信息源继续正常工作。
+
+建议使用没有私信和敏感资料的专用小号。Cookie 等同于登录会话凭据；
+如怀疑泄露，请立即在 X 中退出所有会话或修改密码，并更新 Secret。
+
+---
+
+## 4. 配置文件
 
 编辑 `data/config.json`：
 
@@ -83,7 +109,7 @@ uv run playwright install chromium
 
 ---
 
-## 4. 多账号轮询（防封策略）
+## 5. 多账号轮询（防封策略）
 
 如果你有多个 X 账号，可以为每个账号导出 cookie，命名为：
 
@@ -97,7 +123,7 @@ Horizon 会自动**轮询使用**这些 cookie，当一个账号触发限流时�
 
 ---
 
-## 5. 代理配置（可选）
+## 6. 代理配置（可选）
 
 如果在中国大陆或需要代理：
 
@@ -109,7 +135,7 @@ Playwright 会自动读取 `PROXY`、`https_proxy`、`http_proxy`、`all_proxy` 
 
 ---
 
-## 6. 注意事项
+## 7. 注意事项
 
 ⚠️ **Cookie 有有效期**：通常 1-4 周，过期后需要重新导出  
 ⚠️ **不要提交 Cookie 文件**：已加入 `.gitignore`，请妥善保管  
@@ -118,7 +144,7 @@ Playwright 会自动读取 `PROXY`、`https_proxy`、`http_proxy`、`all_proxy` 
 
 ---
 
-## 7. 故障排除
+## 8. 故障排除
 
 | 问题 | 原因 | 解决 |
 |------|------|------|

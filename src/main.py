@@ -116,11 +116,13 @@ def print_config_template():
         "name": "Example Blog",
         "url": "https://example.com/feed.xml",
         "enabled": true,
-        "category": "software-engineering"
+        "category": "software-engineering",
+        "fetch_limit": 20
       }
     ]
   },
   "filtering": {
+    "ai_relevance_threshold": 8.0,
     "ai_score_threshold": 7.0,
     "time_window_hours": 24,
     "max_items": null,

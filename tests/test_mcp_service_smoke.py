@@ -20,6 +20,7 @@ def make_item(item_id: str, score: float | None = None) -> ContentItem:
         author="tester",
         published_at=datetime.now(timezone.utc),
     )
+    item.ai_relevance_score = 10.0
     item.ai_score = score
     return item
 def test_validate_config_smoke(tmp_path: Path) -> None:
@@ -122,13 +123,24 @@ def test_filter_items_uses_public_topic_dedup_api(tmp_path: Path, monkeypatch) -
             SimpleNamespace(
                 runtime=SimpleNamespace(),
                 config_path=tmp_path / "config.json",
-                config=SimpleNamespace(filtering=SimpleNamespace(ai_score_threshold=7.0)),
+                config=SimpleNamespace(
+                    filtering=SimpleNamespace(
+                        ai_relevance_threshold=8.0,
+                        ai_score_threshold=7.0,
+                        category_groups={},
+                        target_items=None,
+                        max_items=None,
+                    )
+                ),
             ),
         ),
     )
     monkeypatch.setattr("src.mcp.service.make_storage", lambda runtime, config_path: object())
 
     class FakeOrchestrator:
+        def select_score_candidates(self, items, threshold=None):  # type: ignore[no-untyped-def]
+            return items
+
         async def merge_topic_duplicates(self, items):  # type: ignore[no-untyped-def]
             return items[:1]
 
@@ -148,7 +160,9 @@ def test_filter_items_applies_balanced_digest(tmp_path: Path, monkeypatch) -> No
     service = HorizonPipelineService(runs_root=tmp_path / "mcp-runs")
     service.run_store.create_run("run-balanced")
     filtering = SimpleNamespace(
+        ai_relevance_threshold=8.0,
         ai_score_threshold=7.0,
+        target_items=None,
         max_items=1,
         category_groups={},
     )
@@ -168,6 +182,9 @@ def test_filter_items_applies_balanced_digest(tmp_path: Path, monkeypatch) -> No
     monkeypatch.setattr("src.mcp.service.make_storage", lambda runtime, config_path: object())
 
     class FakeOrchestrator:
+        def select_score_candidates(self, items, threshold=None):  # type: ignore[no-untyped-def]
+            return items
+
         def apply_balanced_digest(self, items, log=True):  # type: ignore[no-untyped-def]
             assert log is False
             return SimpleNamespace(items=items[:1], group_counts={"other": 1})

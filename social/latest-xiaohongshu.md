@@ -18,20 +18,20 @@ date: 2026-07-02
 
 今天帮你从技术资讯里捞了几条真正值得看的：
 
-1）首个无细胞骨架合成细胞成功生长分裂
-科学家设计出名为 SpudCell 的合成细胞，无需细胞骨架即可生长分裂，首次在人工系统中实现细胞分裂。 这绕过了合成生物学中一大长期障碍——合成细胞的分裂难题，为创建可控的人工生命形式铺平道路，有望应用于医药、生物制造等领域。
+1）日本最高法院裁定 AI 不能列为专利发明人
+日本最高法院裁定，人工智能不能被列为专利申请的发明人，这与美国和欧洲的类似裁决一致。 该裁决为 AI 在创新中的角色和知识产权归属设置了重要的法律先例，确保人类发明人承担最终责任，可能影响全球 AI 政策讨论。
 
-2）索尼 2028 年 1 月起终止实体游戏光盘生产
-索尼宣布将于 2028 年 1 月停止生产新的 PlayStation 游戏实体光盘，全面转向数字发行。此前用户已购电影被从媒体库中移除，进一步证实了行业从实体媒介的整体转型。 该决定加速了实体游戏所有权的衰落，引发对数字权利、游戏保存和可能价格垄断的担忧。
+2）Copilot Vision 现已正式推出
+GitHub Copilot 现在支持视觉输入，用户可以将图片和 PDF 附加到聊天提示中，让 AI 结合代码进行分析。 该功能使开发者能够就图表、截图和文档等视觉内容获取 AI 辅助，从而简化工作流程，减少上下文切换。
 
-3）FFmpeg 9.1 发布新版 AAC 编码器，音质显著提高
-FFmpeg 9.1 版本引入了一个全新的原生 AAC 编码器，大幅提升音质，解决了早期 FFmpeg AAC 编码器中长期存在的唧唧声等杂音问题。
+3）微软成立 AI 部署公司，投入 25 亿美元
+微软成立了一家新的 AI 部署公司，承诺投入 25 亿美元，以加速 AI 服务交付。此举紧随亚马逊、OpenAI 和 Anthropic 的类似举措。 这表明科技巨头在 AI 基础设施投资上的竞争加剧，致力于提供企业级 AI 部署。这可能会重塑云 AI 服务，并影响企业大规模采用 AI 的方式。
 
-4）Box3D：Box2D 作者发布的开源 3D 物理引擎
-Erin Catto 宣布了 Box3D，这是一个用于游戏的开源 3D 刚体物理仿真库，作为其广泛使用的 Box2D 物理引擎的后继者。 Box2D 一直是独立游戏开发的基础，被无数游戏使用；Box3D 将其扩展到三维空间，有望推动新一代基于物理的游戏和仿真应用。
+4）Cloudflare 设 9 月 15 日为 AI 爬虫分离最后期限
+Cloudflare 宣布新政策，要求 AI 公司在 9 月 15 日前将用于 AI 训练和 AI 代理的网络爬虫与用于搜索索引的爬虫分离开来，否则可能会在采用其服务的发布者网站上被默认拦截。 此举直击 AI 公司未经许可抓取发布者内容的争议问题，可能迫使其为数据访问谈判并付费。
 
-5）Cloudflare 通过 HTTP 402 推出支付网关，实现微交易
-Cloudflare 发布了支付网关，利用长期未使用的 HTTP 402 状态码（x402）对其网络后的任何资源实现按请求收费，并以稳定币即时结算。 这可能为 API 和 AI 代理解锁微交易，允许无需预存账户的自动支付，并可能最终使 HTTP 402 标准在规模上得到实际采用。
+5）从微分几何视角看哈密顿神经网络
+一篇新博文从微分几何的视角解释哈密顿神经网络（HNN），强调了诺特定理在将对称性与模型架构中的守恒律联系起来方面的作用。 该视角提供了对 HNN 的更深层次理论理解，通过将物理对称性直接嵌入神经网络设计，可能提高泛化能力和效率。 该博文数学性较强，但包含交互式视觉内容以帮助说明概念。
 
 如果只看一条，我会先看第 1 条；如果你做开发/AI 产品，第 2、3 条也值得顺手收藏。
 
@@ -41,8 +41,8 @@ Cloudflare 发布了支付网关，利用长期未使用的 HTTP 402 状态码�
 
 ## 链接备查
 
-- 首个无细胞骨架合成细胞成功生长分裂: https://www.quantamagazine.org/for-the-first-time-a-cell-built-from-scratch-grows-and-divides-20260701/
-- 索尼 2028 年 1 月起终止实体游戏光盘生产: https://blog.playstation.com/2026/07/01/physical-disc-production-ending-in-january-2028-for-new-games-releasing-on-playstation-consoles/
-- FFmpeg 9.1 发布新版 AAC 编码器，音质显著提高: https://hydrogenaudio.org/index.php/topic,129691.0.html
-- Box3D：Box2D 作者发布的开源 3D 物理引擎: https://box2d.org/posts/2026/06/announcing-box3d/
-- Cloudflare 通过 HTTP 402 推出支付网关，实现微交易: https://blog.cloudflare.com/monetization-gateway/
+- 日本最高法院裁定 AI 不能列为专利发明人: https://japannews.yomiuri.co.jp/science-nature/technology/20260306-314930/
+- Copilot Vision 现已正式推出: https://github.blog/changelog/2026-07-01-copilot-vision-is-generally-available
+- 微软成立 AI 部署公司，投入 25 亿美元: https://techcrunch.com/2026/07/02/microsoft-launches-its-own-ai-deployment-company-with-2-5-billion-commitment/
+- Cloudflare 设 9 月 15 日为 AI 爬虫分离最后期限: https://techcrunch.com/2026/07/01/cloudflares-new-policy-pushes-ai-companies-to-pay-for-publishers-content/
+- 从微分几何视角看哈密顿神经网络: https://www.reddit.com/r/MachineLearning/comments/1ukzdnj/hamiltonian_neural_networks_from_a_differential/

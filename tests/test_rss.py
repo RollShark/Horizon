@@ -6,7 +6,7 @@ from unittest.mock import AsyncMock
 from unittest.mock import MagicMock
 
 from src.models import RSSSourceConfig
-from src.scrapers.rss import RSSScraper
+from src.scrapers.rss import RSS_HEADERS, RSSScraper
 
 
 def test_rss_ids_are_deterministic() -> None:
@@ -65,3 +65,24 @@ def test_rss_fetch_limit_caps_each_feed() -> None:
     )
 
     assert [item.title for item in items] == ["One", "Two"]
+
+
+def test_rss_fetch_uses_feed_headers() -> None:
+    feed = """<?xml version="1.0" encoding="UTF-8" ?>
+    <rss version="2.0"><channel><title>Test</title></channel></rss>
+    """
+    response = MagicMock()
+    response.text = feed
+    response.raise_for_status.return_value = None
+    client = AsyncMock()
+    client.get.return_value = response
+    source = RSSSourceConfig(name="Test", url="https://example.com/feed.xml")
+    scraper = RSSScraper([source], client)
+
+    asyncio.run(scraper.fetch(datetime(2026, 4, 24, 0, 0, tzinfo=timezone.utc)))
+
+    client.get.assert_awaited_once_with(
+        "https://example.com/feed.xml",
+        headers=RSS_HEADERS,
+        follow_redirects=True,
+    )

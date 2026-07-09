@@ -157,7 +157,7 @@
       },
       {
         "name": "Docker Blog",
-        "url": "https://www.docker.com/blog/feed/",
+        "url": "https://www.docker.com/feed/",
         "enabled": true,
         "category": "developer-tools"
       },

@@ -324,6 +324,27 @@ def test_playwright_parser_drops_retweets_and_replies() -> None:
     assert scraper._parse_tweet({**base, "is_reply": True}, "OpenAI") is None
 
 
+def test_playwright_parser_drops_text_retweets() -> None:
+    """Some GraphQL payloads expose retweets only through the legacy RT text."""
+    scraper = TwitterPlaywrightScraper(
+        _make_config(mode="playwright", users=["HuggingFace"])
+    )
+
+    item = scraper._parse_tweet(
+        {
+            "tweet_id": "456",
+            "text": "RT @skypilot_org: Run AI workloads on any cloud.",
+            "datetime": datetime.now(timezone.utc).isoformat(),
+            "is_retweet": False,
+            "is_reply": False,
+            "images": [],
+        },
+        "HuggingFace",
+    )
+
+    assert item is None
+
+
 # ---------------------------------------------------------------------------
 # Reply fetch tests
 # ---------------------------------------------------------------------------
@@ -452,5 +473,4 @@ def test_fetch_replies_no_conversation_id_returns_empty(monkeypatch):
     result = asyncio.run(scraper.fetch_replies_for_item(item))
     asyncio.run(client.aclose())
     assert result == []
-
 

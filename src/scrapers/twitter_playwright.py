@@ -363,6 +363,8 @@ class TwitterPlaywrightScraper(BaseScraper):
                 return None
             if tweet.get("is_retweet") or tweet.get("is_reply"):
                 return None
+            if text.lstrip().startswith("RT @"):
+                return None
 
             created_at_raw = tweet.get("datetime", "")
             try:

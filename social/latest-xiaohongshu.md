@@ -18,20 +18,20 @@ date: 2026-07-09
 
 今天帮你从技术资讯里捞了几条真正值得看的：
 
-1）Bun 使用 Claude Code 在 11 天内从 Zig 重写为 Rust
-Bun 的 JavaScript 运行时由一名工程师使用 Anthropic 的 AI 工具 Claude Code，在 11 天内从 Zig 重写为 Rust，并通过了所有平台的测试套件。 这展示了 AI 辅助编程在大规模代码迁移中的变革潜力，大幅缩短时间和成本，同时提升了内存安全性、稳定性和性能。
+1）xAI 推出 Grok 4.5：首款编程与智能体导向模型
+xAI 发布了 Grok 4.5，这是其首个专门针对编程和智能体任务训练的模型，利用 Cursor 的交互数据提高了速度和成本效率。 此次发布加剧了 AI 编程助手和企业自动化领域的竞争，以更低价格提供有竞争力的性能，并凸显了真实开发者交互数据的战略价值。
 
-2）SpaceXAI 发布 Grok 4.5：Cursor 训练、Opus 级 AI 模型
-SpaceXAI 发布了 Grok 4.5，这是一款专门针对编程、代理任务和知识工作训练的新语言模型。它使用 Cursor 的交互数据进行训练，推理速度为每秒 80 个 token，输入价格为每百万 token 2 美元，输出价格为每百万 token 6 美元，并在 Harvey 的法律代理基准测试…
+2）OpenAI GPT-5.6 经美政府延迟后发布，声称编码性能超 Claude Mythos 5
+OpenAI 在获得美国政府解除发布禁令并进行额外测试后，于本周四推出 GPT-5.6。该公司声称该模型在编码基准测试中的表现优于 Anthropic 的 Claude Mythos 5，且成本仅为后者的一半左右。
 
-3）OpenAI GPT-5.6 Sol 因美国政府解禁周四推出
-在完成美国政府要求的额外安全测试后，OpenAI 将于周四发布 GPT-5.6 Sol 模型。该模型据称在编码基准测试中以约一半的成本超越了 Anthropic 的 Claude Mythos 5。
+3）OpenAI 发布 GPT-Live 全双工语音模型，结合 GPT-5.5 推理
+OpenAI 发布了 GPT-Live 和 GPT-Live-1 mini，这是新一代的全双工语音模型，能够同时听和说，并将深度推理任务委派给 GPT-5.5，现已用于 ChatGPT Voice。
 
-4）OpenAI 发布 GPT-Live 语音模型
-OpenAI 宣布推出 GPT-Live，新一代语音模型，旨在实现自然的人机交互，并从今日起逐步在 ChatGPT 中推出。早期测试者表示，该模型可在后台将复杂问题委托给 GPT-5.5 处理，显著提升了语音对话质量。 此次发布是语音 AI 领域的重要进步，它弥合了语音接口与最先进语言模型之间的差距。
+4）Anthropic 推出 GRAM：可移除模块隔离双重用途能力
+Anthropic 发布了 GRAM (Gradient-Routed Auxiliary Modules) 训练方法，将病毒学等双重用途知识隔离到语言模型的不同模块中，并可通过开关控制对这些危险能力的访问。
 
-5）PyTorch v2.13.0 发布：FlexAttention 登陆 Apple Silicon 与内存高效 LLM 损失函数
-PyTorch v2.13.0 引入了在 Apple Silicon 上最高可达 12 倍加速的 FlexAttention、用于 TorchInductor 的原型 CuTeDSL 后端，以及可将大型词汇语言模型训练的 GPU 内存占用降低最多 4 倍的 nn.
+5）PyTorch 2.13.0 发布：FlexAttention 登陆苹果硅
+PyTorch 2.13.0 为苹果硅带来了 FlexAttention，在稀疏注意力模式上速度提升高达 12 倍；同时引入了原型 CuTeDSL 后端和可减少大型词汇模型训练内存占用的 nn.LinearCrossEntropyLoss。
 
 如果只看一条，我会先看第 1 条；如果你做开发/AI 产品，第 2、3 条也值得顺手收藏。
 
@@ -41,8 +41,8 @@ PyTorch v2.13.0 引入了在 Apple Silicon 上最高可达 12 倍加速的 FlexA
 
 ## 链接备查
 
-- Bun 使用 Claude Code 在 11 天内从 Zig 重写为 Rust: https://bun.com/blog/bun-in-rust
-- SpaceXAI 发布 Grok 4.5：Cursor 训练、Opus 级 AI 模型: https://techcrunch.com/2026/07/08/spacexai-releases-grok-4-5-which-elon-describes-as-an-opus-class-model/
-- OpenAI GPT-5.6 Sol 因美国政府解禁周四推出: https://the-decoder.com/openais-gpt-5-6-launches-thursday-after-a-delay-forced-by-the-u-s-government/
-- OpenAI 发布 GPT-Live 语音模型: https://x.com/OpenAI/status/2074907025537224840
-- PyTorch v2.13.0 发布：FlexAttention 登陆 Apple Silicon 与内存高效 LLM 损失函数: https://github.com/pytorch/pytorch/releases/tag/v2.13.0
+- xAI 推出 Grok 4.5：首款编程与智能体导向模型: https://x.com/xai/status/2074915721684086811
+- OpenAI GPT-5.6 经美政府延迟后发布，声称编码性能超 Claude Mythos 5: https://the-decoder.com/openais-gpt-5-6-launches-thursday-after-a-delay-forced-by-the-u-s-government/
+- OpenAI 发布 GPT-Live 全双工语音模型，结合 GPT-5.5 推理: https://www.marktechpost.com/2026/07/08/openai-releases-gpt-live-and-gpt-live-1-mini-full-duplex-voice-models-that-delegate-deeper-reasoning-to-gpt-5-5/
+- Anthropic 推出 GRAM：可移除模块隔离双重用途能力: https://x.com/AnthropicAI/status/2074998242417443144
+- PyTorch 2.13.0 发布：FlexAttention 登陆苹果硅: https://github.com/pytorch/pytorch/releases/tag/v2.13.0

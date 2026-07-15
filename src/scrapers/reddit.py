@@ -53,24 +53,22 @@ class RedditScraper(BaseScraper):
         if not self.config.get("enabled", True):
             return []
 
-        tasks = []
+        # Reddit aggressively rate-limits bursts from shared CI egress IPs.
+        # Fetch configured sources sequentially so JSON-to-RSS fallbacks do not
+        # all hit the service at the same time.
+        items = []
         for sub_cfg in self.reddit_config.subreddits:
             if sub_cfg.enabled:
-                tasks.append(self._fetch_subreddit(sub_cfg, since))
+                try:
+                    items.extend(await self._fetch_subreddit(sub_cfg, since))
+                except Exception as e:
+                    logger.warning("Error fetching Reddit source: %s", e)
         for user_cfg in self.reddit_config.users:
             if user_cfg.enabled:
-                tasks.append(self._fetch_user(user_cfg, since))
-
-        if not tasks:
-            return []
-
-        results = await asyncio.gather(*tasks, return_exceptions=True)
-        items = []
-        for result in results:
-            if isinstance(result, Exception):
-                logger.warning("Error fetching Reddit source: %s", result)
-            elif isinstance(result, list):
-                items.extend(result)
+                try:
+                    items.extend(await self._fetch_user(user_cfg, since))
+                except Exception as e:
+                    logger.warning("Error fetching Reddit source: %s", e)
         return items
 
     async def _fetch_subreddit(
@@ -115,6 +113,29 @@ class RedditScraper(BaseScraper):
                 },
                 follow_redirects=True,
             )
+            if response.status_code == 429:
+                try:
+                    retry_after_header = int(response.headers.get("Retry-After", 2))
+                except ValueError:
+                    retry_after_header = 2
+                retry_after = min(
+                    max(retry_after_header, 0),
+                    10,
+                )
+                logger.warning(
+                    "Reddit RSS rate limited for r/%s; retrying after %ds",
+                    cfg.subreddit,
+                    retry_after,
+                )
+                await asyncio.sleep(retry_after)
+                response = await self.client.get(
+                    rss_url,
+                    headers={
+                        **REDDIT_HEADERS,
+                        "Accept": "application/atom+xml,application/xml,text/xml,*/*",
+                    },
+                    follow_redirects=True,
+                )
             response.raise_for_status()
         except httpx.HTTPError as e:
             logger.warning("Reddit RSS fallback failed for r/%s: %s", cfg.subreddit, e)

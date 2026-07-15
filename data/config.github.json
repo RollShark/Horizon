@@ -158,7 +158,7 @@
       {
         "name": "Docker Blog",
         "url": "https://www.docker.com/feed/",
-        "enabled": true,
+        "enabled": false,
         "category": "developer-tools"
       },
       {
@@ -289,7 +289,7 @@
       "users": [
         {
           "username": "iamthatis",
-          "enabled": true,
+          "enabled": false,
           "sort": "new",
           "fetch_limit": 10
         }
@@ -346,7 +346,7 @@
       "period": "past_24_hours",
       "languages": ["All", "Python", "TypeScript", "Rust"],
       "keywords": ["ai", "llm", "agent", "model", "developer", "tool", "runtime", "database", "cloud"],
-      "min_stars": 50,
+      "min_stars": 3,
       "max_items": 20
     }
   },
